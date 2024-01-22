@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data Access\Models\" />
-    <Folder Include="Data Access\Context\" />
     <Folder Include="Presentation\" />
   </ItemGroup>
 
