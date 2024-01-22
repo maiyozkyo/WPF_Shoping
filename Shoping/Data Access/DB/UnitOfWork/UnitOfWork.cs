@@ -11,7 +11,7 @@ namespace Shoping.Data_Access.DB.UnitOfWork
     public class UnitOfWork<TEntity>: IUnitOfWork<TEntity> where TEntity : class
     {
         private readonly DbContext _dbContext;
-        public IRepository<TEntity> _repository { get; set; }
+        public Repository<TEntity> _repository { get; set; }
 
         public UnitOfWork(DbContext dbContext)
         {
@@ -24,7 +24,7 @@ namespace Shoping.Data_Access.DB.UnitOfWork
             return await _dbContext.SaveChangesAsync();
         }
         
-        public IRepository<TEntity> GetRepository()
+        public Repository<TEntity> GetRepository()
         {
             return _repository;
         }
@@ -34,9 +34,9 @@ namespace Shoping.Data_Access.DB.UnitOfWork
             _dbContext.Dispose();
         }
 
-        Task<int> IUnitOfWork<TEntity>.SaveChangeAsync()
+        public Task<int> SaveChangeAsync()
         {
-            throw new NotImplementedException();
+            return _dbContext.SaveChangesAsync();
         }
 
         void IDisposable.Dispose()

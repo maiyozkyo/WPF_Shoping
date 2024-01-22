@@ -9,7 +9,7 @@ namespace Shoping.Data_Access.DB.UnitOfWork
 {
     interface IUnitOfWork<TEntity> : IDisposable where TEntity : class
     {
-        public IRepository<TEntity> _repository { get; set; }
+        public Repository<TEntity> _repository { get; set; }
         public Task<int> SaveChangeAsync();
     }
 }
