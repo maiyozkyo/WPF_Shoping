@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Blend for Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shoping", "Shoping\Shoping.csproj", "{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DBFE749E-A2ED-4DA1-926E-57334F681EC2}
+	EndGlobalSection
+EndGlobal
