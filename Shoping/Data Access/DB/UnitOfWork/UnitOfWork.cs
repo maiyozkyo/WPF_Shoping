@@ -38,10 +38,5 @@ namespace Shoping.Data_Access.DB.UnitOfWork
         {
             return _dbContext.SaveChangesAsync();
         }
-
-        void IDisposable.Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

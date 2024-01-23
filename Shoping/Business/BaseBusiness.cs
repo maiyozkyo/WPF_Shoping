@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Shoping.Data_Access.DB.MongoDB;
 using Shoping.Data_Access.DB.UnitOfWork;
 using Shoping.Data_Access.Repository;
 using System;
@@ -14,8 +16,31 @@ namespace Shoping.Business
         public UnitOfWork<TEntity> UnitOfWork { get; set; }
         public Repository<TEntity> Repository { get; set; }
 
-        public BaseBusiness(DbContext dbContext)
+        public BaseBusiness(IConfiguration iConfiguration)
         {
+            var type = iConfiguration.GetSection("DBType").Value;
+            DbContext dbContext = null;
+            switch (type)
+            {
+                case "MongoDB":
+                    {
+                        dbContext = new MongoDBContext<TEntity>(iConfiguration);
+                        break;
+                    }
+                case "Posgrest":
+                    {
+                        break;
+                    }
+                case "MySQL":
+                    {
+
+                        break;
+                    }
+                    default :
+                    {
+                        throw new Exception("Không có loại DB");
+                    }
+            }
             UnitOfWork = new UnitOfWork<TEntity>(dbContext);
             Repository = UnitOfWork.GetRepository();
         }

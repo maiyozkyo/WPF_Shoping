@@ -1,0 +1,4 @@
+{
+  "MongoDatabase": "mongodb+srv://ekkobuu:onepieceboy313@repositorycluster.dy36cfc.mongodb.net/?retryWrites=true&w=majority",
+  "DBType": "MongoDB"
+}

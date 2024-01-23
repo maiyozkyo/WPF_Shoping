@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace Shoping.Data_Access.DB.MongoDB
         public DbSet<TEntity> _dbSet { get; set; }
         public string _connectionString { get; set; }
 
-        public MongoDBContext(string connectionString) {
-            _connectionString = connectionString;
+        public MongoDBContext(IConfiguration iConfiguration) {
+            _connectionString = iConfiguration.GetSection("MongoDatabase").Value;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
