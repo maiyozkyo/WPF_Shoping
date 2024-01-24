@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Shoping.Business;
+using Shoping.Data_Access.DB.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,8 @@ namespace Shoping.Presentation
     /// </summary>
     public partial class SignUp : Window
     {
-        private UserBusiness UserBusiness { get; set; }
-        public SignUp(IConfiguration iConfiguration)
+        public SignUp()
         {
-            UserBusiness = new UserBusiness(iConfiguration);
             InitializeComponent();
         }
 

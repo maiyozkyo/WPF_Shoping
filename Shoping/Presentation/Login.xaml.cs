@@ -24,5 +24,9 @@ namespace Shoping.Presentation
             InitializeComponent();
         }
 
+        private void Btn_Register(object sender, RoutedEventArgs e)
+        {
+            var registerWindow = new SignUp();
+        }
     }
 }

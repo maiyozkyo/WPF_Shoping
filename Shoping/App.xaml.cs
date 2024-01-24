@@ -14,7 +14,7 @@ namespace Shoping
     public partial class App : Application
     {
         public IServiceProvider ServiceProvider { get; set; }
-        public IConfiguration Configuration { get; set; }
+        public static IConfiguration Configuration { get; set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {

@@ -1,30 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Shoping.Data_Access.DB.MongoDB;
 using Shoping.Data_Access.DB.UnitOfWork;
-using Shoping.Data_Access.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shoping.Data_Access.Repo;
 
 namespace Shoping.Business
 {
-    public class BaseBusiness<TEntity> where TEntity : class
+    public class BaseBusiness
     {
-        public UnitOfWork<TEntity> UnitOfWork { get; set; }
-        public Repository<TEntity> Repository { get; set; }
+        public UnitOfWork UnitOfWork { get; set; }
+        public Repository Repository { get; set; }
 
-        public BaseBusiness(IConfiguration iConfiguration)
+        public BaseBusiness(string _dbName)
         {
+            var iConfiguration = App.Configuration;
             var type = iConfiguration.GetSection("DBType").Value;
             DbContext dbContext = null;
             switch (type)
             {
                 case "MongoDB":
                     {
-                        dbContext = new MongoDBContext<TEntity>(iConfiguration);
+                        dbContext = new MongoDBContext(iConfiguration, _dbName);
                         break;
                     }
                 case "Posgrest":
@@ -41,8 +36,8 @@ namespace Shoping.Business
                         throw new Exception("Không có loại DB");
                     }
             }
-            UnitOfWork = new UnitOfWork<TEntity>(dbContext);
-            Repository = UnitOfWork.GetRepository();
+            UnitOfWork = new UnitOfWork(dbContext);
+            Repository = UnitOfWork.Repository;
         }
     }
 }
