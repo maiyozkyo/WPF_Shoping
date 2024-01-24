@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shoping.Presentation;
 using System.Configuration;
 using System.Data;
 using System.IO;
@@ -25,13 +26,13 @@ namespace Shoping
             var serviceCollection = new ServiceCollection();
             ConfigurationService(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
-            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            var mainWindow = ServiceProvider.GetRequiredService<Login>();
             mainWindow.Show();
         }
 
         private void ConfigurationService(IServiceCollection services)
         {
-            services.AddTransient(typeof(MainWindow));
+            services.AddTransient(typeof(Login));
         }
     }
 
