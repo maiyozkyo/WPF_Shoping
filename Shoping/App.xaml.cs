@@ -22,7 +22,6 @@ namespace Shoping
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("AppSetting.json", optional: false, reloadOnChange: true);
             Configuration = builder.Build();
-            Console.WriteLine(Configuration.GetSection("MongoDatabase").Value);
             var serviceCollection = new ServiceCollection();
             ConfigurationService(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();

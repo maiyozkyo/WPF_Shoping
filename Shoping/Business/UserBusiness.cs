@@ -17,18 +17,22 @@ namespace Shoping.Business
         {
             if (user == null)
             {
-
+                return null;
             }
 
             var addedUser = await Repository.GetOneAsync(x => x.Email == user.Email);
             if (addedUser != null)
             {
-                   
+                addedUser.ModifiedOn = DateTime.Now;
+                return addedUser;
             }
             else
             {
-                
+                user.CreatedOn = DateTime.Now;
+                Repository.Add(user);
             }
+            await UnitOfWork.SaveChangesAsync();
+            return user;
         }
     }
 }

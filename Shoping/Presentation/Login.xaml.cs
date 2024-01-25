@@ -27,6 +27,8 @@ namespace Shoping.Presentation
         private void Btn_Register(object sender, RoutedEventArgs e)
         {
             var registerWindow = new SignUp();
+            this.Hide();
+            registerWindow.Show();
         }
     }
 }
