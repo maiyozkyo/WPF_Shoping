@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Shoping.Business
 {
-    interface IUserBusiness : BaseBusiness
+    interface IUserBusiness
     {
+        
     }
 }

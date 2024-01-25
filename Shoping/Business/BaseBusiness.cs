@@ -5,10 +5,10 @@ using Shoping.Data_Access.Repo;
 
 namespace Shoping.Business
 {
-    public class BaseBusiness
+    public class BaseBusiness<TEntity> where TEntity : class
     {
-        public UnitOfWork UnitOfWork { get; set; }
-        public Repository Repository { get; set; }
+        public UnitOfWork<TEntity> UnitOfWork { get; set; }
+        public Repository<TEntity> Repository { get; set; }
 
         public BaseBusiness(string _dbName)
         {
@@ -36,7 +36,7 @@ namespace Shoping.Business
                         throw new Exception("Không có loại DB");
                     }
             }
-            UnitOfWork = new UnitOfWork(dbContext);
+            UnitOfWork = new UnitOfWork<TEntity>(dbContext);
             Repository = UnitOfWork.Repository;
         }
     }
