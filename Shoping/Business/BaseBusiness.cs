@@ -12,14 +12,14 @@ namespace Shoping.Business
 
         public BaseBusiness(string _dbName)
         {
-            var iConfiguration = App.Configuration;
-            var type = iConfiguration.GetSection("DBType").Value;
+            var iConfiguration = App.iConfiguration;
+            var type = iConfiguration.GetSection("Database").GetSection("DBType").Value;
             DbContext dbContext = null;
             switch (type)
             {
                 case "MongoDB":
                     {
-                        dbContext = new MongoDBContext(iConfiguration, _dbName);
+                        dbContext = new MongoDBContext<TEntity>(iConfiguration, _dbName);
                         break;
                     }
                 case "Posgrest":

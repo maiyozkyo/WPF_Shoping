@@ -7,12 +7,26 @@
         mc:Ignorable="d"
         Title="Login" Height="270" Width="477">
     <Grid>
-        <TextBox  HorizontalAlignment="Left" Margin="160,64,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="193" Height="33"/>
-        <PasswordBox HorizontalAlignment="Left" Margin="160,127,0,0" VerticalAlignment="Top" Width="193" Height="33"/>
+        <TextBox Name="UserName" HorizontalAlignment="Left" Margin="160,64,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="193" Height="33"/>
+        <PasswordBox x:Name="Password" HorizontalAlignment="Left" Margin="160,127,0,0" VerticalAlignment="Top" Width="193" Height="33"/>
         <Label Content="Tài khoản" HorizontalAlignment="Left" Margin="47,64,0,0" VerticalAlignment="Top" Height="33" Width="75"/>
         <Label Content="Mật khẩu" HorizontalAlignment="Left" Margin="47,126,0,0" VerticalAlignment="Top" Height="34" Width="75" RenderTransformOrigin="0.431,1.941"/>
-        <Button Content="Đăng nhập" HorizontalAlignment="Left" Margin="160,181,0,0" VerticalAlignment="Top" Height="39" Width="78"/>
-        <Button Content="Đăng ký" HorizontalAlignment="Left" Margin="275,181,0,0" VerticalAlignment="Top" Height="39" Width="78" Click="Btn_Register"/>
+        <Button 
+            Content="Đăng nhập"
+            Click="LoginClick"
+            HorizontalAlignment="Left" 
+            Margin="160,181,0,0" 
+            VerticalAlignment="Top" 
+            Height="39" Width="78"
+        />
+        <Button 
+            Content="Đăng ký" 
+            Click="RegisterClick"
+            HorizontalAlignment="Left" 
+            Margin="275,181,0,0" 
+            VerticalAlignment="Top" 
+            Height="39" Width="78" 
+        />
 
     </Grid>
 </Window>

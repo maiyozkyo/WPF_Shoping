@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Shoping.Business
 {
-    interface IUserBusiness
+    public interface IUserBusiness
     {
         public Task<User> AddUpdateUserAsync(User user);
+        public Task<User> GetUserAsync(string email, string password);
     }
 }

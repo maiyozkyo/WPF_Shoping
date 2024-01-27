@@ -1,4 +1,7 @@
 {
-  "MongoDatabase": "mongodb+srv://windowclass:windowclass@cluster0.btzn5cp.mongodb.net/?retryWrites=true&w=majority",
-  "DBType": "MongoDB"
+  "Database": {
+    "DBName":  "Shoping",
+    "MongoDatabase": "mongodb+srv://windowclass:windowclass@cluster0.btzn5cp.mongodb.net/?retryWrites=true&w=majority",
+    "DBType": "MongoDB"
+  }
 }

@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +12,17 @@ namespace Shoping.Data_Access.Models
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        protected string _id;
+        [Key]
+        public string ID { get; set; }
 
-        public string RecID { get; set; }
+        public Guid RecID { get; set; }
+
         public int Index { get; set; }
 
         public MongoDBEntity()
         {
-            RecID = Guid.NewGuid().ToString();
+            RecID = Guid.NewGuid();
+            ID = RecID.ToString();
         }
     }
 }

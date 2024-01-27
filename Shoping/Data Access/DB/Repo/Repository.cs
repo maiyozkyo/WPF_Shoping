@@ -15,7 +15,7 @@ namespace Shoping.Data_Access.Repo
         public Repository(DbContext context)
         {
             _context = context;
-            _dbSet = _context.Set<TEntity>();
+            _dbSet = context.Set<TEntity>();
         }
 
         public void Add(TEntity entity)
