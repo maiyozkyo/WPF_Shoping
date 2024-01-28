@@ -1,4 +1,5 @@
-﻿using Shoping.Business;
+﻿using PropertyChanged;
+using Shoping.Business;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shoping.Presentation.ViewModels
 {
+    [AddINotifyPropertyChangedInterface]
     public class SignUpViewModel
     {
         public IUserBusiness UserBusiness;

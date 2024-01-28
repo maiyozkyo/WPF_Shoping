@@ -25,7 +25,7 @@ namespace Shoping.Presentation
         {
             InitializeComponent();
             LoginViewModel = new LoginViewModel(App.iUserBusiness);
-
+            this.DataContext = LoginViewModel;
         }
 
         private void RegisterClick(object sender, RoutedEventArgs e)
@@ -41,14 +41,13 @@ namespace Shoping.Presentation
             this.Show();
         }
 
-        private void LoginClick(object sender, RoutedEventArgs e)
+        private async void LoginClick(object sender, RoutedEventArgs e)
         {
-            var email = UserName.Text;
+            var email = Email.Text;
             var password = Password.Password;
-            var user = LoginViewModel.UserBusiness.GetUserAsync(email, password);
-            if (user != null)
+            var isSuccess = await LoginViewModel.Login(email, password);
+            if (isSuccess)
             {
-                this.Close();
             }
         }
     }
