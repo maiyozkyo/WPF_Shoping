@@ -1,4 +1,5 @@
-﻿using Shoping.Data_Access.Models;
+﻿using Shoping.Data_Access.DTOs;
+using Shoping.Data_Access.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace Shoping.Business
     public interface IUserBusiness
     {
         public Task<User> AddUpdateUserAsync(User user);
-        public Task<User> GetUserAsync(string email, string password);
+        public Task<UserDTO> GetUserAsync(string email, string password);
     }
 }

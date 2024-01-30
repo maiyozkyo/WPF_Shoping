@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,13 @@ namespace Shoping.Business
 {
     public class ApiService : IApiService
     {
+        private readonly IConfiguration IConfiguration;
+        public string UserUrl { get; private set; }
+
+        public ApiService() {
+            IConfiguration = App.iConfiguration;
+            UserUrl = IConfiguration.GetSection("Url").GetSection("User").Value;
+        }
         public async Task<TEntity> Post<TEntity>(string url, Dictionary<string, object> body) where TEntity : class
         {
             using (var httpClient = new HttpClient())

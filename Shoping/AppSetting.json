@@ -1,7 +1,11 @@
 {
   "Database": {
-    "DBName":  "Shoping",
+    "DBName": "Shoping",
     "MongoDatabase": "mongodb+srv://windowclass:windowclass@cluster0.btzn5cp.mongodb.net/?retryWrites=true&w=majority",
     "DBType": "MongoDB"
+  },
+
+  "Url": {
+    "User": "https://localhost:44305/api/User"
   }
 }

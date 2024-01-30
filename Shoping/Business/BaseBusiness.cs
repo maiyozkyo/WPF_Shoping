@@ -9,7 +9,7 @@ namespace Shoping.Business
     {
         public UnitOfWork<TEntity> UnitOfWork { get; set; }
         public Repository<TEntity> Repository { get; set; }
-
+        public ApiService ApiService { get; set; }
         public BaseBusiness(string _dbName)
         {
             var iConfiguration = App.iConfiguration;
@@ -31,11 +31,12 @@ namespace Shoping.Business
 
                         break;
                     }
-                    default :
-                    {
-                        throw new Exception("Không có loại DB");
-                    }
+                default:
+                {
+                    throw new Exception("Không có loại DB");
+                }
             }
+            ApiService = new ApiService();
             UnitOfWork = new UnitOfWork<TEntity>(dbContext);
             Repository = UnitOfWork.Repository;
         }
