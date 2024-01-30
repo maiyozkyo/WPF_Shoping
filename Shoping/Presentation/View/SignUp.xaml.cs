@@ -39,7 +39,7 @@ namespace Shoping.Presentation
                 return;
             }
 
-            var user = new User();
+            var user = new UserDTO();
             user.Email = Email.Text;
             user.Password = Password.Password;
             var addedUser = SignUpViewModel.UserBusiness.AddUpdateUserAsync(user).Result;

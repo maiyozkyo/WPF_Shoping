@@ -16,7 +16,7 @@ namespace Shoping.Business
             ApiService = new ApiService();
         }
 
-        public async Task<User> AddUpdateUserAsync(User user)
+        public async Task<UserDTO> AddUpdateUserAsync(UserDTO user)
         {
             return null;
         }
