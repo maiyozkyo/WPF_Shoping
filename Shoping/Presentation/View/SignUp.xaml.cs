@@ -29,7 +29,7 @@ namespace Shoping.Presentation
         public SignUp()
         {
             InitializeComponent();
-            SignUpViewModel = new SignUpViewModel(App.iUserBusiness);
+            SignUpViewModel = new SignUpViewModel(App.iUserServices);
         }
 
         private void AddUserAsync(object sender, RoutedEventArgs e)
@@ -42,7 +42,7 @@ namespace Shoping.Presentation
             var user = new UserDTO();
             user.Email = Email.Text;
             user.Password = Password.Password;
-            var addedUser = SignUpViewModel.UserBusiness.AddUpdateUserAsync(user).Result;
+            var addedUser = await SignUpViewModel.UserServices.AddUpdateUserAsync(user);
             if (addedUser != null)
             {
                 this.Close();

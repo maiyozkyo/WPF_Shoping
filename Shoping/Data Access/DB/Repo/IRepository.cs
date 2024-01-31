@@ -10,7 +10,7 @@ namespace Shoping.Data_Access.Repo
     interface IRepository<TEntity> where TEntity : class
     {
         void Add(TEntity entity);
-        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> condition);
+        IQueryable<TEntity> GetAsync(Expression<Func<TEntity, bool>> condition);
         Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> condition);
         void Update(TEntity entity);
         void Delete(TEntity entity);

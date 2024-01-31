@@ -24,7 +24,7 @@ namespace Shoping.Presentation
         public Login()
         {
             InitializeComponent();
-            LoginViewModel = new LoginViewModel(App.iUserBusiness);
+            LoginViewModel = new LoginViewModel(App.iUserServices);
             this.DataContext = LoginViewModel;
         }
 

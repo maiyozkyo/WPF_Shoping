@@ -27,6 +27,7 @@ namespace Shoping.Data_Access.Models
         {
             RecID = Guid.NewGuid();
             ID = RecID.ToString();
+            CreatedBy = App.Auth.Email;
             CreatedOn = DateTime.Now;
         }
     }

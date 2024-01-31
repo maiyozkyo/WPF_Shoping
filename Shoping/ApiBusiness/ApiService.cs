@@ -7,14 +7,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shoping.Business
+namespace Shoping.ApiBusiness
 {
     public class ApiService : IApiService
     {
         private readonly IConfiguration IConfiguration;
         public string UserUrl { get; private set; }
 
-        public ApiService() {
+        public ApiService()
+        {
             IConfiguration = App.iConfiguration;
             UserUrl = IConfiguration.GetSection("Url").GetSection("User").Value;
         }
@@ -23,9 +24,10 @@ namespace Shoping.Business
             using (var httpClient = new HttpClient())
             {
                 var json = JsonConvert.SerializeObject(body);
-                var content = new StringContent(json, UTF8Encoding.UTF8, "application/json");
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(url, content);
-                if (response != null && response.IsSuccessStatusCode) {
+                if (response != null && response.IsSuccessStatusCode)
+                {
                     var sResponse = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<TEntity>(sResponse);
                 }

@@ -23,9 +23,9 @@ namespace Shoping.Data_Access.Repo
             _dbSet.Add(entity);
         }
 
-        public Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> condition)
+        public IQueryable<TEntity> GetAsync(Expression<Func<TEntity, bool>> condition)
         {
-            return _dbSet.Where(condition).ToListAsync();
+            return _dbSet.Where(condition);
         }
 
         public Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> condition)

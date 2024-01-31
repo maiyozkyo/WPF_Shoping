@@ -1,11 +1,11 @@
 ﻿using Autofac;
-using Autofac.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shoping.ApiBusiness;
 using Shoping.Business;
+using Shoping.Business.UserServices;
+using Shoping.Data_Access.DTOs;
 using Shoping.Presentation;
-using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Windows;
 
@@ -18,10 +18,9 @@ namespace Shoping
     {
         public IServiceProvider ServiceProvider { get; set; }
         public static IConfiguration iConfiguration { get; set; }
-        public static IUserBusiness iUserBusiness { get; set; }
-        public static IUserBusiness iOrderBusiness { get; set; }
+        public static IUserServices iUserServices { get; set; }
         public static IApiService iApiService { get; set; }
-
+        public static Auth Auth { get; private set; } 
         protected override void OnStartup(StartupEventArgs e)
         {
             var builder = new ConfigurationBuilder()
@@ -30,7 +29,6 @@ namespace Shoping
             iConfiguration = builder.Build();
             var containerBuilder = new ContainerBuilder();
             BuildupContainer(containerBuilder);
-            
 
             var serviceCollection = new ServiceCollection();
             ConfigurationService(serviceCollection);
@@ -49,17 +47,33 @@ namespace Shoping
             var dbName = iConfiguration.GetSection("Database").GetSection("DBName").Value;
 
             #region Register
-            containerBuilder.RegisterType<UserBusiness>().WithParameter("_dbName", dbName).As<IUserBusiness>();
-            containerBuilder.RegisterType<OrderBusiness>().WithParameter("_dbName", dbName).As<IOrderBusiness>();
+            containerBuilder.RegisterType<UserBusiness>().WithParameter("_dbName", dbName).As<IUserServices>();
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
             #endregion
 
             #region Resolve
             var container = containerBuilder.Build();
-            iUserBusiness = container.Resolve<IUserBusiness>();
-            iOrderBusiness = container.Resolve<IOrderBusiness>();
+            iUserServices = container.Resolve<IUserServices>();
             iApiService = container.Resolve<IApiService>();
             #endregion
+        }
+
+        public static void SetAuth(UserDTO loginUser)
+        {
+            if (Auth == null)
+            {
+                Auth = new Auth();
+            }
+
+            if (loginUser != null)
+            {
+                Auth.Email = loginUser.Email;
+                Auth.CreatedBy = loginUser.CreatedBy;
+                Auth.CreatedOn = loginUser.CreatedOn;
+                Auth.UserName = loginUser.UserName;
+                Auth.LoginOn = DateTime.Now;
+
+            }
         }
     }
 

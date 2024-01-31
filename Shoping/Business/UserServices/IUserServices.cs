@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shoping.Business
+namespace Shoping.Business.UserServices
 {
-    public interface IUserBusiness
+    public interface IUserServices
     {
         public Task<UserDTO> AddUpdateUserAsync(UserDTO user);
-        public Task<UserDTO> GetUserAsync(string email, string password);
+        public Task<bool> LoginAsync(string email, string password);
     }
 }

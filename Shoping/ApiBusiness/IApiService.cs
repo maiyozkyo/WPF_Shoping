@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shoping.Business
+namespace Shoping.ApiBusiness
 {
     public interface IApiService
     {

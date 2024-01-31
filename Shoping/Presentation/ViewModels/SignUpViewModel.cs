@@ -1,5 +1,5 @@
 ﻿using PropertyChanged;
-using Shoping.Business;
+using Shoping.Business.UserServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,10 @@ namespace Shoping.Presentation.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class SignUpViewModel
     {
-        public IUserBusiness UserBusiness;
-        public SignUpViewModel(IUserBusiness userBusiness)
+        public IUserServices UserServices;
+        public SignUpViewModel(IUserServices userServices)
         {
-            UserBusiness = userBusiness;
+            UserServices = userServices;
         }
     }
 }

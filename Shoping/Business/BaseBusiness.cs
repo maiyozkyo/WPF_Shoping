@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shoping.ApiBusiness;
 using Shoping.Data_Access.DB.MongoDB;
 using Shoping.Data_Access.DB.UnitOfWork;
+using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Repo;
 
 namespace Shoping.Business
@@ -10,7 +12,7 @@ namespace Shoping.Business
         public UnitOfWork<TEntity> UnitOfWork { get; set; }
         public Repository<TEntity> Repository { get; set; }
         public ApiService ApiService { get; set; }
-        public User Auth { get; private set; }
+
         public BaseBusiness(string _dbName)
         {
             var iConfiguration = App.iConfiguration;
@@ -41,5 +43,6 @@ namespace Shoping.Business
             UnitOfWork = new UnitOfWork<TEntity>(dbContext);
             Repository = UnitOfWork.Repository;
         }
+
     }
 }
