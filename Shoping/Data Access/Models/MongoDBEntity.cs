@@ -16,6 +16,10 @@ namespace Shoping.Data_Access.Models
         public string ID { get; set; }
 
         public Guid RecID { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string ModifiedBy {  get; set; }
+        public DateTime ModifiedOn { get; set; }
 
         public int Index { get; set; }
 
@@ -23,6 +27,7 @@ namespace Shoping.Data_Access.Models
         {
             RecID = Guid.NewGuid();
             ID = RecID.ToString();
+            CreatedOn = DateTime.Now;
         }
     }
 }

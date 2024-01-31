@@ -10,6 +10,7 @@ namespace Shoping.Business
         public UnitOfWork<TEntity> UnitOfWork { get; set; }
         public Repository<TEntity> Repository { get; set; }
         public ApiService ApiService { get; set; }
+        public User Auth { get; private set; }
         public BaseBusiness(string _dbName)
         {
             var iConfiguration = App.iConfiguration;

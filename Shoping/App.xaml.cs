@@ -19,6 +19,7 @@ namespace Shoping
         public IServiceProvider ServiceProvider { get; set; }
         public static IConfiguration iConfiguration { get; set; }
         public static IUserBusiness iUserBusiness { get; set; }
+        public static IUserBusiness iOrderBusiness { get; set; }
         public static IApiService iApiService { get; set; }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -49,12 +50,14 @@ namespace Shoping
 
             #region Register
             containerBuilder.RegisterType<UserBusiness>().WithParameter("_dbName", dbName).As<IUserBusiness>();
+            containerBuilder.RegisterType<OrderBusiness>().WithParameter("_dbName", dbName).As<IOrderBusiness>();
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
             #endregion
 
             #region Resolve
             var container = containerBuilder.Build();
             iUserBusiness = container.Resolve<IUserBusiness>();
+            iOrderBusiness = container.Resolve<IOrderBusiness>();
             iApiService = container.Resolve<IApiService>();
             #endregion
         }
