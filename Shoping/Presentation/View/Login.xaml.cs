@@ -1,4 +1,5 @@
-﻿using Shoping.Presentation.ViewModels;
+﻿using Shoping.Presentation.View;
+using Shoping.Presentation.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,9 @@ namespace Shoping.Presentation
             var isSuccess = await LoginViewModel.Login(email, password);
             if (isSuccess)
             {
+                var mainView = new Main();
+                this.Hide();
+                mainView.Show();
             }
         }
     }

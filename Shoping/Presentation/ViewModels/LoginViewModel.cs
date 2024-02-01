@@ -11,9 +11,6 @@ namespace Shoping.Presentation.ViewModels
     public class LoginViewModel
     {
         public IUserServices UserServices;
-        public UserDTO Author { get; private set; }
-        public string UserName { get; set; }
-
         public LoginViewModel(IUserServices userServices)
         {
             UserServices = userServices;

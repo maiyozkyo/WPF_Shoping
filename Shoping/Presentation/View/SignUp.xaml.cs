@@ -32,7 +32,7 @@ namespace Shoping.Presentation
             SignUpViewModel = new SignUpViewModel(App.iUserServices);
         }
 
-        private void AddUserAsync(object sender, RoutedEventArgs e)
+        private async void AddUserAsync(object sender, RoutedEventArgs e)
         {
             if (Password.Password != ConfirmPassword.Password)
             {
