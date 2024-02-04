@@ -47,5 +47,23 @@ namespace Shoping.Data_Access.Repo
         {
             _dbSet.RemoveRange(entities);
         }
+
+        public async void UpdateField(string field, dynamic value = null)
+        {
+            var lstObj = await _dbSet.ToListAsync();
+            if (lstObj != null)
+            {
+                foreach(var obj in lstObj)
+                {
+                    var propertyInfo = obj.GetType().GetProperty(field);
+                    if (propertyInfo != null)
+                    {
+                        propertyInfo.SetValue(obj, value);
+                    }
+                }
+                _dbSet.UpdateRange(lstObj);
+            }
+            await _context.SaveChangesAsync();
+        }
     }
 }

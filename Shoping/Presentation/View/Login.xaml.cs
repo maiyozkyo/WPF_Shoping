@@ -32,15 +32,12 @@ namespace Shoping.Presentation
         private void RegisterClick(object sender, RoutedEventArgs e)
         {
             var registerWindow = new SignUp();
-            registerWindow.Closed += RegisterClose;
+            registerWindow.Closed += ReturnToLogin;
             this.Hide();
             registerWindow.Show();
         }
 
-        private void RegisterClose(object sender, EventArgs e)
-        {
-            this.Show();
-        }
+        
 
         private async void LoginClick(object sender, RoutedEventArgs e)
         {
@@ -50,9 +47,15 @@ namespace Shoping.Presentation
             if (isSuccess)
             {
                 var mainView = new Main();
+                mainView.Closed += ReturnToLogin;
                 this.Hide();
                 mainView.Show();
             }
+        }
+
+        private void ReturnToLogin(object sender, EventArgs e)
+        {
+            this.Show();
         }
     }
 }

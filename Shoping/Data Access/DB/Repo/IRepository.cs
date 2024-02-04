@@ -15,5 +15,6 @@ namespace Shoping.Data_Access.Repo
         void Update(TEntity entity);
         void Delete(TEntity entity);
         void Delete(IEnumerable<TEntity> entities);
+        void UpdateField(string field, dynamic value = null);
     }
 }
