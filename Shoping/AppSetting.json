@@ -6,6 +6,8 @@
   },
 
   "Url": {
-    "User": "https://localhost:44305/api/User"
+    //"User": "https://localhost:44305/api/User",
+    "User": "http://localhost:8081/api/User" //Docker
+
   }
 }
