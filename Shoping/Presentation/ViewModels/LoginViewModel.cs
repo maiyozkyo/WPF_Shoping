@@ -10,21 +10,16 @@ namespace Shoping.Presentation.ViewModels
     [AddINotifyPropertyChangedInterface]                                                                                                                  
     public class LoginViewModel
     {
-        public IUserServices UserServices;
-        public LoginViewModel(IUserServices userServices)
+        public IUserBusiness UserServices;
+        public LoginViewModel(IUserBusiness userServices)
         {
             UserServices = userServices;
         }
 
         public async Task<bool> Login(string email, string password)
         {
-            var user = await UserServices.LoginAsync(email, password);
-            if (user == null)
-            {
-                return false;
-            }
-
-            return true;
+            var isSuccess = await UserServices.LoginAsync(email, password);
+            return isSuccess;
         }
     }
 }

@@ -24,7 +24,12 @@ namespace Shoping.Presentation.View
         public Main()
         {
             InitializeComponent();
+            MainViewModel = new MainViewModel(App.iOrderBusiness);
+        }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.AddUpdateOrder();
         }
     }
 }

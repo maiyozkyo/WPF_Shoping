@@ -29,7 +29,7 @@ namespace Shoping.Presentation
         public SignUp()
         {
             InitializeComponent();
-            SignUpViewModel = new SignUpViewModel(App.iUserServices);
+            SignUpViewModel = new SignUpViewModel(App.iUserBusiness);
         }
 
         private async void AddUserAsync(object sender, RoutedEventArgs e)

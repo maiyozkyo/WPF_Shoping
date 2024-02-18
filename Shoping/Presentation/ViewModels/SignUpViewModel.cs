@@ -11,8 +11,8 @@ namespace Shoping.Presentation.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class SignUpViewModel
     {
-        public IUserServices UserServices;
-        public SignUpViewModel(IUserServices userServices)
+        public IUserBusiness UserServices;
+        public SignUpViewModel(IUserBusiness userServices)
         {
             UserServices = userServices;
         }
