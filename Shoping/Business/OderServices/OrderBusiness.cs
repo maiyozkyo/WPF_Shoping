@@ -5,7 +5,7 @@ using Shoping.Data_Access.Models;
 
 namespace Shoping.Business.OderServices
 {
-    public class OrderBusiness : BaseBusiness<Order>, IOrderServices
+    public class OrderBusiness : BaseBusiness<Order>, IOrderBusiness
     {
         public OrderBusiness(string _dbName) : base(_dbName)
         {
@@ -20,6 +20,8 @@ namespace Shoping.Business.OderServices
                 {
                     CustomerID = orderDTO.CustomerID,
                 };
+                Repository.Add(order);
+                await UnitOfWork.SaveChangesAsync();
             }
             else
             {

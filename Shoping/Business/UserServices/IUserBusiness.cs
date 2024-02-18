@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shoping.Business.UserServices
 {
-    public interface IUserServices
+    public interface IUserBusiness
     {
         public Task<UserDTO> AddUpdateUserAsync(UserDTO user);
         public Task<bool> LoginAsync(string email, string password);

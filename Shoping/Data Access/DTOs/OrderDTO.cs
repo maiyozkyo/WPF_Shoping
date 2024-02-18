@@ -14,6 +14,6 @@ namespace Shoping.Data_Access.DTOs
         public List<Guid> Vouchers { get; set; }
         public double Paid { get; set; }
         public int PaymentStatus { get; set; }
-        public int LastestDeliveryStatus { get; set; }
+        public int LatestDeliveryStatus { get; set; }
     }
 }

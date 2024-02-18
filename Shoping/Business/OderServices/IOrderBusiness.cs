@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shoping.Business.OderServices
 {
-    public interface IOrderServices
+    public interface IOrderBusiness
     {
         public Task<Guid> AddUpdateOrderAsync(OrderDTO orderDTO);
         public Task<bool> DeleteOrderAsync(Guid orderRecID);

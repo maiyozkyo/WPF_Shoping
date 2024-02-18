@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace Shoping.Data_Access.DTOs
 {
-    public class OrderDetailDTO
+    public class ProductDTO
     {
         public Guid RecID { get; set; }
-        public Guid OrderID { get; set; }
         public Guid ProductID { get; set; }
-        public double Quantity { get; set; }
-        public decimal Price { get; set; }
-        public double Total { get; set; }
+        public string Name { get; set; }
+        public int Price { get; set; }
+        public string Image { get; set; } // Implement later
     }
 }

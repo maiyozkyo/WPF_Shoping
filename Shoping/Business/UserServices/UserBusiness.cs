@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Shoping.Business.UserServices
 {
-    public class UserBusiness : IUserServices
+    public class UserBusiness : IUserBusiness
     {
         public ApiService ApiService { get; set; }
         public UserBusiness()
