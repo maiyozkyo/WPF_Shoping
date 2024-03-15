@@ -5,8 +5,6 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoping", "Shoping\Shoping.csproj", "{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoAdoNet", "..\..\W05\IC\DemoAdoNet\DemoAdoNet.csproj", "{01885D47-21EA-408E-9ED8-230790B207D6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01885D47-21EA-408E-9ED8-230790B207D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01885D47-21EA-408E-9ED8-230790B207D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01885D47-21EA-408E-9ED8-230790B207D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01885D47-21EA-408E-9ED8-230790B207D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
