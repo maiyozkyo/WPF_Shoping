@@ -4,13 +4,14 @@ using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Shoping.Business.ProductServices
 {
-    public class ProductBusiness : BaseBusiness<Product>, IProductServices
+    public class ProductBusiness : BaseBusiness<Product>, IProductBusiness
     {
         public ProductBusiness(string _dbName) : base(_dbName)
         {
@@ -28,12 +29,15 @@ namespace Shoping.Business.ProductServices
                     Image = productDTO.Image
                 };
                 Repository.Add(product);
-                await UnitOfWork.SaveChangesAsync();
             }
             else
             {
-
+                product.Name = productDTO.Name;
+                product.Price = productDTO.Price;
+                product.Image = productDTO.Image;
+                Repository.Update(product);
             }
+            await UnitOfWork.SaveChangesAsync();
             return product.RecID;
         }
         public async Task<bool> DeleteProductAsync(Guid productRecID)
@@ -46,12 +50,22 @@ namespace Shoping.Business.ProductServices
             }
             return true;
         }
-        public async Task<ProductDTO> GetProductAsync(Guid productRecID)
+
+        public async Task<List<ProductDTO>> GetSearchProductsAsync(String Name)
         {
-            var product = await Repository.GetOneAsync(x => x.RecID == productRecID);
-            if (product != null)
+            var products = await Repository.GetAsync(x => x.Name.Contains(Name)).ToListAsync();
+            if (products != null)
             {
-                return JsonConvert.DeserializeObject<ProductDTO>(JsonConvert.SerializeObject(product));
+                return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(products));
+            }
+            return null;
+        }
+        public async Task<List<ProductDTO>> GetAllProducts()
+        {
+            var products = await Repository.GetAsync(x => true).ToListAsync();
+            if (products != null)
+            {
+                return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(products));
             }
             return null;
         }
