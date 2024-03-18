@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shoping.ApiBusiness;
 using Shoping.Business;
 using Shoping.Business.OderServices;
+using Shoping.Business.ProductServices;
 using Shoping.Business.UserServices;
 using Shoping.Data_Access.DTOs;
 using Shoping.Presentation;
@@ -21,6 +22,8 @@ namespace Shoping
         public static IConfiguration iConfiguration { get; set; }
         public static IUserBusiness iUserBusiness { get; set; }
         public static IOrderBusiness iOrderBusiness { get; set; }
+
+        public static IProductBusiness iProductBusiness { get; set; }
         public static IApiService iApiService { get; set; }
         public static Auth Auth { get; private set; } 
         protected override void OnStartup(StartupEventArgs e)

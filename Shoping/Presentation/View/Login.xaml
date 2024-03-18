@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800" Loaded="Window_Loaded">
-    <!--<Grid>
+        Title="Login" Height="450" Width="800">
+    <Grid>
     <TextBox 
         Name="Email" 
         HorizontalAlignment="Left" 
@@ -35,34 +35,35 @@
         Height="39" Width="78" 
     />
 
-</Grid>-->
-    <Canvas>
-        <Label Content="Username:" RenderTransformOrigin="1.925,1.996" Canvas.Left="150" Canvas.Top="74"/>
-        <Label Content="Password:" Canvas.Left="154" Canvas.Top="112"/>
-        <TextBox Text="{Binding Username}" x:Name="usernameTextBox" Canvas.Left="229" Canvas.Top="78" HorizontalAlignment="Left" VerticalAlignment="Center" Width="183"/>
+</Grid>
+    <!--<Canvas>
+    <Label Content="Username:" RenderTransformOrigin="1.925,1.996" Canvas.Left="150" Canvas.Top="74"/>
+    <Label Content="Password:" Canvas.Left="154" Canvas.Top="112"/>
+    <TextBox Text="{Binding Username}" x:Name="usernameTextBox" Canvas.Left="229" Canvas.Top="78" HorizontalAlignment="Left" VerticalAlignment="Center" Width="183"/>
 
-        <PasswordBox PasswordChar="*" Name="passwordBox" Canvas.Left="229" Canvas.Top="116" HorizontalAlignment="Left" VerticalAlignment="Center" Width="183"/>
-        <ProgressBar x:Name="progressBar" Width="100" Height="10" Canvas.Left="312" Canvas.Top="195" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <CheckBox x:Name="rememberPassCheckBox" Content="Remember password" Canvas.Left="229" Canvas.Top="148"/>
-        <Button x:Name="loginButton" Content="Login" Click="loginButton_Click" Canvas.Left="229" Canvas.Top="183" Height="34" Width="66"/>
-        <Button Content="Server settings" Cursor="Hand" RenderTransformOrigin="5.662,16.315" Canvas.Left="223" Canvas.Top="244" HorizontalAlignment="Left" VerticalAlignment="Top" Click="serverSettingsButton_Click">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <TextBlock TextDecorations="Underline">
-            <ContentPresenter />
-                    </TextBlock>
-                </ControlTemplate>
-            </Button.Template>
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Foreground" Value="Blue" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Foreground" Value="Red" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
-    </Canvas>
+    <PasswordBox PasswordChar="*" Name="passwordBox" Canvas.Left="229" Canvas.Top="116" HorizontalAlignment="Left" VerticalAlignment="Center" Width="183"/>
+    <ProgressBar x:Name="progressBar" Width="100" Height="10" Canvas.Left="312" Canvas.Top="195" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+    <CheckBox x:Name="rememberPassCheckBox" Content="Remember password" Canvas.Left="229" Canvas.Top="148"/>
+    <Button x:Name="loginButton" Content="Login" Click="loginButton_Click" Canvas.Left="229" Canvas.Top="183" Height="34" Width="66"/>
+    <Button Content="Server settings" Cursor="Hand" RenderTransformOrigin="5.662,16.315" Canvas.Left="223" Canvas.Top="244" HorizontalAlignment="Left" VerticalAlignment="Top" Click="serverSettingsButton_Click">
+        <Button.Template>
+            <ControlTemplate TargetType="Button">
+                <TextBlock TextDecorations="Underline">
+        <ContentPresenter />
+                </TextBlock>
+            </ControlTemplate>
+        </Button.Template>
+        <Button.Style>
+            <Style TargetType="Button">
+                <Setter Property="Foreground" Value="Blue" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Foreground" Value="Red" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Button.Style>
+    </Button>
+</Canvas>-->
+    
 </Window>

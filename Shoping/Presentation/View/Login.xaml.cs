@@ -31,7 +31,7 @@ namespace Shoping.Presentation
             this.DataContext = LoginViewModel;
         }
 
-        /*private void RegisterClick(object sender, RoutedEventArgs e)
+        private void RegisterClick(object sender, RoutedEventArgs e)
         {
             var registerWindow = new SignUp();
             registerWindow.Closed += ReturnToLogin;
@@ -39,7 +39,7 @@ namespace Shoping.Presentation
             registerWindow.Show();
         }
 
-        
+
 
         private async void LoginClick(object sender, RoutedEventArgs e)
         {
@@ -50,7 +50,7 @@ namespace Shoping.Presentation
             {
                 var mainView = new Main();
                 mainView.Closed += ReturnToLogin;
-                this.Hide();
+                this.Close();
                 mainView.Show();
             }
         }
@@ -58,9 +58,9 @@ namespace Shoping.Presentation
         private void ReturnToLogin(object sender, EventArgs e)
         {
             this.Show();
-        }*/
+        }
 
-        public string Username { get; set; } = "";
+        /*public string Username { get; set; } = "";
         public string Password { get; set; } = "";
         public string Server { get; set; }
         public string Database { get; set; }
@@ -113,7 +113,7 @@ namespace Shoping.Presentation
                     AppConfig.Save();
                 }
 
-                var screen = new MainWindow();
+                var screen = new Main();
                 screen.ShowDialog();
                 this.Close();
             }
@@ -142,6 +142,6 @@ namespace Shoping.Presentation
             DataContext = this;
 
             passwordBox.Password = AppConfig.Password;
-        }
-    }
+        }*/
+    } 
 }

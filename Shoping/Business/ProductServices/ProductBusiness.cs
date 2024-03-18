@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Shoping.Business.ProductServices
 {
-    public class ProductBusiness : BaseBusiness<Product>, IProductServices
+    public class ProductBusiness : BaseBusiness<Product>, IProductBusiness
     {
         public ProductBusiness(string _dbName) : base(_dbName)
         {
 
         }
-        public async Task<Guid> AddUpdateProductAsync(ProductDTO productDTO)
+        public async Task<Guid> AddUpdateProductAsync(ProductDTO? productDTO)
         {
             var product = await Repository.GetOneAsync(x => x.RecID == productDTO.RecID);
             if (product == null)
@@ -46,12 +46,22 @@ namespace Shoping.Business.ProductServices
             }
             return true;
         }
-        public async Task<ProductDTO> GetProductAsync(Guid productRecID)
+        public async Task<ProductDTO> GetProductAsync(String Name)
         {
-            var product = await Repository.GetOneAsync(x => x.RecID == productRecID);
+            var product = await Repository.GetOneAsync(x => x.Name == Name);
             if (product != null)
             {
                 return JsonConvert.DeserializeObject<ProductDTO>(JsonConvert.SerializeObject(product));
+            }
+            return null;
+        }
+
+        public async Task<List<ProductDTO>> GetProductsAsync(String Name)
+        {
+            var products = await Repository.GetAsync(x => x.Name == Name).ToListAsync();
+            if (products != null)
+            {
+                return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(products));
             }
             return null;
         }
