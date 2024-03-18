@@ -6,7 +6,7 @@
   },
 
   "Url": {
-    "User": "http://localhost:44305/api/User",
+    "User": "https://localhost:44305/api/User",
 
   }
 }

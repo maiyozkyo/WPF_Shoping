@@ -1,4 +1,5 @@
-﻿using Shoping.Presentation.ViewModels;
+﻿using Shoping.Data_Access.DTOs;
+using Shoping.Presentation.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +28,25 @@ namespace Shoping.Presentation.View
             MainViewModel = new MainViewModel(App.iOrderBusiness);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainViewModel.AddUpdateOrder();
+            //for (int i = 0; i < 50; i++)
+            //{
+            //    var orderDTO = new OrderDTO
+            //    {
+            //        CustomerID = Guid.NewGuid(),
+            //        Paid = i,
+            //        Total = 1000,
+            //    };
+            //    await MainViewModel.AddUpdateOrder(orderDTO);
+            //}
+            var pageData = await MainViewModel.Paging(3, 20);
+            var x = pageData.Data;
+            foreach(var item in x)
+            {
+
+            }
+            int a = 1;
         }
     }
 }
