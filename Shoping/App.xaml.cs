@@ -52,6 +52,8 @@ namespace Shoping
             containerBuilder.RegisterType<UserBusiness>().WithParameter("_dbName", dbName).As<IUserBusiness>();
             containerBuilder.RegisterType<OrderBusiness>().WithParameter("_dbName", dbName).As<IOrderBusiness>();
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
             #endregion
 
             #region Resolve

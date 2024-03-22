@@ -56,13 +56,12 @@ namespace Shoping.Business.OderServices
 
         public async Task<PageData<OrderDTO>> GetOrderPaging(int page, int pageSize)
         {
-            var pageData = await Repository.GetAsync(x => true).ToPaging<Order, OrderDTO>(page, pageSize);
+            var pageData = await Repository.GetAsync(x => x.Paid < 39).ToPaging<Order, OrderDTO>(page, pageSize);
             return pageData;
         }
         public async Task<List<OrderDTO>> GetOrdersInRangeAsync(DateTime fromDate, DateTime toDate)
         {
             var lstOrders = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
-            
             return JsonConvert.DeserializeObject<List<OrderDTO>>(JsonConvert.SerializeObject(lstOrders));
         }
     }

@@ -1,7 +1,9 @@
-﻿using Shoping.Data_Access.DTOs;
+﻿using Shoping.Business.Helper;
+using Shoping.Data_Access.DTOs;
 using Shoping.Presentation.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +28,7 @@ namespace Shoping.Presentation.View
         {
             InitializeComponent();
             MainViewModel = new MainViewModel(App.iOrderBusiness);
+            DataContext = MainViewModel;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -47,6 +50,16 @@ namespace Shoping.Presentation.View
 
             }
             int a = 1;
+        }
+
+        private void Excel_Click(object sender, RoutedEventArgs e)
+        {
+            var filePath = @"C:\Users\admin\source\repos\Shoping\Shoping\Book1.xlsx";
+            var fileS = File.ReadAllBytes(filePath);
+            using (var fStream = new MemoryStream(fileS))
+            {
+                var lst = ExcelHelper.ReadAsList<OrderDTO>(fStream);
+            }
         }
     }
 }

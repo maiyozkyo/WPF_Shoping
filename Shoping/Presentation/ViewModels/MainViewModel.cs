@@ -14,9 +14,11 @@ namespace Shoping.Presentation.ViewModels
     public class MainViewModel
     {
         public IOrderBusiness OrderBusiness;
+        public PageData<OrderDTO> PageData { get; set; }
         public MainViewModel(IOrderBusiness orderBusiness)
         {
             OrderBusiness = orderBusiness;
+            PageData = new PageData<OrderDTO>();
         }
 
         public async Task<Guid> AddUpdateOrder(OrderDTO orderDTO)
@@ -27,7 +29,8 @@ namespace Shoping.Presentation.ViewModels
 
         public async Task<PageData<OrderDTO>> Paging(int page, int pageSize)
         {
-            return await OrderBusiness.GetOrderPaging(page, pageSize);
+            PageData = await OrderBusiness.GetOrderPaging(page, pageSize);
+            return PageData;
         }
     }
 }
