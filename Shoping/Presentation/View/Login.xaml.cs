@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Shoping.Presentation.View;
+﻿using Shoping.Presentation.View;
 using Shoping.Presentation.ViewModels;
 using System;
 using System.Collections.Generic;

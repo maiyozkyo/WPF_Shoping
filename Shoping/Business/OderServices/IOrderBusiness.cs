@@ -1,4 +1,5 @@
 ﻿using Shoping.Data_Access.DTOs;
+using Shoping.Data_Access.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace Shoping.Business.OderServices
         public Task<bool> DeleteOrderAsync(Guid orderRecID);
         public Task<OrderDTO> GetOrderAsync(Guid orderRecID);
         public Task<List<OrderDTO>> GetOrdersInRangeAsync(DateTime from, DateTime to);
+        public Task<PageData<OrderDTO>> GetOrderPaging(int page, int pageSize);
+
     }
 }

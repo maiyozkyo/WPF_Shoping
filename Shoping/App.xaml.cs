@@ -21,10 +21,9 @@ namespace Shoping
         public IServiceProvider ServiceProvider { get; set; }
         public static IConfiguration iConfiguration { get; set; }
         public static IUserBusiness iUserBusiness { get; set; }
-        public static IOrderBusiness iOrderBusiness { get; set; }
-
-        public static IProductBusiness iProductBusiness { get; set; }
         public static IApiService iApiService { get; set; }
+        public static IProductBusiness iProductBusiness { get; set; }
+        public static IOrderBusiness iOrderBusiness { get; set; }
         public static Auth Auth { get; private set; } 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -56,6 +55,8 @@ namespace Shoping
             containerBuilder.RegisterType<OrderBusiness>().WithParameter("_dbName", dbName).As<IOrderBusiness>();
             containerBuilder.RegisterType<ProductBusiness>().WithParameter("_dbName", dbName).As<IProductBusiness>();
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
             #endregion
 
             #region Resolve
