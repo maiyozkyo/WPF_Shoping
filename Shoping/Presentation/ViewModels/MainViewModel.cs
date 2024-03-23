@@ -1,9 +1,11 @@
-﻿using PropertyChanged;
-using Shoping.Business.OderServices;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using PropertyChanged;
+//using Shoping.Business.OderServices;
+using Shoping.Business.ProductServices;
 using Shoping.Data_Access.DTOs;
-using Shoping.Data_Access.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,27 +13,35 @@ using System.Threading.Tasks;
 namespace Shoping.Presentation.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
-    public class MainViewModel
+    public class MainViewModel 
     {
-        public IOrderBusiness OrderBusiness;
-        public PageData<OrderDTO> PageData { get; set; }
-        public MainViewModel(IOrderBusiness orderBusiness)
+        public IProductBusiness ProductBusiness;
+        public List<ProductDTO> products { get; set; }
+        public MainViewModel(IProductBusiness productBusiness)
         {
-            OrderBusiness = orderBusiness;
-            PageData = new PageData<OrderDTO>();
+            ProductBusiness = productBusiness;
         }
 
-        public async Task<Guid> AddUpdateOrder(OrderDTO orderDTO)
+        public async Task<Guid> AddUpdateProduct(ProductDTO productDTO)
         {
-            var result = await OrderBusiness.AddUpdateOrderAsync(orderDTO);
+            var result = await ProductBusiness.AddUpdateProductAsync(productDTO);
             return result;
         }
 
-        public async Task<PageData<OrderDTO>> Paging(int page, int pageSize)
+        public async Task<bool> DeleteProduct(ProductDTO productDTO)
         {
-            PageData = await OrderBusiness.GetOrderPaging(page, pageSize);
-            return PageData;
+            var result = await ProductBusiness.DeleteProductAsync(productDTO.RecID);
+            return result;
+        }
+        public async Task<List<ProductDTO>> SearchProduct(String searchName)
+        {
+            var result = await ProductBusiness.GetSearchProductsAsync(searchName);
+            return result;
+        }
+        public async Task<List<ProductDTO>> GetAllProducts()
+        {
+            products = await ProductBusiness.GetAllProducts();
+            return products;
         }
     }
 }
- 

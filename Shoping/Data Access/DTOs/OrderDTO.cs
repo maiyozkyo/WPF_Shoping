@@ -15,6 +15,5 @@ namespace Shoping.Data_Access.DTOs
         public double Paid { get; set; }
         public int PaymentStatus { get; set; }
         public int LastestDeliveryStatus { get; set; }
-        public int? Check { get;set; }
     }
 }
