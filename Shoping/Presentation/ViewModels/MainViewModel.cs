@@ -3,6 +3,7 @@ using PropertyChanged;
 //using Shoping.Business.OderServices;
 using Shoping.Business.ProductServices;
 using Shoping.Data_Access.DTOs;
+using Shoping.Data_Access.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,15 +34,14 @@ namespace Shoping.Presentation.ViewModels
             var result = await ProductBusiness.DeleteProductAsync(productDTO.RecID);
             return result;
         }
-        public async Task<List<ProductDTO>> SearchProduct(String searchName)
+        public async Task<PageData<ProductDTO>> SearchProduct(String searchName, int page, int pageSize)
         {
-            var result = await ProductBusiness.GetSearchProductsAsync(searchName);
+            var result = await ProductBusiness.GetSearchProductsAsync(searchName, page, pageSize);
             return result;
         }
-        public async Task<List<ProductDTO>> GetAllProducts()
+        public async Task<PageData<ProductDTO>> Paging(int page, int pageSize)
         {
-            products = await ProductBusiness.GetAllProducts();
-            return products;
+            return await ProductBusiness.GetProductsPaging(page, pageSize);
         }
     }
 }

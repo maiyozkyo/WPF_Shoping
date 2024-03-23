@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Shoping.Data_Access.DB.Repo;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
 using System;
@@ -51,29 +52,23 @@ namespace Shoping.Business.ProductServices
             return true;
         }
 
-        public async Task<List<ProductDTO>> GetSearchProductsAsync(String Name)
+        public async Task<PageData<ProductDTO>> GetSearchProductsAsync(String Name, int page, int pageSize)
         {
-            var products = await Repository.GetAsync(x => x.Name.Contains(Name)).ToListAsync();
+            /*var products = await Repository.GetAsync(x => x.Name.Contains(Name)).ToListAsync();
             if (products != null)
             {
                 return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(products));
             }
-            return null;
-        }
-        public async Task<List<ProductDTO>> GetAllProducts()
-        {
-            var products = await Repository.GetAsync(x => true).ToListAsync();
-            if (products != null)
-            {
-                return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(products));
-            }
-            return null;
+            return null;*/
+
+            var pageData = await Repository.GetAsync(x => x.Name.Contains(Name)).ToPaging<Product, ProductDTO>(page, pageSize);
+            return pageData;
         }
 
-        public async Task<List<ProductDTO>> GetProductsInRangeAsync(int pageSize, int pageNumber)
+        public async Task<PageData<ProductDTO>> GetProductsPaging(int page, int pageSize)
         {
-            var productOrders = await Repository.GetAsync(x => true).Skip((pageNumber - 1) * pageSize).ToListAsync();
-            return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(productOrders));
+            var pageData = await Repository.GetAsync(x => true).ToPaging<Product, ProductDTO>(page, pageSize);
+            return pageData;
         }
     }
 }
