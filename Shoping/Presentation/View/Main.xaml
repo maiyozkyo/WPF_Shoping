@@ -6,18 +6,6 @@
         xmlns:local="clr-namespace:Shoping.Presentation.View"
         mc:Ignorable="d"
         Title="Main" Height="450" Width="800" Loaded="Window_Loaded">
-    <!--
-    <Grid>
-    <Button 
-        Content="Button" 
-        HorizontalAlignment="Left" 
-        Margin="281,199,0,0" 
-        VerticalAlignment="Top" Click="Button_Click"
-        
-    />
-
-</Grid>
-    -->
     <Canvas>
         <ListView Name="productsListView" Width="378" Height="414">
             <ListView.ItemTemplate>
@@ -50,6 +38,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <Button Name="nextButton" Content="Next page" Click="nextButton_Click" Canvas.Left="645" Canvas.Top="187" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="1.822,0.525"/>
+        <Button Content="View Statistic" Canvas.Left="549" Canvas.Top="255" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.451,0.537"/>
     </Canvas>
-    
+
 </Window>

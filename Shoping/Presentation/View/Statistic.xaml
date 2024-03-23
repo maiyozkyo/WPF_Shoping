@@ -1,0 +1,25 @@
+﻿<Window x:Class="Shoping.Presentation.Statistic"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:Shoping.Presentation.View"
+        mc:Ignorable="d"
+        Title="Statistic" Height="450" Width="800">
+    <Canvas>
+        <Button Content="Revenue and profit" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="27" Canvas.Top="60" Click="RevenueButton_Click"/>
+        <Button Content="Products and sales volume" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="174" Canvas.Top="60"/>
+        <ComboBox x:Name="StatisticCombobox" Canvas.Left="27" Canvas.Top="20" Width="120" SelectionChanged="StatisticCombobox_SelectionChanged" d:SelectedIndex="0">
+            <ComboBoxItem Content="From date to date"/>
+            <ComboBoxItem Content="By month"/>
+            <ComboBoxItem Content="By year"/>
+        </ComboBox>
+        <StackPanel Orientation="Horizontal" Canvas.Left="170" Canvas.Top="20" x:Name="DatePicker">
+            <Label Content="From" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="StartDate"/>
+            <Label Content="To" Margin='30 0 0 0' HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="EndDate"/>
+        </StackPanel>
+    </Canvas>
+</Window>
