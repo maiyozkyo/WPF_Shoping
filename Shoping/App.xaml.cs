@@ -3,7 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shoping.ApiBusiness;
 using Shoping.Business;
-using Shoping.Business.OderServices;
+using Shoping.Business.OrderServices;
+using Shoping.Business.OrderDetailServices;
 using Shoping.Business.ProductServices;
 using Shoping.Business.UserServices;
 using Shoping.Data_Access.DTOs;
@@ -24,6 +25,7 @@ namespace Shoping
         public static IApiService iApiService { get; set; }
         public static IProductBusiness iProductBusiness { get; set; }
         public static IOrderBusiness iOrderBusiness { get; set; }
+        public static IOrderDetailBusiness iOrderDetailBusiness { get; set; }
         public static Auth Auth { get; private set; } 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -56,6 +58,7 @@ namespace Shoping
             containerBuilder.RegisterType<ProductBusiness>().WithParameter("_dbName", dbName).As<IProductBusiness>();
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            containerBuilder.RegisterType<OrderDetailBusiness>().WithParameter("_dbName", dbName).As<IOrderDetailBusiness>();
 
             #endregion
 
@@ -65,6 +68,7 @@ namespace Shoping
             iApiService = container.Resolve<IApiService>();
             iProductBusiness = container.Resolve<IProductBusiness>();
             iOrderBusiness = container.Resolve<IOrderBusiness>();
+            iOrderDetailBusiness = container.Resolve<IOrderDetailBusiness>();
             #endregion
         }
 
