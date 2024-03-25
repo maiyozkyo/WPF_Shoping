@@ -4,7 +4,7 @@ using Shoping.Data_Access.DB.Repo;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
 
-namespace Shoping.Business.OderServices
+namespace Shoping.Business.OrderServices
 {
     public class OrderBusiness : BaseBusiness<Order>, IOrderBusiness
     {

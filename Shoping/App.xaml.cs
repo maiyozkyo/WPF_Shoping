@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shoping.ApiBusiness;
 using Shoping.Business;
-using Shoping.Business.OderServices;
+using Shoping.Business.OrderServices;
 using Shoping.Business.OrderDetailServices;
 using Shoping.Business.ProductServices;
 using Shoping.Business.UserServices;

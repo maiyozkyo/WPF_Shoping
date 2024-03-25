@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shoping.Business.OderServices
+namespace Shoping.Business.OrderServices
 {
     public interface IOrderBusiness
     {
