@@ -1,26 +1,52 @@
-﻿using Shoping.Business.StatisticServices;
-using LiveCharts;
-using LiveCharts.Wpf;
+﻿using Shoping.Business.OrderServices;
 
 namespace Shoping.Presentation.ViewModels
 {
     public class StatisticViewModel
     {
-        IStatisticBusiness StatisticServices;
-
-        public async Task<int> DrawRevenueAndProfitDiagram(string choose, DateTime startDate, DateTime endDate)
+        public IOrderBusiness OrderBusiness;
+        public StatisticViewModel(IOrderBusiness orderBusiness)
         {
-            if(choose == "From date to date")
+            OrderBusiness = orderBusiness;
+        }
+        public async Task<Tuple<List<int>, string, List<string>>> GetRevenueAndProfitInfor(int choose, DateTime startDate, DateTime endDate, int year)
+        {
+            List<int> revenues;
+            string X_Title;
+            List<string> X_Labels = [];
+
+            if (choose == 0)
             {
-                var revenue = await StatisticServices.GetRevenueInDateRangeAsync(startDate, endDate);
-            } else if (choose == "By month")
-            {
-                var revenue = await StatisticServices.GetRevenueByMonthAsync();
-            } else
-            {
-                var revenue = await StatisticServices.GetRevenueByYearAsync();
+                (revenues, X_Labels) = await OrderBusiness.GetRevenueInDateRangeAsync(startDate, endDate);
+                X_Title = "Date";
             }
-            return 0;
+            else if (choose == 1)
+            {
+                revenues = await OrderBusiness.GetRevenueByWeekAsync(year);
+                X_Title = "Week";
+                for(int i = 0; i < 53; i++)
+                {
+                    X_Labels.Add($"{i + 1}");
+                }
+            }
+            else if (choose == 2)
+            {
+                revenues = await OrderBusiness.GetRevenueByMonthAsync(year);
+                X_Title = "Month";
+                X_Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            }
+            else
+            {
+                revenues = await OrderBusiness.GetRevenueByYearAsync();
+                X_Title = "Year";
+                for(int i = 10; i >= 0; i--)
+                {
+                    X_Labels.Add($"{ DateTime.Today.Year - i }");
+                }
+            }
+         
+
+            return new Tuple<List<int>, string, List<string>>(revenues, X_Title, X_Labels);
         }
     }
 }

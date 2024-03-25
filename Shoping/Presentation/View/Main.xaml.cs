@@ -163,5 +163,11 @@ namespace Shoping.Presentation.View
         {
 
         }
+
+        private void StatisticButton_Click(object sender, RoutedEventArgs e)
+        {
+            Statistic statistic = new();
+            statistic.Show();
+        }
     }
 }
