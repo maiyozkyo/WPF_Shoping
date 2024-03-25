@@ -1,14 +1,15 @@
-﻿using Shoping.Business.OrderServices;
+﻿using Shoping.Business.OrderDetailServices;
+using Shoping.Business.OrderServices;
+using Shoping.Business.ProductServices;
 
 namespace Shoping.Presentation.ViewModels
 {
-    public class StatisticViewModel
+    public class StatisticViewModel(IOrderBusiness orderBusiness, IOrderDetailBusiness orderDetailBusiness, IProductBusiness productBusiness)
     {
-        public IOrderBusiness OrderBusiness;
-        public StatisticViewModel(IOrderBusiness orderBusiness)
-        {
-            OrderBusiness = orderBusiness;
-        }
+        public IOrderBusiness OrderBusiness = orderBusiness;
+        public IOrderDetailBusiness OrderDetailBusiness = orderDetailBusiness;
+        public IProductBusiness ProductBusiness = productBusiness;
+
         public async Task<Tuple<List<int>, string, List<string>>> GetRevenueAndProfitInfor(int choose, DateTime startDate, DateTime endDate, int year)
         {
             List<int> revenues;
@@ -44,7 +45,6 @@ namespace Shoping.Presentation.ViewModels
                     X_Labels.Add($"{ DateTime.Today.Year - i }");
                 }
             }
-         
 
             return new Tuple<List<int>, string, List<string>>(revenues, X_Title, X_Labels);
         }
