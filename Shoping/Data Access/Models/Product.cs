@@ -9,9 +9,11 @@ namespace Shoping.Data_Access.Models
 {
     public class Product : MongoDBEntity
     {
-        public Guid ProductID { get; set; }
         public string Name { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; } //Giá bán
         public string Image { get; set; } // Implement later
+        public Guid CatID { get; set; } //Category RecID
+        public decimal PurchasePrice { get; set; } //Giá mua
+        public int Quantity { get; set; } //Số lượng nhập hàng
     }
 }
