@@ -1,7 +1,11 @@
-﻿using Shoping.Presentation.View;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Shoping.Presentation.View;
 using Shoping.Presentation.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -23,13 +27,30 @@ namespace Shoping.Presentation
     public partial class Login : Window
     {
         public LoginViewModel LoginViewModel { get; set; }
+        private Configuration AppConfig { get; set; }
         public Login()
         {
             InitializeComponent();
+            ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
+            fileMap.ExeConfigFilename = AppDomain.CurrentDomain.BaseDirectory + "AppConfig.config";
+            AppConfig = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
             LoginViewModel = new LoginViewModel(App.iUserBusiness);
             this.DataContext = LoginViewModel;
         }
-
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Email.Text = GetConfiguration("UserName");
+            var pw = GetConfiguration("Password");
+            if (!string.IsNullOrEmpty(pw))
+            {
+                var pwBytes = Convert.FromBase64String(pw);
+                var entropy = GetConfiguration("Entropy");
+                var entropyBytes = Convert.FromBase64String(entropy);
+                var unecryptedPassword = ProtectedData.Unprotect(pwBytes, entropyBytes, DataProtectionScope.CurrentUser);
+                Password.Password = Encoding.UTF8.GetString(unecryptedPassword);
+                ckbSave.IsChecked = true;
+            }
+        }
         private void RegisterClick(object sender, RoutedEventArgs e)
         {
             var registerWindow = new SignUp();
@@ -38,19 +59,39 @@ namespace Shoping.Presentation
             registerWindow.Show();
         }
 
-
-
         private async void LoginClick(object sender, RoutedEventArgs e)
         {
             var email = Email.Text;
             var password = Password.Password;
-            var isSuccess = await LoginViewModel.Login(email, password);
+            var pwBytes = Encoding.UTF8.GetBytes(password);
+            var md5PWBytes = MD5.HashData(pwBytes);
+            var md5PW = Convert.ToHexString(md5PWBytes);
+
+            var isSuccess = await LoginViewModel.Login(email, md5PW);
             if (isSuccess)
             {
                 var mainView = new Main();
-                mainView.Closed += ReturnToLogin;
+                if (ckbSave.IsChecked == true)
+                {
+                    var entropyBytes = new byte[20];
+                    using (var rng = new RNGCryptoServiceProvider())
+                    {
+                        rng.GetBytes(entropyBytes);
+                    }
+                    var encryptedPWBytes = ProtectedData.Protect(pwBytes, entropyBytes, DataProtectionScope.CurrentUser);
+                    var encryptedPW = Convert.ToBase64String(encryptedPWBytes);
+                    SetConfiguration("UserName", email);
+                    SetConfiguration("Password", encryptedPW);
+                    SetConfiguration("Entropy", Convert.ToBase64String(entropyBytes));
+                }
+                MessageBox.Show("Đăng nhập thành công");
+                //mainView.Closed += ReturnToLogin;
                 this.Close();
                 mainView.Show();
+            }
+            else
+            {
+                MessageBox.Show("Đăng nhập thất bại");
             }
         }
 
@@ -59,88 +100,30 @@ namespace Shoping.Presentation
             this.Show();
         }
 
-        /*public string Username { get; set; } = "";
-        public string Password { get; set; } = "";
-        public string Server { get; set; }
-        public string Database { get; set; }
-        public string Entropy { get; set; }
-
-        private async void loginButton_Click(object sender, RoutedEventArgs e)
+        private void SetConfiguration(string key, string value)
         {
-            AppConfig.Password = passwordBox.Password;
-            AppConfig.Username = Username;
-
-            var connectionString = AppConfig.ConnectionString();
-
-            progressBar.IsIndeterminate = true;
-            var (success, message, connection) = await Task.Run(() => {
-                var __connection = new SqlConnection(connectionString);
-                bool success = true;
-                string message = "";
-                try
-                {
-                    System.Threading.Thread.Sleep(1000);
-                    __connection.Open();
-                }
-                catch (Exception ex)
-                {
-                    success = false;
-                    message = ex.Message;
-                }
-
-                // Test khi chạy quá nhanh
-
-                return new Tuple<bool, string, SqlConnection>(success, message, __connection);
-            });
-            progressBar.IsIndeterminate = false;
-            if (success)
+            var settings = AppConfig.AppSettings.Settings;
+            if (settings[key] != null)
             {
-                MessageBox.Show("Login successfully");
-
-                if (rememberPassCheckBox.IsChecked == true)
-                {
-                    var passwordInBytes = Encoding.UTF8.GetBytes(passwordBox.Password);
-                    var entropy = new byte[20];
-
-                    using (var rng = new RNGCryptoServiceProvider())
-                    {
-                        rng.GetBytes(entropy);
-                    }
-                    var cypherText = ProtectedData.Protect(passwordInBytes, entropy, DataProtectionScope.CurrentUser);
-                    AppConfig.PasswordIn64 = Convert.ToBase64String(cypherText);
-                    AppConfig.Entropy = Convert.ToBase64String(entropy);
-                    AppConfig.Save();
-                }
-
-                var screen = new Main();
-                screen.ShowDialog();
-                this.Close();
+                settings[key].Value = value;
             }
             else
             {
-                MessageBox.Show($"Cannot login. Reason: {message}");
+                settings.Add(key, value);
             }
+            AppConfig.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection(AppConfig.AppSettings.SectionInformation.Name);
         }
 
-        private void serverSettingsButton_Click(object sender, RoutedEventArgs e)
+        private string GetConfiguration(string key)
         {
-            var screen = new Config();
-            if (screen.ShowDialog() == true)
+            if (AppConfig.AppSettings.Settings[key] != null)
             {
-                AppConfig.Reload();
+                return AppConfig.AppSettings.Settings[key].Value;
             }
+            return "";
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            AppConfig.Reload();
 
-            Username = AppConfig.Username;
-            Password = AppConfig.Password;
-
-            DataContext = this;
-
-            passwordBox.Password = AppConfig.Password;
-        }*/
-    } 
+    }
 }

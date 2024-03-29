@@ -14,5 +14,6 @@ namespace Shoping.Business.ProductServices
         public Task<List<ProductDTO>> GetProductsInRangeAsync(int pageSize, int pageNumber);
         public Task<List<ProductDTO>> GetAllProducts();
         public Task<List<ProductDTO>> GetSearchProductsAsync(String Name);
+        public Task<List<ProductDTO>> GetListProductsByRecID(List<Guid> lstRecIDs);
     }
 }

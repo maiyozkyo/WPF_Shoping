@@ -50,6 +50,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <Button Name="nextButton" Content="Next page" Click="nextButton_Click" Canvas.Left="645" Canvas.Top="187" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="1.822,0.525"/>
+        <Button Content="Open Report" Canvas.Left="571" Canvas.Top="304" Click="OpenReport_Click"/>
     </Canvas>
     
 </Window>

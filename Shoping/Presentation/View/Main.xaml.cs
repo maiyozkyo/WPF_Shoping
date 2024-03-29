@@ -163,5 +163,14 @@ namespace Shoping.Presentation.View
         {
 
         }
+
+        private void OpenReport_Click(object sender, RoutedEventArgs e)
+        {
+            var screen = new Report();
+            if (screen.ShowDialog() == true)
+            {
+
+            }
+        }
     }
 }
