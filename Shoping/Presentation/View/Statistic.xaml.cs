@@ -14,7 +14,7 @@ namespace Shoping.Presentation
         public Statistic()
         {
             InitializeComponent();
-            StatisticViewModel = new StatisticViewModel(App.iOrderBusiness);
+            StatisticViewModel = new StatisticViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
             StatisticCombobox.SelectedIndex = 0;
             revenueAndProfitChart.Visibility = Visibility.Collapsed;
         }
@@ -54,12 +54,12 @@ namespace Shoping.Presentation
             {
                 year = int.Parse(txtYear.Text);
             }
-            var information = await StatisticViewModel.GetRevenueAndProfitInfor(choose, startDate, endDate, year);
+            var revenueInformation = await StatisticViewModel.GetRevenueAndProfitInform(choose, startDate, endDate, year);
+            var spending = await StatisticViewModel.GetSpendingInform(choose, startDate, endDate, year);
             List<int> profits = [];
-            for (int i = 0; i < information.Item1.Count; ++i)
+            for (int i = 0; i < revenueInformation.Item1.Count; ++i)
             {
-                int profit = information.Item1[i] - 10000000;
-                if(profit < 0) profit = 0;
+                int profit = revenueInformation.Item1[i] - spending[i];
                 profits.Add(profit);
             }
 
@@ -72,7 +72,7 @@ namespace Shoping.Presentation
                 new LineSeries
                 {
                     Title = "Revenue",
-                    Values = new ChartValues<int>(information.Item1),
+                    Values = new ChartValues<int>(revenueInformation.Item1),
                 },
                 new LineSeries
                 {
@@ -80,14 +80,17 @@ namespace Shoping.Presentation
                     Values = new ChartValues<int>(profits),
                 }
             ];
+
             revenueAndProfitChart.AxisY.Add(new Axis()
             {
-                MinValue = 0,
+                MaxValue = revenueInformation.Item1.Max(),
+                MinValue = profits.Min(),
             });
+
             revenueAndProfitChart.AxisX.Add(new Axis()
             {
-                Title = information.Item2,
-                Labels = information.Item3,
+                Title = revenueInformation.Item2,
+                Labels = revenueInformation.Item3,
                 Separator = new LiveCharts.Wpf.Separator { Step = 1 },
             });
         }

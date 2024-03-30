@@ -164,7 +164,7 @@ namespace Shoping.Presentation.View
 
         }
 
-        private void StatisticButton_Click(object sender, RoutedEventArgs e)
+        private void OpenReport_Click(object sender, RoutedEventArgs e)
         {
             Statistic statistic = new();
             statistic.Show();

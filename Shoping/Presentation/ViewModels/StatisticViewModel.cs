@@ -10,7 +10,7 @@ namespace Shoping.Presentation.ViewModels
         public IOrderDetailBusiness OrderDetailBusiness = orderDetailBusiness;
         public IProductBusiness ProductBusiness = productBusiness;
 
-        public async Task<Tuple<List<int>, string, List<string>>> GetRevenueAndProfitInfor(int choose, DateTime startDate, DateTime endDate, int year)
+        public async Task<Tuple<List<int>, string, List<string>>> GetRevenueAndProfitInform(int choose, DateTime startDate, DateTime endDate, int year)
         {
             List<int> revenues;
             string X_Title;
@@ -47,6 +47,30 @@ namespace Shoping.Presentation.ViewModels
             }
 
             return new Tuple<List<int>, string, List<string>>(revenues, X_Title, X_Labels);
+        }
+
+        public async Task<List<int>> GetSpendingInform(int choose, DateTime startDate, DateTime endDate, int year)
+        {
+            List<int> spending;
+
+            if (choose == 0)
+            {
+                spending = await ProductBusiness.GetSpendingInDateRangeAsync(startDate, endDate);
+            }
+            else if (choose == 1)
+            {
+                spending = await ProductBusiness.GetSpendingByWeekAsync(year);
+            }
+            else if (choose == 2)
+            {
+                spending = await ProductBusiness.GetSpendingByMonthAsync(year);
+            }
+            else
+            {
+                spending = await ProductBusiness.GetSpendingByYearAsync();
+            }
+
+            return spending;
         }
     }
 }
