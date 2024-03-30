@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Shoping.Presentation"
         mc:Ignorable="d"
-        Title="SignUp" Height="315" Width="405">
-    <Grid Margin="0,0,0,9">
+        Title="SignUp" Height="358" Width="405">
+    <Grid Margin="0,0,0,-6">
         <TextBox Name="Email" HorizontalAlignment="Left" Margin="160,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="193" Height="33"/>
         <PasswordBox Name="Password" HorizontalAlignment="Left" Margin="160,120,0,0" VerticalAlignment="Top" Width="193" Height="33"/>
         <PasswordBox Name="ConfirmPassword" HorizontalAlignment="Left" Margin="160,174,0,0" VerticalAlignment="Top" Width="193" Height="33"/>
@@ -14,7 +14,7 @@
         <Label Content="Mật khẩu" HorizontalAlignment="Left" Margin="47,120,0,0" VerticalAlignment="Top" Height="34" Width="75" RenderTransformOrigin="0.431,1.941"/>
         <Label Content="Nhập lại mật khẩu" HorizontalAlignment="Left" Margin="47,174,0,0" VerticalAlignment="Top" Height="34" Width="108" RenderTransformOrigin="0.431,1.941"/>
         <Button Content="Đăng ký" HorizontalAlignment="Left" Margin="47,241,0,0" VerticalAlignment="Top" Height="39" Width="118" Click="AddUserAsync"/>
-        <Button Content="Hủy" Margin="235,241,52,0" VerticalAlignment="Top" Height="39"/>
+        <Button Content="Hủy" Click="CloseClick" Margin="235,241,52,0" VerticalAlignment="Top" Height="39"/>
 
     </Grid>
 </Window>

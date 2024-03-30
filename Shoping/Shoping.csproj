@@ -12,6 +12,7 @@
     <PackageReference Include="Autofac" Version="8.0.0" />
     <PackageReference Include="Bogus" Version="35.4.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="DotNetProjects.WpfToolkit.DataVisualization" Version="6.1.94" />
     <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00385" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
     <PackageReference Include="LiveCharts.Wpf.NetCore3" Version="0.9.8" />
