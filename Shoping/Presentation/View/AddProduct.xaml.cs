@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,23 +24,47 @@ namespace Shoping.Presentation.View
     public partial class AddProduct : Window
     {
         public ProductDTO newPhone = new ProductDTO();
-        public AddProduct()
+        public AddProduct(List<CategoryDTO> categories)
         {
             InitializeComponent();
+            foreach(CategoryDTO category in categories)
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = category.Name;
+                item.Tag = category.RecID;
+
+                phoneControl.categoryComboBox.Items.Add(item);
+            }
+            
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             newPhone.RecID = Guid.NewGuid();
             newPhone.ProductID = Guid.NewGuid();
             newPhone.Name = phoneControl.nameTextBox.Text;
-            newPhone.Price = int.Parse(phoneControl.priceTextBox.Text);
-            String directory = phoneControl.phoneImage.Source.ToString();
-            // Split the directory string by "/"
-            string[] parts = directory.Split('/');
+            newPhone.Price = decimal.Parse(phoneControl.priceTextBox.Text);
+            newPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
+            newPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
+            newPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
 
-            // Get the last part which contains the filename
-            // Remove the quotes and any extra characters
-            newPhone.Image = "Images/" + parts[parts.Length - 1].Trim('\"');
+            var bitmap = phoneControl.phoneImage.Source as BitmapImage;
+            using (var memStream = new MemoryStream())
+            {
+                bitmap.StreamSource.CopyTo(memStream);
+                memStream.Seek(0, SeekOrigin.Begin);
+                var imgBytes = memStream.ToArray();
+                newPhone.Image = Convert.ToBase64String(imgBytes);
+            }
+            var br = 0;
+            //String directory = phoneControl.phoneImage.Source.ToString();
+            //// Split the directory string by "/"
+            //string[] parts = directory.Split('/');
+
+            //// Get the last part which contains the filename
+            //// Remove the quotes and any extra characters
+            //newPhone.Image = "Images/" + parts[parts.Length - 1].Trim('\"');
+
+
             DialogResult = true;
         }
     }

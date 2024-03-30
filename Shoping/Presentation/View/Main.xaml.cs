@@ -105,7 +105,7 @@ namespace Shoping.Presentation.View
 
         private async void loadDataSearch(String search, int page)
         {
-            PageData<ProductDTO> paging = await MainViewModel.SearchProduct(search, page, 4);
+            /*PageData<ProductDTO> paging = await MainViewModel.SearchProduct(search, page, 4);
 
             _products = new ObservableCollection<ProductDTO>();
             foreach (var productDTO in paging.Data)
@@ -121,19 +121,19 @@ namespace Shoping.Presentation.View
             }
 
             productsListView.ItemsSource = _products;
-            DataContext = MainViewModel;
+            DataContext = MainViewModel;*/
         }
 
         private async void addButton_Click(object sender, RoutedEventArgs e)
         {
-            var screen = new AddProduct();
+            /*var screen = new AddProduct();
             if(screen.ShowDialog() == true)
             {
                 ProductDTO temp = screen.newPhone;
                 await MainViewModel.AddUpdateProduct(temp);
                 loadData(_paging.currentPage);
                 MessageBox.Show("Added successfully!");
-            }
+            }*/
         }
 
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
@@ -146,7 +146,7 @@ namespace Shoping.Presentation.View
 
         private async void editButton_Click(object sender, RoutedEventArgs e)
         {
-            ProductDTO oldData = null;
+            /*ProductDTO oldData = null;
             var selected = productsListView.SelectedItem as ProductDTO;
             oldData = (ProductDTO)selected.Clone();
             var screen = new EditProduct(selected);
@@ -165,12 +165,12 @@ namespace Shoping.Presentation.View
                 selected.Price = oldData.Price;
                 selected.Image = oldData.Image;
                 loadData(_paging.currentPage);
-            }
+            }*/
         }
 
         private async void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            var search = searchTextBox.Text;
+            /*var search = searchTextBox.Text;
            
             PageData<ProductDTO> paging = await MainViewModel.SearchProduct(search, 1, 4);
 
@@ -205,7 +205,7 @@ namespace Shoping.Presentation.View
             }
             pagesComboBox.ItemsSource = infos;
             pagesComboBox.SelectedIndex = 0;
-
+*/
         }
 
         private void previousButton_Click(object sender, RoutedEventArgs e)

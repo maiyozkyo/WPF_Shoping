@@ -47,7 +47,7 @@ namespace Shoping.Presentation
             var isSuccess = await LoginViewModel.Login(email, password);
             if (isSuccess)
             {
-                var mainView = new Main();
+                var mainView = new HomeWindow();
                 mainView.Closed += ReturnToLogin;
                 this.Close();
                 mainView.Show();

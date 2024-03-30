@@ -34,14 +34,13 @@ namespace Shoping.Presentation.ViewModels
             var result = await ProductBusiness.DeleteProductAsync(productDTO.RecID);
             return result;
         }
-        public async Task<PageData<ProductDTO>> SearchProduct(String searchName, int page, int pageSize)
-        {
-            var result = await ProductBusiness.GetSearchProductsAsync(searchName, page, pageSize);
-            return result;
-        }
         public async Task<PageData<ProductDTO>> Paging(int page, int pageSize)
         {
             return await ProductBusiness.GetProductsPaging(page, pageSize);
+        }
+        public async Task<PageData<ProductDTO>> GetFilterProducts(String searchFilter, Guid CatID, int page, int pageSize)
+        {
+            return await ProductBusiness.GetFilterProducts(searchFilter, CatID, page, pageSize);
         }
     }
 }

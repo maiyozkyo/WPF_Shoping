@@ -12,7 +12,7 @@ namespace Shoping.Business.ProductServices
     {
         public Task<Guid> AddUpdateProductAsync(ProductDTO productDTO);
         public Task<bool> DeleteProductAsync(Guid productRecID);
-        public Task<PageData<ProductDTO>> GetSearchProductsAsync(String Name, int page, int pageSize);
         public Task<PageData<ProductDTO>> GetProductsPaging(int page, int pageSize);
+        public Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, int page, int pageSize);
     }
 }
