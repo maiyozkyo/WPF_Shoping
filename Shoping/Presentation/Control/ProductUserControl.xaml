@@ -39,5 +39,6 @@
         </ComboBox>
         <Button Name="nextButton" Content="Next page" Click="nextButton_Click" Canvas.Left="645" Canvas.Top="187" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="1.822,0.525"/>
         <ComboBox x:Name="categoryComboBox" SelectionChanged="categoryComboBox_SelectionChanged" Canvas.Left="548" Canvas.Top="265" HorizontalAlignment="Left" Height="21" VerticalAlignment="Top" Width="80"/>
+        <Button Name="excelButton" Content="Excel" Click="excelButton_Click" Canvas.Left="549" Canvas.Top="333" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.822,0.525"/>
     </Canvas>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shoping.Data_Access.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace Shoping.Business.OrderDetailServices
 {
     public interface IOrderDetailBusiness
     {
+        public Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime from, DateTime to);
     }
 }

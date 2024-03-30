@@ -235,5 +235,14 @@ namespace Shoping.Presentation.View
             _paging.currentPage = i + 1;
             loadDataSearch(search, _paging.currentPage);
         }
+
+        private void OpenReport_Click(object sender, RoutedEventArgs e)
+        {
+            var screen = new Report();
+            if (screen.ShowDialog() == true)
+            {
+
+            }
+        }
     }
 }

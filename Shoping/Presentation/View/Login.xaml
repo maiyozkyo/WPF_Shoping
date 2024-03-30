@@ -1,69 +1,45 @@
-﻿<Window x:Class="Shoping.Presentation.Login"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="Login" Height="450" Width="800">
-    <Grid>
-    <TextBox 
-        Name="Email" 
-        HorizontalAlignment="Left" 
-        Margin="160,64,0,0" 
-        TextWrapping="Wrap" 
-        Text="test" 
-        VerticalAlignment="Top" 
-        Width="193" Height="33"
-    />
-    <PasswordBox x:Name="Password" HorizontalAlignment="Left" Margin="160,127,0,0" VerticalAlignment="Top" Width="193" Height="33"/>
-    <Label Content="Tài khoản" HorizontalAlignment="Left" Margin="47,64,0,0" VerticalAlignment="Top" Height="33" Width="75"/>
-    <Label Content="Mật khẩu" HorizontalAlignment="Left" Margin="47,126,0,0" VerticalAlignment="Top" Height="34" Width="75" RenderTransformOrigin="0.431,1.941"/>
-    <Button 
-        Content="Đăng nhập"
-        Click="LoginClick"
-        HorizontalAlignment="Left" 
-        Margin="160,181,0,0" 
-        VerticalAlignment="Top" 
-        Height="39" Width="78"
-    />
-    <Button 
-        Content="Đăng ký" 
-        Click="RegisterClick"
-        HorizontalAlignment="Left" 
-        Margin="275,181,0,0" 
-        VerticalAlignment="Top" 
-        Height="39" Width="78" 
-    />
+﻿<Window 
+    x:Class="Shoping.Presentation.Login"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="LoginWindow" Height="250" Width="500" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
+>
+    <StackPanel Orientation="Vertical" Background="White" Margin="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+        <Border CornerRadius="25" Margin="20,10,20,10" BorderBrush="Red" Background="White" Width="330">
+            <StackPanel Orientation="Vertical">
+                <Label Content="WPF Shop" FontSize="25" HorizontalAlignment="Center" FontWeight="Bold" Margin="2,5,2,0" VerticalContentAlignment="Bottom"/>
+                <Grid Margin="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Margin="0,5" Content="Tài khoản : " VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Right"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="Email" Margin="0,5" Width="150" VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Left"/>
 
-</Grid>
-    <!--<Canvas>
-    <Label Content="Username:" RenderTransformOrigin="1.925,1.996" Canvas.Left="150" Canvas.Top="74"/>
-    <Label Content="Password:" Canvas.Left="154" Canvas.Top="112"/>
-    <TextBox Text="{Binding Username}" x:Name="usernameTextBox" Canvas.Left="229" Canvas.Top="78" HorizontalAlignment="Left" VerticalAlignment="Center" Width="183"/>
+                    <Label Grid.Row="1" Grid.Column="0" Margin="0,5" Content="Mật khẩu : " VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                    <PasswordBox Grid.Row="1" Grid.Column="1" x:Name="Password" Margin="0,5" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
 
-    <PasswordBox PasswordChar="*" Name="passwordBox" Canvas.Left="229" Canvas.Top="116" HorizontalAlignment="Left" VerticalAlignment="Center" Width="183"/>
-    <ProgressBar x:Name="progressBar" Width="100" Height="10" Canvas.Left="312" Canvas.Top="195" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-    <CheckBox x:Name="rememberPassCheckBox" Content="Remember password" Canvas.Left="229" Canvas.Top="148"/>
-    <Button x:Name="loginButton" Content="Login" Click="loginButton_Click" Canvas.Left="229" Canvas.Top="183" Height="34" Width="66"/>
-    <Button Content="Server settings" Cursor="Hand" RenderTransformOrigin="5.662,16.315" Canvas.Left="223" Canvas.Top="244" HorizontalAlignment="Left" VerticalAlignment="Top" Click="serverSettingsButton_Click">
-        <Button.Template>
-            <ControlTemplate TargetType="Button">
-                <TextBlock TextDecorations="Underline">
-        <ContentPresenter />
-                </TextBlock>
-            </ControlTemplate>
-        </Button.Template>
-        <Button.Style>
-            <Style TargetType="Button">
-                <Setter Property="Foreground" Value="Blue" />
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Foreground" Value="Red" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </Button.Style>
-    </Button>
-</Canvas>-->
-    
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                        <Button Content="Đăng nhập" x:Name="btnLogin" Click="LoginClick" Margin="2,10" Width="100" Height="30" Background="#279EFF" Foreground="Black" BorderBrush="White"/>
+                        <Button Content="Đăng ký" x:Name="btnClose" Click="RegisterClick" Margin="2,10" Width="100" Background="#F58840" Foreground="Black" BorderBrush="White"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                        <CheckBox x:Name="ckbSave"></CheckBox>
+                        <TextBlock Margin="5 0 0 0">Ghi nhớ đăng nhập</TextBlock>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
 </Window>

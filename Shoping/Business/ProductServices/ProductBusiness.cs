@@ -76,5 +76,12 @@ namespace Shoping.Business.ProductServices
                 return pageData;
             }
         }
+
+        public async Task<List<ProductDTO>> GetListProductsByRecID(List<Guid> lstRecIDs)
+        {
+            var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID)).ToListAsync();
+            return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
+        }
+
     }
 }
