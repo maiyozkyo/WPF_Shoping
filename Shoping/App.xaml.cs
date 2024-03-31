@@ -3,7 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shoping.ApiBusiness;
 using Shoping.Business;
-using Shoping.Business.OderServices;
+using Shoping.Business.OrderServices;
+using Shoping.Business.OrderDetailServices;
+using Shoping.Business.ProductServices;
 using Shoping.Business.UserServices;
 using Shoping.Data_Access.DTOs;
 using Shoping.Presentation;
@@ -20,8 +22,10 @@ namespace Shoping
         public IServiceProvider ServiceProvider { get; set; }
         public static IConfiguration iConfiguration { get; set; }
         public static IUserBusiness iUserBusiness { get; set; }
-        public static IOrderBusiness iOrderBusiness { get; set; }
         public static IApiService iApiService { get; set; }
+        public static IProductBusiness iProductBusiness { get; set; }
+        public static IOrderBusiness iOrderBusiness { get; set; }
+        public static IOrderDetailBusiness iOrderDetailBusiness { get; set; }
         public static Auth Auth { get; private set; } 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -51,14 +55,20 @@ namespace Shoping
             #region Register
             containerBuilder.RegisterType<UserBusiness>().WithParameter("_dbName", dbName).As<IUserBusiness>();
             containerBuilder.RegisterType<OrderBusiness>().WithParameter("_dbName", dbName).As<IOrderBusiness>();
+            containerBuilder.RegisterType<ProductBusiness>().WithParameter("_dbName", dbName).As<IProductBusiness>();
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            containerBuilder.RegisterType<OrderDetailBusiness>().WithParameter("_dbName", dbName).As<IOrderDetailBusiness>();
+
             #endregion
 
             #region Resolve
             var container = containerBuilder.Build();
             iUserBusiness = container.Resolve<IUserBusiness>();
             iApiService = container.Resolve<IApiService>();
+            iProductBusiness = container.Resolve<IProductBusiness>();
             iOrderBusiness = container.Resolve<IOrderBusiness>();
+            iOrderDetailBusiness = container.Resolve<IOrderDetailBusiness>();
             #endregion
         }
 

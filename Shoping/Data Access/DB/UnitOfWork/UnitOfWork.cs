@@ -13,7 +13,7 @@ namespace Shoping.Data_Access.DB.UnitOfWork
             _dbContext = dbContext;
             Repository = new Repository<TEntity>(dbContext);
         }
-
+        
         public async Task<int> SaveChangesAsync()
         {
             return await _dbContext.SaveChangesAsync();

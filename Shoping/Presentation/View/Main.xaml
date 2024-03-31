@@ -5,15 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Shoping.Presentation.View"
         mc:Ignorable="d"
-        Title="Main" Height="450" Width="800">
+        Title="Main" Height="450" Width="800" Loaded="Window_Loaded">
+    <!--
     <Grid>
-        <Button 
-            Content="Button" 
-            HorizontalAlignment="Left" 
-            Margin="281,199,0,0" 
-            VerticalAlignment="Top" Click="Button_Click"
-            
-        />
+    <Button 
+        Content="Button" 
+        HorizontalAlignment="Left" 
+        Margin="281,199,0,0" 
+        VerticalAlignment="Top" Click="Button_Click"
+        
+    />
 
-    </Grid>
+</Grid>
+    -->
+    <Canvas>
+        <ListView Name="productsListView" Width="378" Height="414">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="200" Height="30">
+                        <TextBlock >
+                            <Run Text="{Binding Name}"/> -
+                            <Run Text="{Binding Price}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Name="addButton" Content="Add" Canvas.Left="447" Canvas.Top="104" Height="32" Width="62" HorizontalAlignment="Center" VerticalAlignment="Top" Click="addButton_Click"/>
+        <Button Name="deleteButton" Content="Delete" Canvas.Left="529" Canvas.Top="105" Height="31" Width="59" Click="deleteButton_Click"></Button>
+        <Button Name="editButton" Content="Edit" Canvas.Left="615" Canvas.Top="105" Height="31" Width="55" Click="editButton_Click"/>
+        <TextBox Name="searchTextBox" Height="40" Width="159" Canvas.Left="447" Canvas.Top="39" HorizontalAlignment="Center" VerticalAlignment="Top"></TextBox>
+        <Button Name="searchButton" Content="Search" Click="searchButton_Click" Canvas.Left="631" Canvas.Top="44" Height="30" Width="53" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+
+        <Button Name="previousButton" Content="Previous page" Click="previousButton_Click" Canvas.Left="447" Canvas.Top="187" Height="30" Width="82" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <ComboBox Name="pagesComboBox" SelectionChanged="pagesComboBox_SelectionChanged" Canvas.Left="558" Canvas.Top="186" HorizontalAlignment="Left" VerticalAlignment="Center" Height="31" Width="60">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock>
+                            <Run Text="{Binding Index, Mode=OneWay}"/>/<Run Text="{Binding Total, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Name="nextButton" Content="Next page" Click="nextButton_Click" Canvas.Left="645" Canvas.Top="187" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="1.822,0.525"/>
+    </Canvas>
+    
 </Window>

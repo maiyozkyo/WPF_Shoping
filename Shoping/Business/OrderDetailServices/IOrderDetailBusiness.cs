@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shoping.Business.ProductServices
+namespace Shoping.Business.OrderDetailServices
 {
-    internal interface IProductServices
+    public interface IOrderDetailBusiness
     {
     }
 }
