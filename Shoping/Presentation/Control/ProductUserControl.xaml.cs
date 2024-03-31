@@ -63,24 +63,24 @@ namespace Shoping.Presentation.Control
             //pagingProducts = await MainViewModel.Paging(1, _paging.itemsPerPage);
 
             //_products = new ObservableCollection<ProductDTO>(pagingProducts.Data);
-            ////foreach (var productDTO in pagingProducts.Data)
-            ////{
-            ////    _products.Add(new ProductDTO
-            ////    {
-            ////        RecID = productDTO.RecID,
-            ////        ProductID = productDTO.ProductID,
-            ////        Name = productDTO.Name,
-            ////        Price = productDTO.Price,
-            ////        PurchasePrice = productDTO.PurchasePrice,
-            ////        CatID = productDTO.CatID,
-            ////        Quantity = productDTO.Quantity,
-            ////        Image = productDTO.Image
-            ////    });
-            ////}
+            //foreach (var productDTO in pagingProducts.Data)
+            //{
+            //    _products.Add(new ProductDTO
+            //    {
+            //        RecID = productDTO.RecID,
+            //        ProductID = productDTO.ProductID,
+            //        Name = productDTO.Name,
+            //        Price = productDTO.Price,
+            //        PurchasePrice = productDTO.PurchasePrice,
+            //        CatID = productDTO.CatID,
+            //        Quantity = productDTO.Quantity,
+            //        Image = productDTO.Image
+            //    });
+            //}
             //productsListView.ItemsSource = _products;
             //DataContext = MainViewModel;
 
-            //// Implement paging
+            // Implement paging
             //_paging.currentPage = 1;
             //_paging.totalPage = (pagingProducts.Total % pagingProducts.Data.Count() == 0) ? pagingProducts.Total / pagingProducts.Data.Count() : pagingProducts.Total / pagingProducts.Data.Count() + 1;
 
@@ -103,7 +103,7 @@ namespace Shoping.Presentation.Control
             });
 
             pagesComboBox.ItemsSource = new ObservableCollection<object>(infos);
-            //pagesComboBox.SelectedIndex = 0;
+            pagesComboBox.SelectedIndex = 0;
 
             // Handling category filter
             categoryComboBox.Items.Clear();
@@ -135,7 +135,7 @@ namespace Shoping.Presentation.Control
             DataContext = MainViewModel;
 
             _paging.currentPage = page;
-            _paging.totalPage = (pagingProducts.Total % pagingProducts.Data.Count() == 0) ? pagingProducts.Total / pagingProducts.Data.Count() : pagingProducts.Total / pagingProducts.Data.Count() + 1;
+            _paging.totalPage = (pagingProducts.Total % _paging.itemsPerPage == 0) ? pagingProducts.Total / _paging.itemsPerPage : pagingProducts.Total / _paging.itemsPerPage + 1;
 
 
             var infos = new ObservableCollection<object>();
@@ -203,8 +203,8 @@ namespace Shoping.Presentation.Control
         private async void searchButton_Click(object sender, RoutedEventArgs e)
         {
             searchFilter = searchTextBox.Text;
+            loadData(1);
             pagesComboBox.SelectedIndex = 0;
-
         }
 
         private void previousButton_Click(object sender, RoutedEventArgs e)
@@ -238,6 +238,7 @@ namespace Shoping.Presentation.Control
             {
                 categoryFilter = Guid.Parse(((ComboBoxItem)categoryComboBox.SelectedItem).Tag.ToString());
             }
+            loadData(1);
             pagesComboBox.SelectedIndex = 0;
         }
 
