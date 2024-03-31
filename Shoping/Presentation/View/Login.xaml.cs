@@ -1,11 +1,5 @@
 ﻿using Shoping.Presentation.View;
 using Shoping.Presentation.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Shoping.Presentation
@@ -41,7 +35,7 @@ namespace Shoping.Presentation
             var isSuccess = await LoginViewModel.Login(email, password);
             if (isSuccess)
             {
-                var mainView = new Main();
+                var mainView = new ManageOrder();
                 mainView.Closed += ReturnToLogin;
                 this.Close();
                 mainView.Show();
@@ -50,7 +44,7 @@ namespace Shoping.Presentation
 
         private void ReturnToLogin(object sender, EventArgs e)
         {
-            this.Show();
+            //this.Show();
         }
 
         /*public string Username { get; set; } = "";
@@ -136,5 +130,5 @@ namespace Shoping.Presentation
 
             passwordBox.Password = AppConfig.Password;
         }*/
-    } 
+    }
 }

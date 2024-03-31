@@ -20,15 +20,21 @@ namespace Shoping.Business.OrderServices
                 order = new Order
                 {
                     CustomerID = orderDTO.CustomerID,
-                    Paid = orderDTO.Paid,
-                    Total = orderDTO.Total,
+                    TotalMoney = orderDTO.TotalMoney,
+                    DeliveryDate = orderDTO.DeliveryDate.ToUniversalTime(),
+                    PaymentStatus = orderDTO.PaymentStatus,
+                    CreateAt = orderDTO.CreateAt,
                 };
+
                 Repository.Add(order);
                 await UnitOfWork.SaveChangesAsync();
             }
             else
             {
-                
+                order.TotalMoney = 1;
+                order.DeliveryDate = orderDTO.DeliveryDate.ToUniversalTime();
+                order.PaymentStatus = orderDTO.PaymentStatus;
+                Repository.Update(order);
             }
             return order.RecID;
         }
@@ -54,15 +60,27 @@ namespace Shoping.Business.OrderServices
             return null;
         }
 
-        public async Task<PageData<OrderDTO>> GetOrderPaging(int page, int pageSize)
-        {
-            var pageData = await Repository.GetAsync(x => x.Paid < 39).ToPaging<Order, OrderDTO>(page, pageSize);
-            return pageData;
-        }
         public async Task<List<OrderDTO>> GetOrdersInRangeAsync(DateTime fromDate, DateTime toDate)
         {
             var lstOrders = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
             return JsonConvert.DeserializeObject<List<OrderDTO>>(JsonConvert.SerializeObject(lstOrders));
         }
+
+        public async Task<List<OrderDTO>> GetAllOrders()
+        {
+            var orders = await Repository.GetAsync(x => true).ToListAsync();
+            if (orders != null)
+            {
+                return JsonConvert.DeserializeObject<List<OrderDTO>>(JsonConvert.SerializeObject(orders));
+            }
+            return null;
+        }
+
+        public async Task<PageData<OrderDTO>> GetOrderPaging(int page, int pageSize)
+        {
+            var pageData = await Repository.GetAsync(x => true).ToPaging<Order, OrderDTO>(page, pageSize);
+            return pageData;
+        }
+
     }
 }

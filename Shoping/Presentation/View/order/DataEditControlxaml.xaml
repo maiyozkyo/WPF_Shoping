@@ -1,0 +1,150 @@
+﻿<Window
+    x:Class="Shoping.Presentation.View.order.DataEditControlxaml"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Shoping.Presentation.View.order"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="DataEditControlxaml"
+    Width="800"
+    Height="450"
+    Loaded="Product_Loaded"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <local:RelativeToAbsoluteConverter x:Key="ImageConverter" />
+    </Window.Resources>
+    <Canvas>
+        <Label
+            Canvas.Left="32"
+            Canvas.Top="87"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Content="Thông tin đơn hàng"
+            FontSize="20"
+            FontWeight="Bold"
+            Foreground="Purple" />
+        <Label
+            Canvas.Left="32"
+            Canvas.Top="129"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Tên khách hàng:" />
+        <Label
+            Canvas.Left="32"
+            Canvas.Top="155"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Tổng tiền hàng:" />
+        <Label
+            Canvas.Left="32"
+            Canvas.Top="181"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Content="Ngày giao hàng:" />
+        <Label
+            Canvas.Left="32"
+            Canvas.Top="207"
+            Content="Tình trạng đơn hàng:" />
+        <DatePicker
+            Name="delivery_date"
+            Canvas.Left="127"
+            Canvas.Top="183" />
+
+        <CheckBox
+            Name="payment_status"
+            Canvas.Left="153"
+            Canvas.Top="213"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Content="Chưa thanh toán" />
+        <Button
+            Canvas.Left="91"
+            Canvas.Top="238"
+            Width="80"
+            Height="30"
+            Click="Confirm_Click"
+            Content="Chỉnh sửa" />
+        <TextBlock
+            Name="customer_name"
+            Canvas.Left="127"
+            Canvas.Top="134"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="TextBlock"
+            TextWrapping="Wrap" />
+        <TextBlock
+            Name="total_money"
+            Canvas.Left="125"
+            Canvas.Top="160"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Text="TextBlock"
+            TextWrapping="Wrap" />
+        <Button
+            Canvas.Left="179"
+            Canvas.Top="158"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Click="DisplayProduct_Click"
+            Content="Thêm" />
+
+        <ListView
+            Name="PhoneComboBox"
+            Canvas.Left="293"
+            Canvas.Top="39"
+            Width="476"
+            Height="312"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.Resources>
+                <ContextMenu x:Key="PhoneContextMenu">
+                    <MenuItem Header="Add">
+                        <MenuItem.Icon>
+                            <Image
+                                Width="16"
+                                Height="16"
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                Source="images/add.jpg" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListView.Resources>
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="ContextMenu" Value="{StaticResource PhoneContextMenu}" />
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel
+                        Width="280"
+                        Height="80"
+                        VerticalAlignment="Center">
+                        <Image
+                            Width="50"
+                            Height="50"
+                            Margin="5"
+                            RenderOptions.BitmapScalingMode="HighQuality"
+                            Source="{Binding Avatar, Converter={StaticResource ImageConverter}}" />
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Foreground="Red" Text="{Binding Name}" />
+                            <TextBlock Text=" - " />
+                            <TextBlock Foreground="Green" Text="{Binding Price}" />
+                            <TextBlock Text=" - " />
+                            <TextBlock Foreground="Blue" Text="{Binding Manufacturer}" />
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+    </Canvas>
+</Window>
