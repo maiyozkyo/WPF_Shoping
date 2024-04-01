@@ -23,7 +23,7 @@ namespace Shoping.Presentation.Control
     /// </summary>
     public partial class PhoneControl : UserControl
     {
-        private static string fullPath;
+        public string fullPath { get; set; }
         public PhoneControl()
         {
             InitializeComponent();
@@ -44,8 +44,8 @@ namespace Shoping.Presentation.Control
             
             BitmapImage picture = new();
             picture.BeginInit();
-            picture.UriSource = new Uri(fullPath);
-            //picture.StreamSource = new MemoryStream(fileBytes);
+            //picture.UriSource = new Uri(fullPath);
+            picture.StreamSource = new MemoryStream(fileBytes);
             picture.EndInit();
             phoneImage.Source = picture;
         }
