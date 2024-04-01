@@ -246,10 +246,11 @@ namespace Shoping.Presentation.Control
 
         private void excelButton_Click(object sender, RoutedEventArgs e)
         {
-            var fileBytes = File.ReadAllBytes("D:\\Nam 3\\HK2\\Windows\\Project 1\\MyShop\\Shoping\\Book1.xlsx");
+            var fileBytes = File.ReadAllBytes("C:\\Users\\admin\\source\\repos\\WPF_Shoping\\Shoping\\Book1.xlsx");
             using (var mem = new MemoryStream(fileBytes))
             {
-                var lstData = ExcelHelper.ReadAsList<ProductDTO>(mem);
+                var lstProducts = ExcelHelper.ReadAsList<OrderDTO>(mem, 0);
+                var lstChartITems = ExcelHelper.ReadAsList<ChartItemDTO>(mem, 1);
 
             }
         }
