@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bogus.DataSets;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Shoping.Data_Access.DB.Repo;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
 using System;
@@ -26,6 +28,9 @@ namespace Shoping.Business.ProductServices
                 {
                     Name = productDTO.Name,
                     Price = productDTO.Price,
+                    PurchasePrice = productDTO.PurchasePrice,
+                    CatID = productDTO.CatID,
+                    Quantity = productDTO.Quantity,
                     Image = productDTO.Image
                 };
                 Repository.Add(product);
@@ -34,6 +39,9 @@ namespace Shoping.Business.ProductServices
             {
                 product.Name = productDTO.Name;
                 product.Price = productDTO.Price;
+                product.PurchasePrice = productDTO.PurchasePrice;
+                product.CatID = productDTO.CatID;
+                product.Quantity = productDTO.Quantity;
                 product.Image = productDTO.Image;
                 Repository.Update(product);
             }
@@ -51,29 +59,22 @@ namespace Shoping.Business.ProductServices
             return true;
         }
 
-        public async Task<List<ProductDTO>> GetSearchProductsAsync(String Name)
+        public async Task<PageData<ProductDTO>> GetProductsPaging(int page, int pageSize)
         {
-            var products = await Repository.GetAsync(x => x.Name.Contains(Name)).ToListAsync();
-            if (products != null)
-            {
-                return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(products));
-            }
-            return null;
+            var pageData = await Repository.GetAsync(x => true).ToPaging<Product, ProductDTO>(page, pageSize);
+            return pageData;
         }
-        public async Task<List<ProductDTO>> GetAllProducts()
+        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, int page, int pageSize)
         {
-            var products = await Repository.GetAsync(x => true).ToListAsync();
-            if (products != null)
+            if (CatID == Guid.Empty)
             {
-                return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(products));
+                return await Repository.GetAsync(x => x.Name.Contains(search)).ToPaging<Product, ProductDTO>(page, pageSize);
             }
-            return null;
-        }
-
-        public async Task<List<ProductDTO>> GetProductsInRangeAsync(int pageSize, int pageNumber)
-        {
-            var productOrders = await Repository.GetAsync(x => true).Skip((pageNumber - 1) * pageSize).ToListAsync();
-            return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(productOrders));
+            else
+            {
+                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID).ToPaging<Product, ProductDTO>(page, pageSize);
+                return pageData;
+            }
         }
 
         public async Task<List<ProductDTO>> GetListProductsByRecID(List<Guid> lstRecIDs)

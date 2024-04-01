@@ -70,7 +70,7 @@ namespace Shoping.Presentation
             var isSuccess = await LoginViewModel.Login(email, md5PW);
             if (isSuccess)
             {
-                var mainView = new Main();
+                var mainView = new HomeWindow();
                 if (ckbSave.IsChecked == true)
                 {
                     var entropyBytes = new byte[20];

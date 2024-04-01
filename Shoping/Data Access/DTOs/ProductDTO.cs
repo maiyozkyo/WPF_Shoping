@@ -14,6 +14,9 @@ namespace Shoping.Data_Access.DTOs
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Image { get; set; } // Implement later
+        public Guid CatID { get; set; } 
+        public decimal PurchasePrice { get; set; } 
+        public int Quantity { get; set; } 
         public object Clone()
         {
             return MemberwiseClone();
