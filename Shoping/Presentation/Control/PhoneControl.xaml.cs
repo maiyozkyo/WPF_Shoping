@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,11 +39,19 @@ namespace Shoping.Presentation.Control
                 fullPath = file.FileName;
             }
 
+            var fileBytes = File.ReadAllBytes(fullPath);
+            
             BitmapImage picture = new();
             picture.BeginInit();
-            picture.UriSource = new Uri(fullPath);
+            //picture.UriSource = new Uri(fullPath);
+            picture.StreamSource = new MemoryStream(fileBytes);
             picture.EndInit();
             phoneImage.Source = picture;
+        }
+
+        private void categoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

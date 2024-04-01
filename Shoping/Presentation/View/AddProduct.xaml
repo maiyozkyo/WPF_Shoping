@@ -9,6 +9,6 @@
         Title="AddProduct" Height="450" Width="800">
     <Canvas>
         <uc:PhoneControl x:Name="phoneControl"/>
-        <Button Content="Add" Canvas.Left="196" Canvas.Top="201" Height="34" Width="79" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_Click" RenderTransformOrigin="0.804,1.336"/>
+        <Button Content="Add" Canvas.Left="360" Canvas.Top="368" Height="34" Width="80" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.804,1.336"/>
     </Canvas>
 </Window>
