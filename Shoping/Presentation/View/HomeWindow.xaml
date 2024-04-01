@@ -13,29 +13,21 @@
                 <Fluent:Backstage Header="My Shop">
                     <Fluent:BackstageTabControl>
                         <Fluent:BackstageTabItem Header="Manage Product">
-                            <TabControl Name="tabsProduct" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}">
-
-                            </TabControl>
+                            <TabControl Name="tabsProduct" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Manage Category">
-                            <TabControl Name="tabsCategory" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}">
-
-                            </TabControl>
+                            <TabControl Name="tabsCategory" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Order">
-
+                            <TabControl Name="tabsOrder" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Statistic">
-
+                            <TabControl Name="tabsStatistic" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Setting">
-                            <TabControl Name="tabsSetting" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}">
-
-                            </TabControl>
+                            <TabControl Name="tabsSetting" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
                         </Fluent:BackstageTabItem>
-                        <Fluent:BackstageTabItem Header="Quit" MouseDown="Quit_Handle">
-
-                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Quit" MouseDown="Quit_Handle"/>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>

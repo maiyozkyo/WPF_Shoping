@@ -7,10 +7,10 @@ using LiveCharts.Wpf;
 
 namespace Shoping.Presentation.Control
 {
-    public partial class StatisticControl : UserControl
+    public partial class StatisticUserControl : UserControl
     {
-        StatisticViewModel StatisticViewModel { get; set; }
-        public StatisticControl()
+        public StatisticViewModel StatisticViewModel { get; set; }
+        public StatisticUserControl()
         {
             InitializeComponent();
             StatisticViewModel = new StatisticViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
@@ -35,7 +35,6 @@ namespace Shoping.Presentation.Control
                 InputYear.Visibility = Visibility.Collapsed;
             }
         }
-
         private async void RevenueButton_Click(object sender, RoutedEventArgs e)
         {
             revenueAndProfitChart.Visibility = Visibility.Visible;
