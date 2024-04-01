@@ -32,11 +32,25 @@ namespace Shoping.Presentation.View
                 new TabItem() { Content = new Control.ProductUserControl()},
             };
             tabsProduct.ItemsSource = productTabs;
+
             var categoryTabs = new ObservableCollection<TabItem>()
             {
                 new TabItem() { Content = new Control.CategoryUserControl()},
             };
             tabsCategory.ItemsSource = categoryTabs;
+
+            var orderTabs = new ObservableCollection<TabItem>()
+            {
+                new TabItem() { Content = new Control.OrderUserControl()},
+            };
+            tabsOrder.ItemsSource = orderTabs;
+            
+            var statisticTabs = new ObservableCollection<TabItem>()
+            {
+                new TabItem() { Content = new Control.StatisticUserControl()},
+            };
+            tabsStatistic.ItemsSource = statisticTabs;
+
             var settingTabs = new ObservableCollection<TabItem>()
             {
                 new TabItem() { Content = new Control.SettingUserControl()},
@@ -50,37 +64,6 @@ namespace Shoping.Presentation.View
             {
                 Application.Current.Shutdown();
             }
-        }
-        private void addCategorytButton_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void deleteCategorytButton_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void excelButton_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void addProductButton_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void updateProductButton_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        
+        }     
     }
 }

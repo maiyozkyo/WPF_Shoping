@@ -1,10 +1,5 @@
 ﻿using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoping.Business.OrderServices
 {
@@ -15,6 +10,9 @@ namespace Shoping.Business.OrderServices
         public Task<OrderDTO> GetOrderAsync(Guid orderRecID);
         public Task<List<OrderDTO>> GetOrdersInRangeAsync(DateTime from, DateTime to);
         public Task<PageData<OrderDTO>> GetOrderPaging(int page, int pageSize);
-
+        public Task<Tuple<List<int>, List<string>>> GetRevenueInDateRangeAsync(DateTime from, DateTime to);
+        public Task<List<int>> GetRevenueByWeekAsync(int year);
+        public Task<List<int>> GetRevenueByMonthAsync(int year);
+        public Task<List<int>> GetRevenueByYearAsync();
     }
 }
