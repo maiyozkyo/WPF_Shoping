@@ -160,6 +160,7 @@ namespace Shoping.Presentation.Control
                 ProductDTO temp = screen.newPhone;
                 await MainViewModel.AddUpdateProduct(temp);
                 loadData(1);
+                pagesComboBox.SelectedIndex = 0;
                 MessageBox.Show("Added successfully!");
             }
         }
@@ -169,6 +170,7 @@ namespace Shoping.Presentation.Control
             var selected = productsListView.SelectedItem as ProductDTO;
             await MainViewModel.DeleteProduct(selected);
             loadData(1);
+            pagesComboBox.SelectedIndex = 0;
             MessageBox.Show("Deleted successfully!");
         }
 

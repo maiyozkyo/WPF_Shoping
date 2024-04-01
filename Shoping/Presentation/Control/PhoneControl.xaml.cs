@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,8 +44,8 @@ namespace Shoping.Presentation.Control
             
             BitmapImage picture = new();
             picture.BeginInit();
-            //picture.UriSource = new Uri(fullPath);
-            picture.StreamSource = new MemoryStream(fileBytes);
+            picture.UriSource = new Uri(fullPath);
+            //picture.StreamSource = new MemoryStream(fileBytes);
             picture.EndInit();
             phoneImage.Source = picture;
         }
