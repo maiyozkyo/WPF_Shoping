@@ -47,23 +47,9 @@ namespace Shoping.Presentation.View
             newPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
             newPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
 
-            var bitmap = phoneControl.phoneImage.Source as BitmapImage;
-            using (var memStream = new MemoryStream())
-            {
-                bitmap.StreamSource.CopyTo(memStream);
-                memStream.Seek(0, SeekOrigin.Begin);
-                var imgBytes = memStream.ToArray();
-                newPhone.Image = Convert.ToBase64String(imgBytes);
-            }
-            var br = 0;
-            //String directory = phoneControl.phoneImage.Source.ToString();
-            //// Split the directory string by "/"
-            //string[] parts = directory.Split('/');
-
-            //// Get the last part which contains the filename
-            //// Remove the quotes and any extra characters
-            //newPhone.Image = "Images/" + parts[parts.Length - 1].Trim('\"');
-
+            string directory = phoneControl.fullPath;
+            var fileBytes = File.ReadAllBytes(directory);
+            newPhone.Image = Convert.ToBase64String(fileBytes);
 
             DialogResult = true;
         }

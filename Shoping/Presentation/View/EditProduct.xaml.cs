@@ -49,6 +49,7 @@ namespace Shoping.Presentation.View
             newEditPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
             newEditPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
             newEditPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
+            newEditPhone.Image = phoneControl.phoneImage.Source.ToString();
             DialogResult = true;
         }
     }
