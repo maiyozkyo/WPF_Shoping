@@ -118,7 +118,6 @@ namespace Shoping.Business.OrderServices
             {
                 var total = (int)ordersByDateTime[dateTime].Sum(x => x.Total * 1000);
                 revenueInDateRange.Add(total);
-                dates.Add(dateTime.ToString()[..10]);
             }
             return new Tuple<List<int>, List<string>>(revenueInDateRange, dates);
         }

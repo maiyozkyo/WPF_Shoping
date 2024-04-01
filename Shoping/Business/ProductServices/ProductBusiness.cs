@@ -82,7 +82,7 @@ namespace Shoping.Business.ProductServices
             return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
         }
 
-        public async Task<List<int>> GetSpendingInDateRangeAsync(DateTime fromDate, DateTime toDate)
+        public async Task<Tuple<List<int>, List<string>>> GetSpendingInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
             var listProducts = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
             var productsByDateTime = listProducts.ToLookup(x => x.CreatedOn.Date);
@@ -95,7 +95,7 @@ namespace Shoping.Business.ProductServices
                 spendingInDateRange.Add(total);
                 dates.Add(dateTime.ToString()[..10]);
             }
-            return spendingInDateRange;
+            return new Tuple<List<int>, List<string>>(spendingInDateRange, dates);
         }
 
         public async Task<List<int>> GetSpendingByWeekAsync(int year)

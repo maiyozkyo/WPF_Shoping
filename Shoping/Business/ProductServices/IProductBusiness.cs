@@ -15,7 +15,7 @@ namespace Shoping.Business.ProductServices
         public Task<List<ProductDTO>> GetAllProducts();
         public Task<List<ProductDTO>> GetSearchProductsAsync(String Name);
         public Task<List<ProductDTO>> GetListProductsByRecID(List<Guid> lstRecIDs);
-        public Task<List<int>> GetSpendingInDateRangeAsync(DateTime from, DateTime to);
+        public Task<Tuple<List<int>, List<string>>> GetSpendingInDateRangeAsync(DateTime from, DateTime to);
         public Task<List<int>> GetSpendingByWeekAsync(int year);
         public Task<List<int>> GetSpendingByMonthAsync(int year);
         public Task<List<int>> GetSpendingByYearAsync();
