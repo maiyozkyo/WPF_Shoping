@@ -45,7 +45,7 @@ namespace Shoping.Business.Helper
                         }
                         catch (Exception ex)
                         {
-                            value = "";
+                            value = values[i].ToString();
                         }
                     }
                     dict.Add(key, value);
