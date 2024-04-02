@@ -15,16 +15,20 @@ namespace Shoping
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BitmapImage picture = new();
-            picture.BeginInit();
-            picture.StreamSource = new MemoryStream(System.Convert.FromBase64String((string)value));
-            picture.EndInit();
-            /*string filePath = (string)value;
-            if (Uri.TryCreate(filePath, UriKind.Absolute, out Uri uri) && uri.IsFile)
+            if((string)value != null)
             {
-                return uri.LocalPath;
-            }*/
-            return picture;
+                BitmapImage picture = new();
+                picture.BeginInit();
+                picture.StreamSource = new MemoryStream(System.Convert.FromBase64String((string)value));
+                picture.EndInit();
+                /*string filePath = (string)value;
+                if (Uri.TryCreate(filePath, UriKind.Absolute, out Uri uri) && uri.IsFile)
+                {
+                    return uri.LocalPath;
+                }*/
+                return picture;
+            }
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

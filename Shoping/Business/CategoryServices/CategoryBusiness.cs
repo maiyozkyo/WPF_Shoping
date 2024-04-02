@@ -50,5 +50,20 @@ namespace Shoping.Business.CategoryServices
             var categories = await Repository.GetAsync(x => true).ToListAsync();
             return JsonConvert.DeserializeObject<List<CategoryDTO>>(JsonConvert.SerializeObject(categories));
         }
+        public async Task<bool> DeleteAllCategories()
+        {
+            var categories = await Repository.GetAsync(x => true).ToListAsync();
+            if(categories != null)
+            {
+                Repository.Delete(categories);
+                await UnitOfWork.SaveChangesAsync();
+            }
+            return true;
+        }
+        public async Task<Guid> GetCategoryID(string Name)
+        {
+            var category = await Repository.GetOneAsync(x => x.Name == Name);
+            return category.RecID;
+        }
     }
 }

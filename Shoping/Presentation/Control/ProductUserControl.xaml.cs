@@ -1,4 +1,5 @@
-﻿using Shoping.Business.Helper;
+﻿using Microsoft.Win32;
+using Shoping.Business.Helper;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
 using Shoping.Presentation.View;
@@ -37,6 +38,8 @@ namespace Shoping.Presentation.Control
         public PageData<ProductDTO> pagingProducts { get; set; }
         public string searchFilter = "";
         public Guid categoryFilter = Guid.Empty;
+        public decimal priceFromFilter = 0;
+        public decimal priceToFilter = 9000m;
         PagingInfo _paging;
         public SettingUserControl setting = new SettingUserControl();
         public int _itemsPerPage { get; set; }
@@ -128,7 +131,7 @@ namespace Shoping.Presentation.Control
         private async void loadData(int page)
         {
             _paging.itemsPerPage = ItemsPerPage.itemsPerPage;
-            pagingProducts = await MainViewModel.GetFilterProducts(searchFilter, categoryFilter, page, _paging.itemsPerPage);
+            pagingProducts = await MainViewModel.GetFilterProducts(searchFilter, categoryFilter, priceFromFilter, priceToFilter, page, _paging.itemsPerPage);
 
             _products = new ObservableCollection<ProductDTO>(pagingProducts.Data);
             productsListView.ItemsSource = _products;
@@ -244,14 +247,67 @@ namespace Shoping.Presentation.Control
             pagesComboBox.SelectedIndex = 0;
         }
 
-        private void excelButton_Click(object sender, RoutedEventArgs e)
+        private async void excelButton_Click(object sender, RoutedEventArgs e)
         {
-            var fileBytes = File.ReadAllBytes("C:\\Users\\admin\\source\\repos\\WPF_Shoping\\Shoping\\Book1.xlsx");
+            string fullPath = "";
+            OpenFileDialog file = new()
+            {
+                Filter = "Excel Files|*.xlsx"
+            };
+            if (file.ShowDialog() == true)
+            {
+                fullPath = file.FileName;
+            }
+            var fileBytes = File.ReadAllBytes(fullPath);
+            await categoryViewModel.DeleteAllCategories();
+            await MainViewModel.DeleteAllProducts();
             using (var mem = new MemoryStream(fileBytes))
             {
-                var lstProducts = ExcelHelper.ReadAsList<OrderDTO>(mem, 0);
-                var lstChartITems = ExcelHelper.ReadAsList<ChartItemDTO>(mem, 1);
+                Dictionary<int, Guid> catID = new Dictionary<int, Guid>();
 
+                var listCategories = ExcelHelper.ReadAsList<CategoryDTO>(mem, 0);
+                for(int i = 0; i < listCategories.Count(); i++)
+                {
+                    await categoryViewModel.AddUpdateCategory(listCategories[i]);
+                    catID[i] = await categoryViewModel.GetCategoryID(listCategories[i].Name);
+                }
+                var listProducts = ExcelHelper.ReadAsList<ProductExcelDTO>(mem, 1);
+                foreach (var product in listProducts)
+                {
+                    for (int i = 0; i < catID.Count(); i++)
+                    {
+                        if (product.CatID == (i + 1).ToString())
+                        {
+                            var tempProduct = new ProductDTO
+                            {
+                                Name = product.Name,
+                                Price = product.Price,
+                                PurchasePrice = product.PurchasePrice,
+                                Quantity = product.Quantity,
+                                CatID = catID[i],
+                                //Image = product.Image
+                            };
+                            await MainViewModel.AddUpdateProduct(tempProduct);
+                        }
+                    }
+                }
+            }
+            loadData(1);
+            pagesComboBox.SelectedIndex = 0;
+        }
+
+        private void priceSortButton_Click(object sender, RoutedEventArgs e)
+        {
+            priceFromFilter = (priceSortFromTextBox.Text != null) ? decimal.Parse(priceSortFromTextBox.Text) : 0;
+            priceToFilter = (priceSortToTextBox.Text != null) ? decimal.Parse(priceSortToTextBox.Text) : int.MaxValue;
+            if(priceFromFilter > priceToFilter)
+            {
+                MessageBox.Show("Error! Price from cannot larget than price to");
+            }
+            else
+            {
+                loadData(1);
+                pagesComboBox.SelectedIndex = 0;
             }
         }
     }

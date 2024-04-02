@@ -64,15 +64,16 @@ namespace Shoping.Business.ProductServices
             var pageData = await Repository.GetAsync(x => true).ToPaging<Product, ProductDTO>(page, pageSize);
             return pageData;
         }
-        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, int page, int pageSize)
+        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, decimal from, decimal to ,int page, int pageSize)
         {
             if (CatID == Guid.Empty)
             {
-                return await Repository.GetAsync(x => x.Name.Contains(search)).ToPaging<Product, ProductDTO>(page, pageSize);
+                Console.WriteLine(to);
+                return await Repository.GetAsync(x => x.Name.Contains(search) && ( x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
             }
             else
             {
-                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID).ToPaging<Product, ProductDTO>(page, pageSize);
+                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID && ( x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
                 return pageData;
             }
         }
@@ -82,6 +83,15 @@ namespace Shoping.Business.ProductServices
             var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID)).ToListAsync();
             return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
         }
-
+        public async Task<bool> DeleteAllProducts()
+        {
+            var products = await Repository.GetAsync(x => true).ToListAsync();
+            if (products != null)
+            {
+                Repository.Delete(products);
+                await UnitOfWork.SaveChangesAsync();
+            }
+            return true;
+        }
     }
 }
