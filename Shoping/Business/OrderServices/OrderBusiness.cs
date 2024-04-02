@@ -21,21 +21,20 @@ namespace Shoping.Business.OrderServices
                 {
                     CustomerID = orderDTO.CustomerID,
                     TotalMoney = orderDTO.TotalMoney,
-                    DeliveryDate = orderDTO.DeliveryDate.ToUniversalTime(),
+                    DeliveryDate = orderDTO.DeliveryDate,
                     PaymentStatus = orderDTO.PaymentStatus,
-                    CreateAt = orderDTO.CreateAt,
                 };
 
                 Repository.Add(order);
-                await UnitOfWork.SaveChangesAsync();
             }
             else
             {
                 order.TotalMoney = 1;
-                order.DeliveryDate = orderDTO.DeliveryDate.ToUniversalTime();
+                order.DeliveryDate = orderDTO.DeliveryDate;
                 order.PaymentStatus = orderDTO.PaymentStatus;
                 Repository.Update(order);
             }
+            await UnitOfWork.SaveChangesAsync();
             return order.RecID;
         }
 
@@ -82,5 +81,10 @@ namespace Shoping.Business.OrderServices
             return pageData;
         }
 
+        public async Task<PageData<OrderDTO>> GetOrdersPaging(int page, int pageSize)
+        {
+            var pageData = await Repository.GetAsync(x => true).ToPaging<Order, OrderDTO>(page, pageSize);
+            return pageData;
+        }
     }
 }

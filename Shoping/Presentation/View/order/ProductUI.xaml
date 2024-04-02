@@ -61,7 +61,7 @@
                             <TextBlock Text=" - " />
                             <TextBlock Foreground="Green" Text="{Binding Price}" />
                             <TextBlock Text=" - " />
-                            <TextBlock Foreground="Blue" Text="{Binding Manufacturer}" />
+                            <TextBlock Foreground="Blue" Text="{Binding Quantity}" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>

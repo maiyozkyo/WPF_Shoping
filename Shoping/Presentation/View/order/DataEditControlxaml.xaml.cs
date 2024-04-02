@@ -39,7 +39,7 @@ namespace Shoping.Presentation.View.order
             SelectedIndex = selectedIndex;
             EditOrder = editOrder;
 
-            //GetCustomerData(editOrder.CustomerID);
+            GetCustomerData(editOrder.CustomerID);
             total_money.Text = editOrder.TotalMoney.ToString();
             delivery_date.SelectedDate = editOrder.DeliveryDate;
             payment_status.IsChecked = editOrder.PaymentStatus;

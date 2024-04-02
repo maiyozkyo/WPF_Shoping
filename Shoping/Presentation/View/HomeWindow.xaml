@@ -23,7 +23,9 @@
                             </TabControl>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Order">
+                            <TabControl Name="tabOrder" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}">
 
+                            </TabControl>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Statistic">
 

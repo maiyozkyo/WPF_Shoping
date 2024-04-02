@@ -2,6 +2,7 @@
 using Shoping.Business.CustomerServices;
 using Shoping.Business.OrderServices;
 using Shoping.Data_Access.DTOs;
+using Shoping.Data_Access.Models;
 
 
 namespace Shoping.Presentation.ViewModels
@@ -32,7 +33,6 @@ namespace Shoping.Presentation.ViewModels
             var result = await OrderBusiness.AddUpdateOrderAsync(orderDTO);
             return result != Guid.Empty;
         }
-
         public async Task<bool> DeleteOrder(OrderDTO orderDTO)
         {
             var result = await OrderBusiness.DeleteOrderAsync(orderDTO.RecID);
@@ -47,6 +47,10 @@ namespace Shoping.Presentation.ViewModels
         {
             orders = await OrderBusiness.GetAllOrders();
             return orders;
+        }
+        public async Task<PageData<OrderDTO>> Paging(int page, int pageSize)
+        {
+            return await OrderBusiness.GetOrdersPaging(page, pageSize);
         }
         private double _cartTotalMoney;
         public double CartTotalMoney

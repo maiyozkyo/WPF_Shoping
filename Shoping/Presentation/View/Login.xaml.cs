@@ -1,15 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Shoping.Presentation.View;
+﻿using Shoping.Presentation.View;
 using Shoping.Presentation.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Configuration;
-using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Shoping.Presentation

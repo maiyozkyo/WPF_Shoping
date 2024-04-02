@@ -1,15 +1,8 @@
-﻿using Bogus.DataSets;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Shoping.Data_Access.DB.Repo;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoping.Business.ProductServices
 {
@@ -81,6 +74,15 @@ namespace Shoping.Business.ProductServices
         {
             var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID)).ToListAsync();
             return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
+        }
+        public async Task<List<ProductDTO>> GetAllProducts()
+        {
+            var products = await Repository.GetAsync(x => true).ToListAsync();
+            if (products != null)
+            {
+                return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(products));
+            }
+            return null;
         }
 
     }

@@ -1,21 +1,9 @@
-﻿using Shoping.Data_Access.Models;
+﻿using Shoping.Data_Access.DTOs;
+using Shoping.Data_Access.Models;
 using Shoping.Presentation.ViewModels;
-using Shoping.Data_Access.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace Shoping.Presentation.View
 {
@@ -30,7 +18,7 @@ namespace Shoping.Presentation.View
             public int currentPage { get; set; }
             public int totalPage { get; set; }
         }
-        
+
         public Main()
         {
             InitializeComponent();
@@ -52,8 +40,8 @@ namespace Shoping.Presentation.View
             _products = new ObservableCollection<ProductDTO>();
             foreach (var productDTO in paging.Data)
             {
-                _products.Add(new ProductDTO 
-                {   
+                _products.Add(new ProductDTO
+                {
                     RecID = productDTO.RecID,
                     ProductID = productDTO.ProductID,
                     Name = productDTO.Name,
@@ -210,7 +198,7 @@ namespace Shoping.Presentation.View
 
         private void previousButton_Click(object sender, RoutedEventArgs e)
         {
-            if(_paging.currentPage > 1)
+            if (_paging.currentPage > 1)
             {
                 _paging.currentPage--;
                 pagesComboBox.SelectedIndex--;
@@ -243,6 +231,11 @@ namespace Shoping.Presentation.View
             {
 
             }
+        }
+
+        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

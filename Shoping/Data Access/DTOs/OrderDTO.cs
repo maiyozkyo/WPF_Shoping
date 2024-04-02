@@ -7,7 +7,6 @@
         public double TotalMoney { get; set; }
         public DateTime DeliveryDate { get; set; }
         public bool PaymentStatus { get; set; }
-        public DateTime CreateAt { get; set; }
         public List<Guid> Vouchers { get; set; }
     }
 }

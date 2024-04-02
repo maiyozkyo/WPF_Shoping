@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Shoping.Presentation.ViewModels;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 
@@ -11,13 +12,20 @@ namespace Shoping.Presentation.View.order
         public event EventHandler<CartInputEventArgs> CartInputCompleted;
         public double _totalMoney = 0;
         private bool _addItemClicked = false;
+        public MainViewModel MainViewModel { get; set; }
+
+
         public ProductUI()
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            MainViewModel = new MainViewModel(App.iProductBusiness);
         }
-        private void Product_Loaded(object sender, RoutedEventArgs e)
+
+        private async void Product_Loaded(object sender, RoutedEventArgs e)
         {
+
+            //_list = new ObservableCollection<ProductDTO>();
             _list = new ObservableCollection<Phone>();
 
             _list.Add(new Phone() { Name = "iPhone 15 Pro Max", Price = 31990000, Manufacturer = "Samsung", Avatar = "Images/mobile01.jpg" });
@@ -31,12 +39,29 @@ namespace Shoping.Presentation.View.order
             _list.Add(new Phone() { Name = "iphone 11", Price = 9990000, Manufacturer = "Apple", Avatar = "Images/mobile09.jpg" });
             _list.Add(new Phone() { Name = "Xiaomi Redmi Note 13 Pro 5G", Price = 9190000, Manufacturer = "Xiaomi", Avatar = "Images/mobile10.jpg" });
 
+            //List<ProductDTO> _products = new List<ProductDTO>();
+            //_products = await MainViewModel.GetAllProducts();
+            //foreach (var productDTO in _products)
+            //{
+            //    _list.Add(new ProductDTO
+            //    {
+            //        RecID = productDTO.RecID,
+            //        ProductID = productDTO.ProductID,
+            //        Name = productDTO.Name,
+            //        Price = productDTO.Price,
+            //        PurchasePrice = productDTO.PurchasePrice,
+            //        CatID = productDTO.CatID,
+            //        Quantity = productDTO.Quantity,
+            //        Image = productDTO.Image
+            //    });
+            //}
+
             PhoneComboBox.ItemsSource = _list;
         }
         private void AddItem_Click(object sender, RoutedEventArgs e)
         {
             int i = PhoneComboBox.SelectedIndex;
-            _totalMoney += _list[i].Price;
+            //_totalMoney += _list[i].Price;
 
             _addItemClicked = true;
         }
