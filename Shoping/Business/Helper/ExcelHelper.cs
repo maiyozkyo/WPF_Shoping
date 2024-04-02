@@ -36,6 +36,18 @@ namespace Shoping.Business.Helper
                 {
                     var key = lstHeaders[i];
                     var value = values[i].ToString();
+                    if (key.Contains("Image"))
+                    {
+                        try
+                        {
+                            var fileBytes = File.ReadAllBytes(value);
+                            value = Convert.ToBase64String(fileBytes);
+                        }
+                        catch (Exception ex)
+                        {
+                            value = "";
+                        }
+                    }
                     dict.Add(key, value);
                 }
                 lstJSON.Add(dict);
