@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace Shoping.Presentation.Control
     /// </summary>
     public partial class PhoneControl : UserControl
     {
-        private static string fullPath;
+        public string fullPath { get; set; }
         public PhoneControl()
         {
             InitializeComponent();

@@ -11,6 +11,9 @@ namespace Shoping.Business.OrderServices
         public Task<List<OrderDTO>> GetOrdersInRangeAsync(DateTime from, DateTime to);
         public Task<List<OrderDTO>> GetAllOrders();
         public Task<PageData<OrderDTO>> GetOrderPaging(int page, int pageSize);
-        public Task<PageData<OrderDTO>> GetOrdersPaging(int page, int pageSize);
+        public Task<Tuple<List<int>, List<string>>> GetRevenueInDateRangeAsync(DateTime from, DateTime to);
+        public Task<List<int>> GetRevenueByWeekAsync(int year);
+        public Task<List<int>> GetRevenueByMonthAsync(int year);
+        public Task<List<int>> GetRevenueByYearAsync();
     }
 }

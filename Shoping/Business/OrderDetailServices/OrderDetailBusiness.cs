@@ -17,7 +17,7 @@ namespace Shoping.Business.OrderDetailServices
         }
         public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime from, DateTime to)
         {
-            var lstOrderDetails = await Repository.GetAsync(c => c.CreatedOn >= from && c.CreatedOn <= to).ToListAsync();
+            var lstOrderDetails = await Repository.GetAsync(x => x.CreatedOn >= from && x.CreatedOn <= to && x.CreatedBy == App.Auth.Email).ToListAsync();
             return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(lstOrderDetails));
         }
     }

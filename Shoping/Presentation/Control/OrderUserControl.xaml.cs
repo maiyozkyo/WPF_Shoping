@@ -5,9 +5,19 @@ using Shoping.Presentation.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace Shoping.Presentation.Control
 {
+    /// <summary>
+    /// Interaction logic for OrderUserControl.xaml
+    /// </summary>
     public partial class OrderUserControl : UserControl
     {
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
@@ -42,7 +52,7 @@ namespace Shoping.Presentation.Control
                     PaymentStatus = orderDTO.PaymentStatus,
                 };
                 _orders.Add(order);
-            }
+        }
             OrderComboBox.ItemsSource = _orders;
 
             DataContext = ManageOrderViewModel;
