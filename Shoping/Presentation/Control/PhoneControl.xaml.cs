@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace Shoping.Presentation.Control
     /// </summary>
     public partial class PhoneControl : UserControl
     {
-        private static string fullPath;
+        public string fullPath { get; set; }
         public PhoneControl()
         {
             InitializeComponent();
@@ -38,11 +40,19 @@ namespace Shoping.Presentation.Control
                 fullPath = file.FileName;
             }
 
+            var fileBytes = File.ReadAllBytes(fullPath);
+            
             BitmapImage picture = new();
             picture.BeginInit();
-            picture.UriSource = new Uri(fullPath);
+            //picture.UriSource = new Uri(fullPath);
+            picture.StreamSource = new MemoryStream(fileBytes);
             picture.EndInit();
             phoneImage.Source = picture;
+        }
+
+        private void categoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

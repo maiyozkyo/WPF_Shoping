@@ -11,6 +11,7 @@ using Shoping.Data_Access.DTOs;
 using Shoping.Presentation;
 using System.IO;
 using System.Windows;
+using Shoping.Business.CategoryServices;
 
 namespace Shoping
 {
@@ -24,6 +25,7 @@ namespace Shoping
         public static IUserBusiness iUserBusiness { get; set; }
         public static IApiService iApiService { get; set; }
         public static IProductBusiness iProductBusiness { get; set; }
+        public static ICategoryBusiness iCategoryBusiness { get; set; }
         public static IOrderBusiness iOrderBusiness { get; set; }
         public static IOrderDetailBusiness iOrderDetailBusiness { get; set; }
         public static Auth Auth { get; private set; } 
@@ -56,6 +58,7 @@ namespace Shoping
             containerBuilder.RegisterType<UserBusiness>().WithParameter("_dbName", dbName).As<IUserBusiness>();
             containerBuilder.RegisterType<OrderBusiness>().WithParameter("_dbName", dbName).As<IOrderBusiness>();
             containerBuilder.RegisterType<ProductBusiness>().WithParameter("_dbName", dbName).As<IProductBusiness>();
+            containerBuilder.RegisterType<CategoryBusiness>().WithParameter("_dbName", dbName).As<ICategoryBusiness>();
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             containerBuilder.RegisterType<OrderDetailBusiness>().WithParameter("_dbName", dbName).As<IOrderDetailBusiness>();
@@ -67,6 +70,7 @@ namespace Shoping
             iUserBusiness = container.Resolve<IUserBusiness>();
             iApiService = container.Resolve<IApiService>();
             iProductBusiness = container.Resolve<IProductBusiness>();
+            iCategoryBusiness = container.Resolve<ICategoryBusiness>();
             iOrderBusiness = container.Resolve<IOrderBusiness>();
             iOrderDetailBusiness = container.Resolve<IOrderDetailBusiness>();
             #endregion

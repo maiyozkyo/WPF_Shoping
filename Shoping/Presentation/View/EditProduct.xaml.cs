@@ -23,10 +23,18 @@ namespace Shoping.Presentation.View
     public partial class EditProduct : Window
     {
         public ProductDTO newEditPhone { get; set; }
-        public EditProduct(ProductDTO temp)
+        public EditProduct(ProductDTO temp, List<CategoryDTO> categories)
         {
             InitializeComponent();
             newEditPhone = (ProductDTO)temp.Clone();
+            foreach (CategoryDTO category in categories)
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = category.Name;
+                item.Tag = category.RecID;
+
+                phoneControl.categoryComboBox.Items.Add(item);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -36,6 +44,12 @@ namespace Shoping.Presentation.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            newEditPhone.Name = phoneControl.nameTextBox.Text;
+            newEditPhone.Price = decimal.Parse(phoneControl.priceTextBox.Text);
+            newEditPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
+            newEditPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
+            newEditPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
+            newEditPhone.Image = phoneControl.phoneImage.Source.ToString();
             DialogResult = true;
         }
     }

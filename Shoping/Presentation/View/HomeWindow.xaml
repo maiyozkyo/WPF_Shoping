@@ -1,0 +1,38 @@
+﻿<Fluent:RibbonWindow x:Class="Shoping.Presentation.View.HomeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Shoping.Presentation.View"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+        mc:Ignorable="d"
+        Title="HomeWindow" Height="650" Width="1000" Loaded="RibbonWindow_Loaded">
+    <DockPanel LastChildFill="True">
+        <Fluent:Ribbon DockPanel.Dock="Top" Name="ribbon">
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage Header="My Shop">
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="Manage Product">
+                            <TabControl Name="tabsProduct" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Manage Category">
+                            <TabControl Name="tabsCategory" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Order">
+                            <TabControl Name="tabsOrder" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Statistic">
+                            <TabControl Name="tabsStatistic" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Setting">
+                            <TabControl Name="tabsSetting" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}"/>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Quit" MouseDown="Quit_Handle"/>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+
+        </Fluent:Ribbon>
+
+    </DockPanel>
+</Fluent:RibbonWindow>
