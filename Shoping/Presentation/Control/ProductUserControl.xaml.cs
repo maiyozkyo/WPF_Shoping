@@ -257,43 +257,43 @@ namespace Shoping.Presentation.Control
             if (file.ShowDialog() == true)
             {
                 fullPath = file.FileName;
-            }
-            var fileBytes = File.ReadAllBytes(fullPath);
-            await categoryViewModel.DeleteAllCategories();
-            await MainViewModel.DeleteAllProducts();
-            using (var mem = new MemoryStream(fileBytes))
-            {
-                Dictionary<int, Guid> catID = new Dictionary<int, Guid>();
+                var fileBytes = File.ReadAllBytes(fullPath);
+                await categoryViewModel.DeleteAllCategories();
+                await MainViewModel.DeleteAllProducts();
+                using (var mem = new MemoryStream(fileBytes))
+                {
+                    Dictionary<int, Guid> catID = new Dictionary<int, Guid>();
 
-                var listCategories = ExcelHelper.ReadAsList<CategoryDTO>(mem, 0);
-                for(int i = 0; i < listCategories.Count(); i++)
-                {
-                    await categoryViewModel.AddUpdateCategory(listCategories[i]);
-                    catID[i] = await categoryViewModel.GetCategoryID(listCategories[i].Name);
-                }
-                var listProducts = ExcelHelper.ReadAsList<ProductExcelDTO>(mem, 1);
-                foreach (var product in listProducts)
-                {
-                    for (int i = 0; i < catID.Count(); i++)
+                    var listCategories = ExcelHelper.ReadAsList<CategoryDTO>(mem, 0);
+                    for (int i = 0; i < listCategories.Count(); i++)
                     {
-                        if (product.CatID == (i + 1).ToString())
+                        await categoryViewModel.AddUpdateCategory(listCategories[i]);
+                        catID[i] = await categoryViewModel.GetCategoryID(listCategories[i].Name);
+                    }
+                    var listProducts = ExcelHelper.ReadAsList<ProductExcelDTO>(mem, 1);
+                    foreach (var product in listProducts)
+                    {
+                        for (int i = 0; i < catID.Count(); i++)
                         {
-                            var tempProduct = new ProductDTO
+                            if (product.CatID == (i + 1).ToString())
                             {
-                                Name = product.Name,
-                                Price = product.Price,
-                                PurchasePrice = product.PurchasePrice,
-                                Quantity = product.Quantity,
-                                CatID = catID[i],
-                                Image = product.Image
-                            };
-                            await MainViewModel.AddUpdateProduct(tempProduct);
+                                var tempProduct = new ProductDTO
+                                {
+                                    Name = product.Name,
+                                    Price = product.Price,
+                                    PurchasePrice = product.PurchasePrice,
+                                    Quantity = product.Quantity,
+                                    CatID = catID[i],
+                                    Image = product.Image
+                                };
+                                await MainViewModel.AddUpdateProduct(tempProduct);
+                            }
                         }
                     }
                 }
+                loadData(1);
+                pagesComboBox.SelectedIndex = 0;
             }
-            loadData(1);
-            pagesComboBox.SelectedIndex = 0;
         }
 
         private void priceSortButton_Click(object sender, RoutedEventArgs e)

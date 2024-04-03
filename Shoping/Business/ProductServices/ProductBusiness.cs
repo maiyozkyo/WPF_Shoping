@@ -21,7 +21,7 @@ namespace Shoping.Business.ProductServices
         }
         public async Task<Guid> AddUpdateProductAsync(ProductDTO productDTO)
         {
-            var product = await Repository.GetOneAsync(x => x.RecID == productDTO.RecID && x.CreatedBy == App.Auth.Email);
+            var product = await Repository.GetOneAsync(x => x.RecID == productDTO.RecID /*&& x.CreatedBy == App.Auth.Email*/);
             if (product == null)
             {
                 product = new Product
@@ -50,7 +50,7 @@ namespace Shoping.Business.ProductServices
         }
         public async Task<bool> DeleteProductAsync(Guid productRecID)
         {
-            var product = await Repository.GetOneAsync(x => x.RecID == productRecID && x.CreatedBy == App.Auth.Email);
+            var product = await Repository.GetOneAsync(x => x.RecID == productRecID /*&& x.CreatedBy == App.Auth.Email*/);
             if (product != null)
             {
                 Repository.Delete(product);
@@ -72,15 +72,14 @@ namespace Shoping.Business.ProductServices
             }
             else
             {
-                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID && (x.Price >= from && x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
-                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID && x.CreatedBy == App.Auth.Email).ToPaging<Product, ProductDTO>(page, pageSize);
+                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID /*&& x.CreatedBy == App.Auth.Email*/ && (x.Price >= from && x.Price <= to) ).ToPaging<Product, ProductDTO>(page, pageSize);
                 return pageData;
             }
         }
 
         public async Task<List<ProductDTO>> GetListProductsByRecID(List<Guid> lstRecIDs)
         {
-            var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID) && x.CreatedBy == App.Auth.Email).ToListAsync();
+            var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID) /*&& x.CreatedBy == App.Auth.Email*/).ToListAsync();
             return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
         }
 

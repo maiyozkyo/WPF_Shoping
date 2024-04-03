@@ -49,6 +49,5 @@
         <TextBox Name="priceSortToTextBox" Height="15" Width="79" Canvas.Left="591" Canvas.Top="312"/>
         <TextBlock Text="-" Canvas.Left="548" Canvas.Top="311"/>
         <Button Name="priceSortButton" Content="Sort" Click="priceSortButton_Click" Canvas.Left="703" Canvas.Top="307" HorizontalAlignment="Center" VerticalAlignment="Top" Height="28" Width="59"/>
-        <Button Name="excelButton" Content="Import Excel" Click="excelButton_Click" Canvas.Left="548" Canvas.Top="333" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.474,0.421"/>
     </Canvas>
 </UserControl>
