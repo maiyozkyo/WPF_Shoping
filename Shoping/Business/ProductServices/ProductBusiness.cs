@@ -68,12 +68,11 @@ namespace Shoping.Business.ProductServices
         {
             if (CatID == Guid.Empty)
             {
-                Console.WriteLine(to);
-                return await Repository.GetAsync(x => ( x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
+                return await Repository.GetAsync(x => x.Name.Contains(search) && (x.Price >= from && x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
             }
             else
             {
-                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID && ( x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
+                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID && (x.Price >= from && x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
                 return pageData;
             }
         }

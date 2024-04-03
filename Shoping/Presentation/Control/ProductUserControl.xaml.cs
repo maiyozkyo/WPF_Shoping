@@ -39,7 +39,7 @@ namespace Shoping.Presentation.Control
         public string searchFilter = "";
         public Guid categoryFilter = Guid.Empty;
         public double priceFromFilter = 0;
-        public double priceToFilter = 9000;
+        public double priceToFilter = double.MaxValue;
         PagingInfo _paging;
         public SettingUserControl setting = new SettingUserControl();
         public int _itemsPerPage { get; set; }
@@ -285,7 +285,7 @@ namespace Shoping.Presentation.Control
                                 PurchasePrice = product.PurchasePrice,
                                 Quantity = product.Quantity,
                                 CatID = catID[i],
-                                //Image = product.Image
+                                Image = product.Image
                             };
                             await MainViewModel.AddUpdateProduct(tempProduct);
                         }
