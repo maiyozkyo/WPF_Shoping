@@ -64,12 +64,12 @@ namespace Shoping.Business.ProductServices
             var pageData = await Repository.GetAsync(x => true).ToPaging<Product, ProductDTO>(page, pageSize);
             return pageData;
         }
-        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, decimal from, decimal to ,int page, int pageSize)
+        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, double from, double to ,int page, int pageSize)
         {
             if (CatID == Guid.Empty)
             {
                 Console.WriteLine(to);
-                return await Repository.GetAsync(x => x.Name.Contains(search) && ( x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
+                return await Repository.GetAsync(x => ( x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
             }
             else
             {

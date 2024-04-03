@@ -42,8 +42,8 @@ namespace Shoping.Presentation.View
             newPhone.RecID = Guid.NewGuid();
             newPhone.ProductID = Guid.NewGuid();
             newPhone.Name = phoneControl.nameTextBox.Text;
-            newPhone.Price = decimal.Parse(phoneControl.priceTextBox.Text);
-            newPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
+            newPhone.Price = double.Parse(phoneControl.priceTextBox.Text);
+            newPhone.PurchasePrice = double.Parse(phoneControl.purchasePriceTextBox.Text);
             newPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
             newPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
 

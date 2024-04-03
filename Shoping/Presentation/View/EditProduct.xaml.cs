@@ -45,8 +45,8 @@ namespace Shoping.Presentation.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             newEditPhone.Name = phoneControl.nameTextBox.Text;
-            newEditPhone.Price = decimal.Parse(phoneControl.priceTextBox.Text);
-            newEditPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
+            newEditPhone.Price = double.Parse(phoneControl.priceTextBox.Text);
+            newEditPhone.PurchasePrice = double.Parse(phoneControl.purchasePriceTextBox.Text);
             newEditPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
             newEditPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
             newEditPhone.Image = phoneControl.phoneImage.Source.ToString();
