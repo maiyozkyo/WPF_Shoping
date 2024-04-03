@@ -39,19 +39,28 @@ namespace Shoping.Presentation.View
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            newPhone.RecID = Guid.NewGuid();
-            newPhone.ProductID = Guid.NewGuid();
-            newPhone.Name = phoneControl.nameTextBox.Text;
-            newPhone.Price = decimal.Parse(phoneControl.priceTextBox.Text);
-            newPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
-            newPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
-            newPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
+            if (string.IsNullOrWhiteSpace(phoneControl.nameTextBox.Text.Trim()) || string.IsNullOrWhiteSpace(phoneControl.purchasePriceTextBox.Text.Trim()) ||
+                string.IsNullOrWhiteSpace(phoneControl.quantityTextBox.Text.Trim()) || string.IsNullOrWhiteSpace(phoneControl.priceTextBox.Text.Trim()) || 
+                phoneControl.categoryComboBox.SelectedIndex == -1 || phoneControl.fullPath == null)
+            {
+                MessageBox.Show("Please fill all the information!");
+            }
+            else
+            {
+                newPhone.RecID = Guid.NewGuid();
+                newPhone.ProductID = Guid.NewGuid();
+                newPhone.Name = phoneControl.nameTextBox.Text;
+                newPhone.Price = decimal.Parse(phoneControl.priceTextBox.Text);
+                newPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
+                newPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
+                newPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
 
-            string directory = phoneControl.fullPath;
-            var fileBytes = File.ReadAllBytes(directory);
-            newPhone.Image = Convert.ToBase64String(fileBytes);
+                string directory = phoneControl.fullPath;
+                var fileBytes = File.ReadAllBytes(directory);
+                newPhone.Image = Convert.ToBase64String(fileBytes);
 
-            DialogResult = true;
+                DialogResult = true;
+            }
         }
     }
 }

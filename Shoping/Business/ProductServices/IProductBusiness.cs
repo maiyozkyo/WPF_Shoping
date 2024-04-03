@@ -16,5 +16,6 @@ namespace Shoping.Business.ProductServices
         public Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, decimal from, decimal to, int page, int pageSize);
         public Task<List<ProductDTO>> GetListProductsByRecID(List<Guid> lstRecIDs);
         public Task<bool> DeleteAllProducts();
+        public Task<bool> CheckProductCategory(Guid category);
     }
 }

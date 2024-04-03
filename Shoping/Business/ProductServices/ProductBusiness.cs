@@ -83,6 +83,7 @@ namespace Shoping.Business.ProductServices
             var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID)).ToListAsync();
             return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
         }
+
         public async Task<bool> DeleteAllProducts()
         {
             var products = await Repository.GetAsync(x => true).ToListAsync();
@@ -92,6 +93,16 @@ namespace Shoping.Business.ProductServices
                 await UnitOfWork.SaveChangesAsync();
             }
             return true;
+        }
+
+        public async Task<bool> CheckProductCategory(Guid category)
+        {
+            var product = await Repository.GetOneAsync(x => x.CatID == category);
+            if(product != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -49,5 +49,9 @@ namespace Shoping.Presentation.ViewModels
             var result = await ProductBusiness.DeleteAllProducts();
             return result;
         }
+        public async Task<bool> CheckProductCategory(Guid category)
+        {
+            return await ProductBusiness.CheckProductCategory(category);
+        }
     }
 }

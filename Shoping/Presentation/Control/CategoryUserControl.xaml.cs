@@ -28,10 +28,12 @@ namespace Shoping.Presentation.Control
     {
         public CategoryViewModel CategoryViewModel { get; set; }
         public ObservableCollection<CategoryDTO> _categories { get; set; }
+        public MainViewModel MainViewModel { get; set; }
         public CategoryUserControl()
         {
             InitializeComponent();
             CategoryViewModel = new CategoryViewModel(App.iCategoryBusiness);
+            MainViewModel = new MainViewModel(App.iProductBusiness);
             DataContext = CategoryViewModel;
         }
 
@@ -85,9 +87,17 @@ namespace Shoping.Presentation.Control
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             var selected = categoriesListView.SelectedItem as CategoryDTO;
-            await CategoryViewModel.DeleteCategory(selected);
-            loadData();
-            MessageBox.Show("Deleted successfully!");
+            bool checkProduct = await MainViewModel.CheckProductCategory(selected.RecID);
+            if (checkProduct)
+            {
+                MessageBox.Show("Cannot delete category. Reason: There are still products with this category!");
+            }
+            else
+            {
+                await CategoryViewModel.DeleteCategory(selected);
+                loadData();
+                MessageBox.Show("Deleted successfully!");
+            }
         }
 
         private async void editButton_Click(object sender, RoutedEventArgs e)
