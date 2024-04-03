@@ -54,8 +54,8 @@ namespace Shoping.Presentation.View
             else
             {
                 newEditPhone.Name = phoneControl.nameTextBox.Text;
-                newEditPhone.Price = decimal.Parse(phoneControl.priceTextBox.Text);
-                newEditPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
+                newEditPhone.Price = double.Parse(phoneControl.priceTextBox.Text);
+                newEditPhone.PurchasePrice = double.Parse(phoneControl.purchasePriceTextBox.Text);
                 newEditPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
                 newEditPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
 
@@ -64,16 +64,6 @@ namespace Shoping.Presentation.View
                 newEditPhone.Image = Convert.ToBase64String(fileBytes);
                 DialogResult = true;
             }
-        }
-    }
-}
-            newEditPhone.Name = phoneControl.nameTextBox.Text;
-            newEditPhone.Price = double.Parse(phoneControl.priceTextBox.Text);
-            newEditPhone.PurchasePrice = double.Parse(phoneControl.purchasePriceTextBox.Text);
-            newEditPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
-            newEditPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
-            newEditPhone.Image = phoneControl.phoneImage.Source.ToString();
-            DialogResult = true;
         }
     }
 }
