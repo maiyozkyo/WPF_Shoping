@@ -39,6 +39,13 @@ namespace Shoping.Presentation.View
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            newPhone.RecID = Guid.NewGuid();
+            newPhone.ProductID = Guid.NewGuid();
+            newPhone.Name = phoneControl.nameTextBox.Text;
+            newPhone.Price = double.Parse(phoneControl.priceTextBox.Text);
+            newPhone.PurchasePrice = double.Parse(phoneControl.purchasePriceTextBox.Text);
+            newPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
+            newPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
             if (string.IsNullOrWhiteSpace(phoneControl.nameTextBox.Text.Trim()) || string.IsNullOrWhiteSpace(phoneControl.purchasePriceTextBox.Text.Trim()) ||
                 string.IsNullOrWhiteSpace(phoneControl.quantityTextBox.Text.Trim()) || string.IsNullOrWhiteSpace(phoneControl.priceTextBox.Text.Trim()) || 
                 phoneControl.categoryComboBox.SelectedIndex == -1 || phoneControl.fullPath == null)

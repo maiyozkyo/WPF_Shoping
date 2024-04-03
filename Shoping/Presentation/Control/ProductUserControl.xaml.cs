@@ -38,8 +38,8 @@ namespace Shoping.Presentation.Control
         public PageData<ProductDTO> pagingProducts { get; set; }
         public string searchFilter = "";
         public Guid categoryFilter = Guid.Empty;
-        public decimal priceFromFilter = 0;
-        public decimal priceToFilter = 9000m;
+        public double priceFromFilter = 0;
+        public double priceToFilter = 9000;
         PagingInfo _paging;
         public SettingUserControl setting = new SettingUserControl();
         public int _itemsPerPage { get; set; }
@@ -298,8 +298,8 @@ namespace Shoping.Presentation.Control
 
         private void priceSortButton_Click(object sender, RoutedEventArgs e)
         {
-            priceFromFilter = (priceSortFromTextBox.Text != null) ? decimal.Parse(priceSortFromTextBox.Text) : 0;
-            priceToFilter = (priceSortToTextBox.Text != null) ? decimal.Parse(priceSortToTextBox.Text) : int.MaxValue;
+            priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
+            priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
             if(priceFromFilter > priceToFilter)
             {
                 MessageBox.Show("Error! Price from cannot larget than price to");
