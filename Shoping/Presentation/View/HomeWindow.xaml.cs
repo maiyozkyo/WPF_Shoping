@@ -34,7 +34,7 @@ namespace Shoping.Presentation.View
                 new TabItem() { Content = new Control.OrderUserControl()},
             };
             tabsOrder.ItemsSource = orderTabs;
-            
+
             var statisticTabs = new ObservableCollection<TabItem>()
             {
                 new TabItem() { Content = new Control.StatisticUserControl()},
@@ -54,6 +54,6 @@ namespace Shoping.Presentation.View
             {
                 Application.Current.Shutdown();
             }
-        }     
+        }
     }
 }

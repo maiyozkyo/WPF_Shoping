@@ -5,24 +5,16 @@ using Shoping.Presentation.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Shoping.Presentation.Control
 {
-    /// <summary>
-    /// Interaction logic for OrderUserControl.xaml
-    /// </summary>
     public partial class OrderUserControl : UserControl
     {
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
         public ObservableCollection<OrderDTO> _orders { get; set; }
+        public int pageIndex { get; set; }
         PagingInfo _paging;
+        bool flag = false;
         class PagingInfo
         {
             public int currentPage { get; set; }
@@ -32,13 +24,16 @@ namespace Shoping.Presentation.Control
         public OrderUserControl()
         {
             InitializeComponent();
-            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness);
+            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness);
             DataContext = ManageOrderViewModel;
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //await LoadOrderFromDb();
-            PageData<OrderDTO> paging = await ManageOrderViewModel.Paging(1, 2);
+            LoadData();
+        }
+        private async void LoadData()
+        {
+            PageData<OrderDTO> paging = await ManageOrderViewModel.Paging(1, 4);
 
             _orders = new ObservableCollection<OrderDTO>();
             foreach (var orderDTO in paging.Data)
@@ -52,7 +47,7 @@ namespace Shoping.Presentation.Control
                     PaymentStatus = orderDTO.PaymentStatus,
                 };
                 _orders.Add(order);
-        }
+            }
             OrderComboBox.ItemsSource = _orders;
 
             DataContext = ManageOrderViewModel;
@@ -72,22 +67,12 @@ namespace Shoping.Presentation.Control
                 });
             }
 
-            pagesComboBox.ItemsSource = infos;
-            pagesComboBox.SelectedIndex = 0;
+            pageIndex = 1;
+            pageTextBox.Text = pageIndex.ToString() + " / " + $"{_paging.totalPage}";
         }
-        private async Task LoadOrderFromDb()
+        private async void loadDataPerPage(int page)
         {
-            //List<OrderDTO> orderList = await ManageOrderViewModel.GetAllOrders();
-            //foreach (var order in orderList)
-            //{
-            //    order.DeliveryDate = order.DeliveryDate;
-            //}
-            //_orders = new ObservableCollection<OrderDTO>(orderList);
-            //OrderComboBox.ItemsSource = _orders;
-        }
-        private async void loadData(int page)
-        {
-            PageData<OrderDTO> paging = await ManageOrderViewModel.Paging(page, 2);
+            PageData<OrderDTO> paging = await ManageOrderViewModel.Paging(page, 4);
 
             _orders = new ObservableCollection<OrderDTO>();
             foreach (var orderDTO in paging.Data)
@@ -110,7 +95,6 @@ namespace Shoping.Presentation.Control
             var customerDTO = new CustomerDTO();
 
             // initialize new customer
-
             customerDTO.FirstName = first_name.Text;
             customerDTO.LastName = last_name.Text;
             Guid customerId = Guid.Empty;
@@ -141,9 +125,16 @@ namespace Shoping.Presentation.Control
             if (await ManageOrderViewModel.AddUpdateOrderAsync(orderDTO))
             {
                 MessageBox.Show($"Tạo đơn hàng thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                await LoadOrderFromDb();
+                _orders.Add(orderDTO);
+                flag = false;
+                LoadData();
             }
             ResetInputData();
+        }
+        private void ReloadedOrder(object sender, RoutedEventArgs e)
+        {
+            flag = false;
+            LoadData();
         }
         private void DetailOrder_Click(object sender, RoutedEventArgs e)
         {
@@ -156,11 +147,6 @@ namespace Shoping.Presentation.Control
             _orders[e.SelectedIndex].PaymentStatus = e.PaymentStatus;
 
             await ManageOrderViewModel.AddUpdateOrderAsync(_orders[e.SelectedIndex]);
-            await LoadOrderFromDb();
-        }
-        private void CartData_DataInputCompleted(object sender, CartInputEventArgs e)
-        {
-            ManageOrderViewModel.CartTotalMoney = e.TotalMoney;
         }
         private void EditOrder_Click(object sender, RoutedEventArgs e)
         {
@@ -172,15 +158,19 @@ namespace Shoping.Presentation.Control
 
             newDataInputControl.ShowDialog();
         }
+        private void ResetCart_Click(object sender, RoutedEventArgs e)
+        {
+            total_money.Text = "0";
+        }
+        private async void EditCartData_DataInputCompleted(object sender, CartInputEventArgs e)
+        {
+            total_money.Text = e.TotalMoney.ToString();
+        }
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
             ProductUI productUI = new ProductUI();
-            productUI.CartInputCompleted += CartData_DataInputCompleted;
+            productUI.CartInputCompleted += EditCartData_DataInputCompleted;
             productUI.ShowDialog();
-        }
-        private void ResetCart_Click(object sender, RoutedEventArgs e)
-        {
-            ManageOrderViewModel.CartTotalMoney = 0;
         }
         private async void DeleteOrder_Click(object sender, RoutedEventArgs e)
         {
@@ -194,19 +184,97 @@ namespace Shoping.Presentation.Control
 
             await ManageOrderViewModel.DeleteOrder(deletedOrderDTO);
             MessageBox.Show($"Huỷ đơn thành công", "Notice", MessageBoxButton.OK, MessageBoxImage.Information);
+            flag = false;
+            LoadData();
         }
+
+        private async void LoadSearchData(DateTime fromDate, DateTime toDate)
+        {
+            PageData<OrderDTO> paging = await ManageOrderViewModel.SearchOrder(fromDate, toDate, 1, 4);
+
+            if (paging != null)
+            {
+                if (paging.Data.Count() == 0)
+                {
+                    return;
+                }
+                _orders.Clear();
+
+                _orders = new ObservableCollection<OrderDTO>();
+                foreach (var orderDTO in paging.Data)
+                {
+                    var order = new OrderDTO
+                    {
+                        RecID = orderDTO.RecID,
+                        CustomerID = orderDTO.CustomerID,
+                        TotalMoney = orderDTO.TotalMoney,
+                        DeliveryDate = orderDTO.DeliveryDate,
+                        PaymentStatus = orderDTO.PaymentStatus,
+                    };
+                    _orders.Add(order);
+                }
+                OrderComboBox.ItemsSource = _orders;
+
+                DataContext = ManageOrderViewModel;
+
+                _paging = new PagingInfo();
+
+                _paging.currentPage = 1;
+                _paging.totalPage = (paging.Total % paging.Data.Count() == 0) ? paging.Total / paging.Data.Count() : paging.Total / paging.Data.Count() + 1;
+
+                var infos = new ObservableCollection<PagingInfo>();
+                for (int i = 1; i <= _paging.totalPage; i++)
+                {
+                    infos.Add(new PagingInfo
+                    {
+                        currentPage = i,
+                        totalPage = _paging.totalPage
+                    });
+                }
+
+                pageIndex = 1;
+                pageTextBox.Text = pageIndex.ToString() + " / " + $"{_paging.totalPage}";
+
+                flag = true;
+            }
+            else
+            {
+                flag = false;
+            }
+        }
+        private async void loadDataSearchPerPage(int page, DateTime fromDate, DateTime toDate)
+        {
+            PageData<OrderDTO> paging = await ManageOrderViewModel.SearchOrder(fromDate, toDate, page, 4);
+
+            _orders = new ObservableCollection<OrderDTO>();
+            foreach (var orderDTO in paging.Data)
+            {
+                var order = new OrderDTO
+                {
+                    RecID = orderDTO.RecID,
+                    CustomerID = orderDTO.CustomerID,
+                    TotalMoney = orderDTO.TotalMoney,
+                    DeliveryDate = orderDTO.DeliveryDate,
+                    PaymentStatus = orderDTO.PaymentStatus,
+                };
+                _orders.Add(order);
+            }
+
+            OrderComboBox.ItemsSource = _orders;
+        }
+        DateTime? dateBefore;
+        DateTime? dateAfter;
         private async void SearchOrder_Click(object sender, RoutedEventArgs e)
         {
-            DateTime? dateBefore = date_before.SelectedDate;
-            DateTime? dateAfter = date_after.SelectedDate;
+            dateBefore = date_before.SelectedDate;
+            dateAfter = date_after.SelectedDate;
 
             if (dateBefore.HasValue && dateAfter.HasValue)
             {
-                List<OrderDTO> _result = await ManageOrderViewModel.SearchOrder(dateBefore.Value, dateAfter.Value);
-                if (_result.Count > 0)
+                LoadSearchData(dateBefore.Value, dateAfter.Value);
+                if (flag == true)
                 {
-                    ObservableCollection<OrderDTO> orderSearchList = new ObservableCollection<OrderDTO>(_result);
-                    OrderComboBox.ItemsSource = orderSearchList;
+                    MessageBox.Show($"Tìm thành công", "Notice", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
@@ -217,14 +285,24 @@ namespace Shoping.Presentation.Control
             {
                 MessageBox.Show("Vui lòng nhập ngày để tìm", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            date_before.SelectedDate = null;
+            date_after.SelectedDate = null;
         }
         private void nextButton_Click(object sender, RoutedEventArgs e)
         {
             if (_paging.currentPage < _paging.totalPage)
             {
                 _paging.currentPage++;
-                pagesComboBox.SelectedIndex++;
-                loadData(_paging.currentPage);
+                pageIndex++;
+                pageTextBox.Text = pageIndex.ToString() + " / " + $"{_paging.totalPage}";
+                if (flag == true)
+                {
+                    loadDataSearchPerPage(_paging.currentPage, dateBefore.Value, dateAfter.Value);
+                }
+                else
+                {
+                    loadDataPerPage(_paging.currentPage);
+                }
             }
         }
         private void previousButton_Click(Object sender, RoutedEventArgs e)
@@ -232,8 +310,16 @@ namespace Shoping.Presentation.Control
             if (_paging.currentPage > 1)
             {
                 _paging.currentPage--;
-                pagesComboBox.SelectedIndex--;
-                loadData(_paging.currentPage);
+                pageIndex--;
+                pageTextBox.Text = pageIndex.ToString() + " / " + $"{_paging.totalPage}";
+                if (flag == true)
+                {
+                    loadDataSearchPerPage(_paging.currentPage, dateBefore.Value, dateAfter.Value);
+                }
+                else
+                {
+                    loadDataPerPage(_paging.currentPage);
+                }
             }
         }
         private void ResetInputData()
@@ -244,6 +330,5 @@ namespace Shoping.Presentation.Control
             delivery_date.SelectedDate = null;
             payment_status.IsChecked = false;
         }
-
     }
 }

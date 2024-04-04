@@ -1,9 +1,9 @@
 ﻿using PropertyChanged;
 using Shoping.Business.CustomerServices;
+using Shoping.Business.OrderDetailServices;
 using Shoping.Business.OrderServices;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
-
 
 namespace Shoping.Presentation.ViewModels
 {
@@ -12,12 +12,16 @@ namespace Shoping.Presentation.ViewModels
     {
         public IOrderBusiness OrderBusiness;
         public ICustomerBusiness CustomerBusiness;
+        public IOrderDetailBusiness OrderDetailBusiness;
         public List<OrderDTO> orders { get; set; }
-        public ManageOrderViewModel(IOrderBusiness orderBusiness, ICustomerBusiness customerBusiness)
+        public List<OrderDetailDTO> orderDetails { get; set; }
+        public ManageOrderViewModel(IOrderBusiness orderBusiness, ICustomerBusiness customerBusiness, IOrderDetailBusiness orderDetailBusiness)
         {
             OrderBusiness = orderBusiness;
             CustomerBusiness = customerBusiness;
+            OrderDetailBusiness = orderDetailBusiness;
         }
+        // Customer
         public async Task<Guid> CreateCustomer(CustomerDTO customerDTO)
         {
             var result = await CustomerBusiness.CreateCustomer(customerDTO);
@@ -28,6 +32,23 @@ namespace Shoping.Presentation.ViewModels
             var result = await CustomerBusiness.GetCustomerById(customerId);
             return result;
         }
+        // Order details
+        public async Task<bool> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid productId)
+        {
+            var result = await OrderDetailBusiness.AddUpdateOrderDetailAsync(orderDetailDTO, productId);
+            return result != Guid.Empty;
+        }
+        public async Task<bool> DeleteOrderDetail(OrderDetailDTO orderDetailDTO)
+        {
+            var result = await OrderDetailBusiness.DeleteOrderDetailsAsync(orderDetailDTO.RecID);
+            return result;
+        }
+        public async Task<List<OrderDetailDTO>> GetAllOrderDetails()
+        {
+            orderDetails = await OrderDetailBusiness.GetAllOrderDetails();
+            return orderDetails;
+        }
+        // Order
         public async Task<bool> AddUpdateOrderAsync(OrderDTO orderDTO)
         {
             var result = await OrderBusiness.AddUpdateOrderAsync(orderDTO);
@@ -38,31 +59,13 @@ namespace Shoping.Presentation.ViewModels
             var result = await OrderBusiness.DeleteOrderAsync(orderDTO.RecID);
             return result;
         }
-        public async Task<List<OrderDTO>> SearchOrder(DateTime startDate, DateTime endDate)
-        {
-            var result = await OrderBusiness.GetOrdersInRangeAsync(startDate, endDate);
-            return result;
-        }
-        public async Task<List<OrderDTO>> GetAllOrders()
-        {
-            orders = await OrderBusiness.GetAllOrders();
-            return orders;
-        }
         public async Task<PageData<OrderDTO>> Paging(int page, int pageSize)
         {
             return await OrderBusiness.GetOrdersPaging(page, pageSize);
         }
-        private double _cartTotalMoney;
-        public double CartTotalMoney
+        public async Task<PageData<OrderDTO>> SearchOrder(DateTime fromDate, DateTime toDate, int page, int pageSize)
         {
-            get { return _cartTotalMoney; }
-            set
-            {
-                if (_cartTotalMoney != value)
-                {
-                    _cartTotalMoney = value;
-                }
-            }
+            return await OrderBusiness.GetOrdersInRangeAsync(fromDate, toDate, page, pageSize);
         }
     }
 }

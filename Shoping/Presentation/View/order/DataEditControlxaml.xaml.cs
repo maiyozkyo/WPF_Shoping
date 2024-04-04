@@ -7,38 +7,24 @@ namespace Shoping.Presentation.View.order
 {
     public partial class DataEditControlxaml : Window
     {
-        ObservableCollection<Phone> _list;
+        ObservableCollection<ProductDTO> _list;
         public int SelectedIndex { get; set; }
         public OrderDTO EditOrder { get; set; }
 
         public event EventHandler<DataInputEventArgs> DataInputCompleted;
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
-        private void Product_Loaded(object sender, RoutedEventArgs e)
-        {
-            _list = new ObservableCollection<Phone>();
-
-            _list.Add(new Phone() { Name = "iPhone 15 Pro Max", Price = 31990000, Manufacturer = "Samsung", Avatar = "images/mobile01.jpg" });
-            _list.Add(new Phone() { Name = "Samsung Galaxy S24+ 5G", Price = 26990000, Manufacturer = "Samsung", Avatar = "images/mobile02.jpg" });
-            _list.Add(new Phone() { Name = "Oppo Reno 11 5G", Price = 10690000, Manufacturer = "Oppo", Avatar = "images/mobile03.jpg" });
-            _list.Add(new Phone() { Name = "Xiaomi Redmi Note 13", Price = 4990000, Manufacturer = "Xiaomi", Avatar = "images/mobile04.jpg" });
-            _list.Add(new Phone() { Name = "vivo Y17s", Price = 4190000, Manufacturer = "Vivo", Avatar = "images/mobile05.jpg" });
-            _list.Add(new Phone() { Name = "realme Note 50 128GB", Price = 2890000, Manufacturer = "Oppo", Avatar = "images/mobile06.jpg" });
-            _list.Add(new Phone() { Name = "iphone 13", Price = 14990000, Manufacturer = "Apple", Avatar = "images/mobile07.jpg" });
-            _list.Add(new Phone() { Name = "realme C55", Price = 4190000, Manufacturer = "Oppo", Avatar = "images/mobile08.jpg" });
-            _list.Add(new Phone() { Name = "iphone 11", Price = 9990000, Manufacturer = "Apple", Avatar = "images/mobile09.jpg" });
-            _list.Add(new Phone() { Name = "Xiaomi Redmi Note 13 Pro 5G", Price = 9190000, Manufacturer = "Xiaomi", Avatar = "images/mobile10.jpg" });
-
-            PhoneComboBox.ItemsSource = _list;
-        }
+        public MainViewModel MainViewModel { get; set; }
         public DataEditControlxaml(int selectedIndex, OrderDTO editOrder)
         {
             InitializeComponent();
-            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness);
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness);
+            MainViewModel = new MainViewModel(App.iProductBusiness);
             DataContext = ManageOrderViewModel;
+            DataContext = MainViewModel;
 
             SelectedIndex = selectedIndex;
             EditOrder = editOrder;
-
             GetCustomerData(editOrder.CustomerID);
             total_money.Text = editOrder.TotalMoney.ToString();
             delivery_date.SelectedDate = editOrder.DeliveryDate;
@@ -49,15 +35,36 @@ namespace Shoping.Presentation.View.order
             CustomerDTO customerDTO = await ManageOrderViewModel.GetCustomerById(customerId);
             customer_name.Text = $"{customerDTO.FirstName} {customerDTO.LastName}";
         }
-        private void DisplayProduct_Click(object sender, RoutedEventArgs e)
+        private async void Product_Loaded(object sender, RoutedEventArgs e)
+        {
+            _list = new ObservableCollection<ProductDTO>();
+            List<ProductDTO> _products = new List<ProductDTO>();
+            _products = await MainViewModel.GetAllProducts();
+            foreach (var productDTO in _products)
+            {
+                _list.Add(new ProductDTO
+                {
+                    RecID = productDTO.RecID,
+                    ProductID = productDTO.ProductID,
+                    Name = productDTO.Name,
+                    Price = productDTO.Price,
+                    PurchasePrice = productDTO.PurchasePrice,
+                    CatID = productDTO.CatID,
+                    Quantity = productDTO.Quantity,
+                    Image = productDTO.Image
+                });
+            }
+            PhoneComboBox.ItemsSource = _list;
+        }
+        private async void EditCartData_DataInputCompleted(object sender, CartInputEventArgs e)
+        {
+            total_money.Text = e.TotalMoney.ToString();
+        }
+        private void EditOrderDetail_Click(object sender, RoutedEventArgs e)
         {
             ProductUI productUI = new ProductUI();
-            productUI.Closed += HandleProductUIClosed;
-            productUI.Show();
-        }
-        private void HandleProductUIClosed(object sender, EventArgs e)
-        {
-
+            productUI.CartInputCompleted += EditCartData_DataInputCompleted;
+            productUI.ShowDialog();
         }
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
@@ -79,7 +86,6 @@ namespace Shoping.Presentation.View.order
         public DateTime DeliveryDate { get; }
         public bool PaymentStatus { get; }
         public int SelectedIndex { get; }
-
         public DataInputEventArgs(double total_money, DateTime delivery_date, bool payment_status, int selectedIndex)
         {
             TotalMoney = total_money;

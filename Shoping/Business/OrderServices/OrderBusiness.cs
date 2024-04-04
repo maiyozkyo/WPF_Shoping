@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Shoping.Data_Access.DB.Repo;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
-using System.Windows.Controls;
 
 namespace Shoping.Business.OrderServices
 {
@@ -13,6 +12,7 @@ namespace Shoping.Business.OrderServices
         {
 
         }
+        // Order
         public async Task<Guid> AddUpdateOrderAsync(OrderDTO orderDTO)
         {
             var order = await Repository.GetOneAsync(x => x.RecID == orderDTO.RecID && x.CreatedBy == App.Auth.Email);
@@ -60,11 +60,18 @@ namespace Shoping.Business.OrderServices
             return null;
         }
 
-        public async Task<List<OrderDTO>> GetOrdersInRangeAsync(DateTime fromDate, DateTime toDate)
+        public async Task<PageData<OrderDTO>> GetOrdersPaging(int page, int pageSize)
         {
-            var listOrders = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate && x.CreatedBy == App.Auth.Email).ToListAsync();
-            return JsonConvert.DeserializeObject<List<OrderDTO>>(JsonConvert.SerializeObject(listOrders));
+            var pageData = await Repository.GetAsync(x => true).ToPaging<Order, OrderDTO>(page, pageSize);
+            return pageData;
         }
+
+        public async Task<PageData<OrderDTO>> GetOrdersInRangeAsync(DateTime fromDate, DateTime toDate, int page, int pageSize)
+        {
+            var pageData = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate && x.CreatedBy == App.Auth.Email).ToPaging<Order, OrderDTO>(page, pageSize);
+            return pageData;
+        }
+        // Report
         public async Task<List<int>> GetRevenueByWeekAsync(int year)
         {
             var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year && x.CreatedBy == App.Auth.Email).ToListAsync();
@@ -74,11 +81,12 @@ namespace Shoping.Business.OrderServices
 
             foreach (var week in ordersByWeek.Select(x => x.Key).OrderBy(x => x))
             {
-                var total = (int)ordersByWeek[week].Sum(x => x.Total * 1000);
+                var total = (int)ordersByWeek[week].Sum(x => x.TotalMoney * 1000);
                 revenueByWeek[week] = total;
             }
             return revenueByWeek;
         }
+
         public async Task<List<int>> GetRevenueByMonthAsync(int year)
         {
             var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year && x.CreatedBy == App.Auth.Email).ToListAsync();
@@ -87,11 +95,12 @@ namespace Shoping.Business.OrderServices
 
             foreach (var month in ordersByMonth.Select(x => x.Key).OrderBy(x => x))
             {
-                var total = (int)ordersByMonth[month].Sum(x => x.Total * 1000);
+                var total = (int)ordersByMonth[month].Sum(x => x.TotalMoney * 1000);
                 revenueByMonth[month - 1] = total;
             }
             return revenueByMonth;
         }
+
         public async Task<List<int>> GetRevenueByYearAsync()
         {
             var currentYear = DateTime.Today.Year;
@@ -102,11 +111,12 @@ namespace Shoping.Business.OrderServices
 
             foreach (var year in ordersByYear.Select(x => x.Key).OrderBy(x => x))
             {
-                var total = (int)ordersByYear[year].Sum(x => x.Total * 1000);
+                var total = (int)ordersByYear[year].Sum(x => x.TotalMoney * 1000);
                 revenueByYear[year] = total;
             }
             return revenueByYear;
         }
+
         public async Task<Tuple<List<int>, List<string>>> GetRevenueInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
             var listOrders = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate && x.CreatedBy == App.Auth.Email).ToListAsync();
@@ -116,32 +126,10 @@ namespace Shoping.Business.OrderServices
 
             foreach (var dateTime in ordersByDateTime.Select(x => x.Key).OrderBy(x => x))
             {
-                var total = (int)ordersByDateTime[dateTime].Sum(x => x.Total * 1000);
+                var total = (int)ordersByDateTime[dateTime].Sum(x => x.TotalMoney * 1000);
                 revenueInDateRange.Add(total);
             }
             return new Tuple<List<int>, List<string>>(revenueInDateRange, dates);
-        }
-
-        public async Task<List<OrderDTO>> GetAllOrders()
-        {
-            var orders = await Repository.GetAsync(x => true).ToListAsync();
-            if (orders != null)
-            {
-                return JsonConvert.DeserializeObject<List<OrderDTO>>(JsonConvert.SerializeObject(orders));
-            }
-            return null;
-        }
-
-        public async Task<PageData<OrderDTO>> GetOrderPaging(int page, int pageSize)
-        {
-            var pageData = await Repository.GetAsync(x => true).ToPaging<Order, OrderDTO>(page, pageSize);
-            return pageData;
-        }
-
-        public async Task<PageData<OrderDTO>> GetOrdersPaging(int page, int pageSize)
-        {
-            var pageData = await Repository.GetAsync(x => true).ToPaging<Order, OrderDTO>(page, pageSize);
-            return pageData;
         }
     }
 }

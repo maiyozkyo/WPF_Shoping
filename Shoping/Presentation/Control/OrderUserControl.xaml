@@ -1,12 +1,14 @@
-﻿<UserControl x:Class="Shoping.Presentation.Control.OrderUserControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Shoping.Presentation.Control"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Loaded="UserControl_Loaded">
+﻿<UserControl
+    x:Class="Shoping.Presentation.Control.OrderUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Shoping.Presentation.Control"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="540"
+    d:DesignWidth="800"
+    Loaded="UserControl_Loaded"
+    mc:Ignorable="d">
     <Canvas>
         <Label
             Canvas.Left="10"
@@ -63,14 +65,14 @@
             Canvas.Left="79"
             Canvas.Top="103"
             Width="82"
-            HorizontalAlignment="Left"
+            HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="{Binding CartTotalMoney}"
             TextWrapping="Wrap" />
         <DatePicker
             x:Name="delivery_date"
-            Canvas.Left="107"
-            Canvas.Top="126"
+            Canvas.Left="112"
+            Canvas.Top="127"
+            Height="25"
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
         <CheckBox
@@ -83,14 +85,15 @@
 
         <ListView
             Name="OrderComboBox"
-            Canvas.Left="314"
-            Canvas.Top="20"
+            Canvas.Left="331"
+            Canvas.Top="28"
             Width="420"
-            Height="400"
+            Height="430"
             Padding="5"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled">
 
             <ListView.Resources>
                 <ContextMenu x:Key="OrderContextMenu">
@@ -112,7 +115,6 @@
                         Width="400"
                         Height="100"
                         VerticalAlignment="Center">
-
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <TextBlock Text="ID: " />
                             <TextBlock Foreground="Red" Text="{Binding RecID}" />
@@ -163,33 +165,39 @@
             Click="ResetCart_Click"
             Content="Reset" />
         <Label
-            Canvas.Left="10"
-            Canvas.Top="230"
+            Canvas.Left="64"
+            Canvas.Top="334"
+            Width="60"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Content="Ngày bắt đầu:" />
+            Content="Từ ngày:" />
         <Label
-            Canvas.Left="10"
-            Canvas.Top="273"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Content="Ngày kết thúc:" />
+            Canvas.Left="64"
+            Canvas.Top="384"
+            Width="60"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Content="Đến ngày:" />
         <DatePicker
             x:Name="date_before"
-            Canvas.Left="94"
-            Canvas.Top="231"
+            Canvas.Left="129"
+            Canvas.Top="334"
+            Width="116"
+            Height="26"
             HorizontalAlignment="Center"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Center" />
         <DatePicker
             x:Name="date_after"
-            Canvas.Left="95"
-            Canvas.Top="275"
-            HorizontalAlignment="Left"
+            Canvas.Left="129"
+            Canvas.Top="384"
+            Width="116"
+            Height="26"
+            HorizontalAlignment="Center"
             VerticalAlignment="Center" />
         <Button
-            Canvas.Left="95"
-            Canvas.Top="316"
-            Width="77"
+            Canvas.Left="129"
+            Canvas.Top="431"
+            Width="116"
             Height="27"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
@@ -198,39 +206,62 @@
 
         <Rectangle
             Canvas.Left="10"
-            Canvas.Top="217"
+            Canvas.Top="243"
             Width="299"
             Height="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Stroke="Black" />
 
-        <ComboBox
-            Name="pagesComboBox"
-            Canvas.Left="474"
-            Canvas.Top="432"
-            Width="120"
-            DisplayMemberPath="DisplayText"/>
+        <TextBox
+            Name="pageTextBox"
+            Canvas.Left="516"
+            Canvas.Top="481"
+            Width="50"
+            Height="25"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            TextAlignment="Center" />
 
         <Button
             Name="previousButton"
-            Canvas.Left="420"
-            Canvas.Top="432"
-            Height="22"
+            Canvas.Left="461"
+            Canvas.Top="481"
+            Width="50"
+            Height="25"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Previous"
-            Click="previousButton_Click"/>
+            VerticalAlignment="Center"
+            Click="previousButton_Click"
+            Content="Previous" />
         <Button
             Name="nextButton"
-            Canvas.Left="599"
-            Canvas.Top="432"
-            Height="22"
+            Canvas.Left="571"
+            Canvas.Top="481"
+            Width="50"
+            Height="25"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Next"
-            Click="nextButton_Click"/>
+            VerticalAlignment="Center"
+            Click="nextButton_Click"
+            Content="Next" />
+        <Button
+            Canvas.Left="701"
+            Canvas.Top="481"
+            Width="50"
+            Height="25"
+            Content="Reload"
+            Click="ReloadedOrder"/>
+        <Label
+            Canvas.Left="37"
+            Canvas.Top="270"
+            Width="289"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Content="Tìm kiếm đơn hàng được tạo"
+            FontSize="20"
+            FontWeight="Bold"
+            Foreground="Blue" />
 
-            
+
+
     </Canvas>
 </UserControl>

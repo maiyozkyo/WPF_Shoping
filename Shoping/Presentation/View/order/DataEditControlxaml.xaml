@@ -10,9 +10,6 @@
     Height="450"
     Loaded="Product_Loaded"
     mc:Ignorable="d">
-    <Window.Resources>
-        <local:RelativeToAbsoluteConverter x:Key="ImageConverter" />
-    </Window.Resources>
     <Canvas>
         <Label
             Canvas.Left="32"
@@ -85,7 +82,7 @@
             Canvas.Top="158"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            Click="DisplayProduct_Click"
+            Click="EditOrderDetail_Click"
             Content="Thêm" />
 
         <ListView
@@ -120,22 +117,23 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel
-                        Width="280"
-                        Height="80"
+                        Width="200"
+                        Height="60"
+                        Margin="5,5,5,0"
                         VerticalAlignment="Center">
-                        <Image
-                            Width="50"
-                            Height="50"
-                            Margin="5"
-                            RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="{Binding Avatar, Converter={StaticResource ImageConverter}}" />
-                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                            <TextBlock Foreground="Red" Text="{Binding Name}" />
-                            <TextBlock Text=" - " />
-                            <TextBlock Foreground="Green" Text="{Binding Price}" />
-                            <TextBlock Text=" - " />
-                            <TextBlock Foreground="Blue" Text="{Binding Manufacturer}" />
-                        </StackPanel>
+                        <DockPanel>
+                            <Image
+                                Width="50"
+                                Height="50"
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                DockPanel.Dock="Left"
+                                Source="{Binding Image}" />
+                            <StackPanel VerticalAlignment="Center" Orientation="Vertical" DockPanel.Dock="Right">
+                                <TextBlock Foreground="Red" Text="{Binding Name}" />
+                                <TextBlock Foreground="Green" Text="{Binding Price}" />
+                                <TextBlock Foreground="Blue" Text="{Binding Quantity}" />
+                            </StackPanel>
+                        </DockPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
