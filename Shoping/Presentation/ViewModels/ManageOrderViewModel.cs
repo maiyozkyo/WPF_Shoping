@@ -33,27 +33,28 @@ namespace Shoping.Presentation.ViewModels
             return result;
         }
         // Order details
-        public async Task<bool> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid productId)
+        public async Task<bool> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
-            var result = await OrderDetailBusiness.AddUpdateOrderDetailAsync(orderDetailDTO, productId);
+            var result = await OrderDetailBusiness.AddUpdateOrderDetailAsync(orderDetailDTO, orderId);
             return result != Guid.Empty;
         }
-        public async Task<bool> DeleteOrderDetail(OrderDetailDTO orderDetailDTO)
+        public async Task<double> DeleteOrderDetail(OrderDetailDTO orderDetailDTO)
         {
             var result = await OrderDetailBusiness.DeleteOrderDetailsAsync(orderDetailDTO.RecID);
             return result;
         }
-        public async Task<List<OrderDetailDTO>> GetAllOrderDetails()
+        public async Task<List<OrderDetailDTO>> GetAllOrderDetails(Guid orderId)
         {
-            orderDetails = await OrderDetailBusiness.GetAllOrderDetails();
+            orderDetails = await OrderDetailBusiness.GetAllOrderDetails(orderId);
             return orderDetails;
         }
         // Order
-        public async Task<bool> AddUpdateOrderAsync(OrderDTO orderDTO)
+        public async Task<Guid> AddUpdateOrderAsync(OrderDTO orderDTO)
         {
             var result = await OrderBusiness.AddUpdateOrderAsync(orderDTO);
-            return result != Guid.Empty;
+            return result;
         }
+
         public async Task<bool> DeleteOrder(OrderDTO orderDTO)
         {
             var result = await OrderBusiness.DeleteOrderAsync(orderDTO.RecID);

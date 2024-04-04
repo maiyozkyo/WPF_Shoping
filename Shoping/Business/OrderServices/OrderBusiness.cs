@@ -30,7 +30,7 @@ namespace Shoping.Business.OrderServices
             }
             else
             {
-                order.TotalMoney = 1;
+                order.TotalMoney = orderDTO.TotalMoney;
                 order.DeliveryDate = orderDTO.DeliveryDate;
                 order.PaymentStatus = orderDTO.PaymentStatus;
                 Repository.Update(order);

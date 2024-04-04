@@ -1,26 +1,22 @@
 ﻿<Window
-    x:Class="Shoping.Presentation.View.order.DataEditControlxaml"
+    x:Class="Shoping.Presentation.View.order.OrderDetailUI"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Shoping.Presentation.View.order"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:uc="clr-namespace:Shoping"
-    Title="DataEditControlxaml"
+    Title="OrderDetailUI"
     Width="620"
     Height="450"
-    Loaded="Product_Loaded"
+    Loaded="OrderDetail_Loaded"
     mc:Ignorable="d">
-    <Window.Resources>
-        <uc:ImageConverter x:Key="imageConverter" />
-    </Window.Resources>
     <Canvas>
         <Label
             Canvas.Left="32"
             Canvas.Top="87"
             HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Content="Thông tin đơn hàng"
+            VerticalAlignment="Center"
+            Content="Chi tiết đơn hàng"
             FontSize="20"
             FontWeight="Bold"
             Foreground="Purple" />
@@ -46,25 +42,22 @@
             Canvas.Left="32"
             Canvas.Top="207"
             Content="Tình trạng đơn hàng:" />
-        <DatePicker
+        <TextBlock
             Name="delivery_date"
             Canvas.Left="127"
-            Canvas.Top="183" />
-
-        <CheckBox
-            Name="payment_status"
-            Canvas.Left="153"
-            Canvas.Top="213"
+            Canvas.Top="186"
+            Width="150"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Content="Chưa thanh toán" />
-        <Button
-            Canvas.Left="91"
-            Canvas.Top="238"
-            Width="80"
-            Height="30"
-            Click="Confirm_Click"
-            Content="Chỉnh sửa" />
+            Text="date" />
+
+        <TextBlock
+            Name="payment_status"
+            Canvas.Left="153"
+            Canvas.Top="212"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Text="status" />
         <TextBlock
             Name="customer_name"
             Canvas.Left="127"
@@ -77,17 +70,11 @@
             Name="total_money"
             Canvas.Left="125"
             Canvas.Top="160"
+            Width="49"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Text="0"
             TextWrapping="Wrap" />
-        <Button
-            Canvas.Left="179"
-            Canvas.Top="158"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Click="EditOrderDetail_Click"
-            Content="Thêm" />
 
         <ListView
             Name="PhoneComboBox"
@@ -99,17 +86,7 @@
             VerticalAlignment="Center"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.Resources>
-                <ContextMenu x:Key="PhoneContextMenu">
-                    <MenuItem Header="Delete" Click="DeleteOrderDetail_Click">
-                        <MenuItem.Icon>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                RenderOptions.BitmapScalingMode="HighQuality"
-                                Source="images/add.jpg" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
+                <ContextMenu x:Key="PhoneContextMenu" />
             </ListView.Resources>
 
             <ListView.ItemContainerStyle>
@@ -131,7 +108,7 @@
                                 Height="80"
                                 DockPanel.Dock="Left"
                                 RenderOptions.BitmapScalingMode="HighQuality"
-                                Source="{Binding Image, Converter={StaticResource imageConverter}}" />
+                                Source="{Binding Image}" />
                             <StackPanel
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Right"
@@ -160,6 +137,12 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-
+        <Button
+            Canvas.Left="94"
+            Canvas.Top="238"
+            Width="50"
+            Height="30"
+            Click="back_Click"
+            Content="Quay lại" />
     </Canvas>
 </Window>

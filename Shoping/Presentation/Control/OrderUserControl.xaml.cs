@@ -12,6 +12,7 @@ namespace Shoping.Presentation.Control
     {
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
         public ObservableCollection<OrderDTO> _orders { get; set; }
+        public ObservableCollection<OrderDetailDTO> _listOrderDetail { get; set; }
         public int pageIndex { get; set; }
         PagingInfo _paging;
         bool flag = false;
@@ -55,7 +56,11 @@ namespace Shoping.Presentation.Control
             _paging = new PagingInfo();
 
             _paging.currentPage = 1;
-            _paging.totalPage = (paging.Total % paging.Data.Count() == 0) ? paging.Total / paging.Data.Count() : paging.Total / paging.Data.Count() + 1;
+            _paging.totalPage = (paging.Total > 0 && paging.Data.Count() > 0) ?
+                    (paging.Total % paging.Data.Count() == 0) ?
+                    paging.Total / paging.Data.Count() :
+                    paging.Total / paging.Data.Count() + 1 :
+                    1;
 
             var infos = new ObservableCollection<PagingInfo>();
             for (int i = 1; i <= _paging.totalPage; i++)
@@ -108,28 +113,40 @@ namespace Shoping.Presentation.Control
             }
 
             // assign value to order
-            total_money.Text = "0";
             double totalMoney = double.Parse(total_money.Text);
             DateTime? dateDelivery = delivery_date.SelectedDate;
             bool paymentStatus = payment_status.IsChecked ?? false;
             DateTime createOn = DateTime.Now;
 
-            var orderDTO = new OrderDTO()
+            if (totalMoney > 0 && delivery_date.SelectedDate != null)
             {
-                CustomerID = customerId,
-                TotalMoney = totalMoney,
-                DeliveryDate = dateDelivery.Value,
-                PaymentStatus = paymentStatus,
-            };
+                var orderDTO = new OrderDTO()
+                {
+                    CustomerID = customerId,
+                    TotalMoney = totalMoney,
+                    DeliveryDate = dateDelivery.Value,
+                    PaymentStatus = paymentStatus,
+                };
 
-            if (await ManageOrderViewModel.AddUpdateOrderAsync(orderDTO))
-            {
-                MessageBox.Show($"Tạo đơn hàng thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                _orders.Add(orderDTO);
-                flag = false;
-                LoadData();
+                Guid orderId = await ManageOrderViewModel.AddUpdateOrderAsync(orderDTO);
+
+                if (orderId != Guid.Empty)
+                {
+                    foreach (var orderDetailDTO in _listOrderDetail)
+                    {
+                        await ManageOrderViewModel.AddUpdateOrderDetailAsync(orderDetailDTO, orderId);
+                    }
+                    MessageBox.Show($"Tạo đơn hàng thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    flag = false;
+                    LoadData();
+                }
+                ResetInputData();
             }
-            ResetInputData();
+            else
+            {
+                MessageBox.Show("Hãy nhập đầy đủ thông tin", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
         private void ReloadedOrder(object sender, RoutedEventArgs e)
         {
@@ -138,7 +155,11 @@ namespace Shoping.Presentation.Control
         }
         private void DetailOrder_Click(object sender, RoutedEventArgs e)
         {
+            int i = OrderComboBox.SelectedIndex;
+            OrderDTO detailOrderDTO = _orders[i];
 
+            OrderDetailUI orderDetailUI = new OrderDetailUI(i, detailOrderDTO);
+            orderDetailUI.ShowDialog();
         }
         private async void EditData_DataInputCompleted(object sender, DataInputEventArgs e)
         {
@@ -147,6 +168,8 @@ namespace Shoping.Presentation.Control
             _orders[e.SelectedIndex].PaymentStatus = e.PaymentStatus;
 
             await ManageOrderViewModel.AddUpdateOrderAsync(_orders[e.SelectedIndex]);
+            flag = false;
+            LoadData();
         }
         private void EditOrder_Click(object sender, RoutedEventArgs e)
         {
@@ -161,10 +184,12 @@ namespace Shoping.Presentation.Control
         private void ResetCart_Click(object sender, RoutedEventArgs e)
         {
             total_money.Text = "0";
+            _listOrderDetail = null;
         }
         private async void EditCartData_DataInputCompleted(object sender, CartInputEventArgs e)
         {
             total_money.Text = e.TotalMoney.ToString();
+            _listOrderDetail = e.ListOrderDetail;
         }
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
@@ -176,11 +201,6 @@ namespace Shoping.Presentation.Control
         {
             int i = OrderComboBox.SelectedIndex;
             OrderDTO deletedOrderDTO = _orders[i];
-
-            if (i != -1)
-            {
-                _orders.RemoveAt(i);
-            }
 
             await ManageOrderViewModel.DeleteOrder(deletedOrderDTO);
             MessageBox.Show($"Huỷ đơn thành công", "Notice", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -220,7 +240,11 @@ namespace Shoping.Presentation.Control
                 _paging = new PagingInfo();
 
                 _paging.currentPage = 1;
-                _paging.totalPage = (paging.Total % paging.Data.Count() == 0) ? paging.Total / paging.Data.Count() : paging.Total / paging.Data.Count() + 1;
+                _paging.totalPage = (paging.Total > 0 && paging.Data.Count() > 0) ?
+                    (paging.Total % paging.Data.Count() == 0) ?
+                    paging.Total / paging.Data.Count() :
+                    paging.Total / paging.Data.Count() + 1 :
+                    1;
 
                 var infos = new ObservableCollection<PagingInfo>();
                 for (int i = 1; i <= _paging.totalPage; i++)

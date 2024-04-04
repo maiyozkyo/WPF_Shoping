@@ -67,7 +67,8 @@
             Width="82"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap"
+            Text="0"/>
         <DatePicker
             x:Name="delivery_date"
             Canvas.Left="112"

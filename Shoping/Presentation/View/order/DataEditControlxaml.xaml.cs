@@ -7,9 +7,10 @@ namespace Shoping.Presentation.View.order
 {
     public partial class DataEditControlxaml : Window
     {
-        ObservableCollection<ProductDTO> _list;
+        ObservableCollection<OrderDetailDTO> _list;
         public int SelectedIndex { get; set; }
         public OrderDTO EditOrder { get; set; }
+        public ObservableCollection<OrderDetailDTO> _listOrderDetail { get; set; }
 
         public event EventHandler<DataInputEventArgs> DataInputCompleted;
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
@@ -35,36 +36,60 @@ namespace Shoping.Presentation.View.order
             CustomerDTO customerDTO = await ManageOrderViewModel.GetCustomerById(customerId);
             customer_name.Text = $"{customerDTO.FirstName} {customerDTO.LastName}";
         }
-        private async void Product_Loaded(object sender, RoutedEventArgs e)
+        private void Product_Loaded(object sender, RoutedEventArgs e)
         {
-            _list = new ObservableCollection<ProductDTO>();
-            List<ProductDTO> _products = new List<ProductDTO>();
-            _products = await MainViewModel.GetAllProducts();
-            foreach (var productDTO in _products)
+            LoadData();
+        }
+        private async void LoadData()
+        {
+            _list = new ObservableCollection<OrderDetailDTO>();
+            List<OrderDetailDTO> _orderDetails = new List<OrderDetailDTO>();
+            _orderDetails = await ManageOrderViewModel.GetAllOrderDetails(EditOrder.RecID);
+            foreach (var orderDetailDTO in _orderDetails)
             {
-                _list.Add(new ProductDTO
+                _list.Add(new OrderDetailDTO
                 {
-                    RecID = productDTO.RecID,
-                    ProductID = productDTO.ProductID,
-                    Name = productDTO.Name,
-                    Price = productDTO.Price,
-                    PurchasePrice = productDTO.PurchasePrice,
-                    CatID = productDTO.CatID,
-                    Quantity = productDTO.Quantity,
-                    Image = productDTO.Image
+                    ProductID = orderDetailDTO.ProductID,
+                    Quantity = orderDetailDTO.Quantity,
+                    Price = orderDetailDTO.Price,
+                    Total = orderDetailDTO.Total,
                 });
             }
             PhoneComboBox.ItemsSource = _list;
         }
+        double _totalMoney;
         private async void EditCartData_DataInputCompleted(object sender, CartInputEventArgs e)
         {
-            total_money.Text = e.TotalMoney.ToString();
+            _totalMoney = e.TotalMoney + double.Parse(total_money.Text);
+            total_money.Text = _totalMoney.ToString();
+            _listOrderDetail = e.ListOrderDetail;
         }
         private void EditOrderDetail_Click(object sender, RoutedEventArgs e)
         {
             ProductUI productUI = new ProductUI();
             productUI.CartInputCompleted += EditCartData_DataInputCompleted;
+            productUI.Closed += ProductUI_Closed;
             productUI.ShowDialog();
+        }
+        private async void ProductUI_Closed(object sender, EventArgs e)
+        {
+            foreach (var orderDetailDTO in _listOrderDetail)
+            {
+                await ManageOrderViewModel.AddUpdateOrderDetailAsync(orderDetailDTO, EditOrder.RecID);
+            }
+            MessageBox.Show($"Cập nhật giỏ hàng thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+            LoadData();
+        }
+        private async void DeleteOrderDetail_Click(Object sender, RoutedEventArgs e)
+        {
+            int i = PhoneComboBox.SelectedIndex;
+            List<OrderDetailDTO> _orderDetails = new List<OrderDetailDTO>();
+            _orderDetails = await ManageOrderViewModel.GetAllOrderDetails(EditOrder.RecID);
+            OrderDetailDTO _orderDetailDTO = _orderDetails[i];
+
+            double totalDeleted = await ManageOrderViewModel.DeleteOrderDetail(_orderDetailDTO);
+            total_money.Text = ((double.Parse(total_money.Text) - totalDeleted).ToString());
+            LoadData();
         }
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {

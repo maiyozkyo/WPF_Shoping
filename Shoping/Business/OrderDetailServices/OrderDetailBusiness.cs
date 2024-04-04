@@ -18,45 +18,50 @@ namespace Shoping.Business.OrderDetailServices
             return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(lstOrderDetails));
         }
 
-        public async Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid productId)
+        public async Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
             var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailDTO.RecID && x.CreatedBy == App.Auth.Email);
             if (orderDetail == null)
             {
                 orderDetail = new OrderDetail
                 {
-                    ProductID = productId,
+                    OrderID = orderId,
+                    ProductID = orderDetailDTO.ProductID,
                     Quantity = orderDetailDTO.Quantity,
                     Price = orderDetailDTO.Price,
-                    Total = orderDetailDTO.Quantity * (double)orderDetailDTO.Price,
+                    Total = orderDetailDTO.Quantity * orderDetailDTO.Price,
                 };
-
                 Repository.Add(orderDetail);
             }
             else
             {
+                orderDetail.OrderID = orderId;
+                orderDetail.ProductID = orderDetailDTO.ProductID;
                 orderDetail.Quantity = orderDetailDTO.Quantity;
                 orderDetail.Price = orderDetailDTO.Price;
-                orderDetail.Total = orderDetailDTO.Quantity * (double)orderDetailDTO.Price;
+                orderDetail.Total = orderDetailDTO.Quantity * orderDetailDTO.Price;
+                Repository.Update(orderDetail);
             }
             await UnitOfWork.SaveChangesAsync();
             return orderDetail.RecID;
         }
 
-        public async Task<bool> DeleteOrderDetailsAsync(Guid orderDetailRecID)
+        public async Task<double> DeleteOrderDetailsAsync(Guid orderDetailRecID)
         {
-            var order = await Repository.GetOneAsync(x => x.RecID == orderDetailRecID && x.CreatedBy == App.Auth.Email);
-            if (order != null)
+            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailRecID && x.CreatedBy == App.Auth.Email);
+            double totalDeleted = 0;
+            if (orderDetail != null)
             {
-                Repository.Delete(order);
+                totalDeleted = orderDetail.Total;
+                Repository.Delete(orderDetail);
                 await UnitOfWork.SaveChangesAsync();
             }
-            return true;
+            return totalDeleted;
         }
 
-        public async Task<List<OrderDetailDTO>> GetAllOrderDetails()
+        public async Task<List<OrderDetailDTO>> GetAllOrderDetails(Guid orderId)
         {
-            var orderDetails = await Repository.GetAsync(x => true).ToListAsync();
+            var orderDetails = await Repository.GetAsync(x => x.OrderID == orderId).ToListAsync();
             if (orderDetails != null)
             {
                 return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(orderDetails));

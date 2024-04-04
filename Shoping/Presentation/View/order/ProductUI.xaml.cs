@@ -11,6 +11,7 @@ namespace Shoping.Presentation.View.order
         ObservableCollection<ProductDTO> _list;
         public event EventHandler<CartInputEventArgs> CartInputCompleted;
         public double _totalMoney = 0;
+        ObservableCollection<OrderDetailDTO> _listOrderDetail;
         public MainViewModel MainViewModel { get; set; }
         public ProductUI()
         {
@@ -37,6 +38,7 @@ namespace Shoping.Presentation.View.order
                     Image = productDTO.Image
                 });
             }
+            _listOrderDetail = new ObservableCollection<OrderDetailDTO>();
             PhoneComboBox.ItemsSource = _list;
         }
         private void AddToCart_Click(object sender, RoutedEventArgs e)
@@ -50,6 +52,16 @@ namespace Shoping.Presentation.View.order
                 {
                     MessageBox.Show($"Thêm vào đơn hàng thành công", "Notice", MessageBoxButton.OK, MessageBoxImage.Information);
                     _totalMoney += (double)_list[i].Price * quantity;
+
+                    // create order detail
+                    OrderDetailDTO orderDetail = new OrderDetailDTO
+                    {
+                        ProductID = _list[i].ProductID,
+                        Quantity = quantity,
+                        Price = _list[i].Price,
+                        Total = _list[i].Price * quantity,
+                    };
+                    _listOrderDetail.Add(orderDetail);
                 }
                 else
                 {
@@ -64,7 +76,7 @@ namespace Shoping.Presentation.View.order
         }
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            CartInputCompleted?.Invoke(this, new CartInputEventArgs(_totalMoney));
+            CartInputCompleted?.Invoke(this, new CartInputEventArgs(_totalMoney, _listOrderDetail));
             var parentWindow = Window.GetWindow(this);
             if (parentWindow != null)
             {
@@ -75,9 +87,11 @@ namespace Shoping.Presentation.View.order
     public class CartInputEventArgs
     {
         public double TotalMoney { get; }
-        public CartInputEventArgs(double total_money)
+        public ObservableCollection<OrderDetailDTO> ListOrderDetail { get; }
+        public CartInputEventArgs(double total_money, ObservableCollection<OrderDetailDTO> list_orderDetail)
         {
             TotalMoney = total_money;
+            ListOrderDetail = list_orderDetail;
         }
     }
 }
