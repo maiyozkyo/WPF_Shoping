@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,13 +45,25 @@ namespace Shoping.Presentation.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            newEditPhone.Name = phoneControl.nameTextBox.Text;
-            newEditPhone.Price = decimal.Parse(phoneControl.priceTextBox.Text);
-            newEditPhone.PurchasePrice = decimal.Parse(phoneControl.purchasePriceTextBox.Text);
-            newEditPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
-            newEditPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
-            newEditPhone.Image = phoneControl.phoneImage.Source.ToString();
-            DialogResult = true;
+            if (string.IsNullOrWhiteSpace(phoneControl.nameTextBox.Text.Trim()) || string.IsNullOrWhiteSpace(phoneControl.purchasePriceTextBox.Text.Trim()) ||
+                string.IsNullOrWhiteSpace(phoneControl.quantityTextBox.Text.Trim()) || string.IsNullOrWhiteSpace(phoneControl.priceTextBox.Text.Trim()) ||
+                phoneControl.categoryComboBox.SelectedIndex == -1 || phoneControl.fullPath == null)
+            {
+                MessageBox.Show("Please fill all the information!");
+            }
+            else
+            {
+                newEditPhone.Name = phoneControl.nameTextBox.Text;
+                newEditPhone.Price = double.Parse(phoneControl.priceTextBox.Text);
+                newEditPhone.PurchasePrice = double.Parse(phoneControl.purchasePriceTextBox.Text);
+                newEditPhone.CatID = Guid.Parse(((ComboBoxItem)phoneControl.categoryComboBox.SelectedItem).Tag.ToString());
+                newEditPhone.Quantity = int.Parse(phoneControl.quantityTextBox.Text);
+
+                string directory = phoneControl.fullPath;
+                var fileBytes = File.ReadAllBytes(directory);
+                newEditPhone.Image = Convert.ToBase64String(fileBytes);
+                DialogResult = true;
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Shoping.Business.ProductServices
         }
         public async Task<Guid> AddUpdateProductAsync(ProductDTO productDTO)
         {
-            var product = await Repository.GetOneAsync(x => x.RecID == productDTO.RecID && x.CreatedBy == App.Auth.Email);
+            var product = await Repository.GetOneAsync(x => x.RecID == productDTO.RecID /*&& x.CreatedBy == App.Auth.Email*/);
             if (product == null)
             {
                 product = new Product
@@ -43,7 +43,7 @@ namespace Shoping.Business.ProductServices
         }
         public async Task<bool> DeleteProductAsync(Guid productRecID)
         {
-            var product = await Repository.GetOneAsync(x => x.RecID == productRecID && x.CreatedBy == App.Auth.Email);
+            var product = await Repository.GetOneAsync(x => x.RecID == productRecID /*&& x.CreatedBy == App.Auth.Email*/);
             if (product != null)
             {
                 Repository.Delete(product);
@@ -57,22 +57,22 @@ namespace Shoping.Business.ProductServices
             var pageData = await Repository.GetAsync(x => true).ToPaging<Product, ProductDTO>(page, pageSize);
             return pageData;
         }
-        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, int page, int pageSize)
+        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, double from, double to ,int page, int pageSize)
         {
             if (CatID == Guid.Empty)
             {
-                return await Repository.GetAsync(x => x.Name.Contains(search)).ToPaging<Product, ProductDTO>(page, pageSize);
+                return await Repository.GetAsync(x => x.Name.Contains(search) && (x.Price >= from && x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
             }
             else
             {
-                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID && x.CreatedBy == App.Auth.Email).ToPaging<Product, ProductDTO>(page, pageSize);
+                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID /*&& x.CreatedBy == App.Auth.Email*/ && (x.Price >= from && x.Price <= to) ).ToPaging<Product, ProductDTO>(page, pageSize);
                 return pageData;
             }
         }
 
         public async Task<List<ProductDTO>> GetListProductsByRecID(List<Guid> lstRecIDs)
         {
-            var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID) && x.CreatedBy == App.Auth.Email).ToListAsync();
+            var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID) /*&& x.CreatedBy == App.Auth.Email*/).ToListAsync();
             return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
         }
         public async Task<List<ProductDTO>> GetAllProducts()
@@ -130,6 +130,17 @@ namespace Shoping.Business.ProductServices
             return spendingByMonth;
         }
 
+        public async Task<bool> DeleteAllProducts()
+        {
+            var products = await Repository.GetAsync(x => true).ToListAsync();
+            if (products != null)
+            {
+                Repository.Delete(products);
+                await UnitOfWork.SaveChangesAsync();
+            }
+            return true;
+        }
+
         public async Task<List<int>> GetSpendingByYearAsync()
         {
             var currentYear = DateTime.Today.Year;
@@ -144,6 +155,15 @@ namespace Shoping.Business.ProductServices
                 spendingByYear[year] = total;
             }
             return spendingByYear;
+        }
+        public async Task<bool> CheckProductCategory(Guid category)
+        {
+            var product = await Repository.GetOneAsync(x => x.CatID == category);
+            if(product != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
