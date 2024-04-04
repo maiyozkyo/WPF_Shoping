@@ -5,13 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Shoping.Presentation.View.order"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:Shoping"
     Title="ProductUI"
     Width="620"
     Height="450"
     Loaded="Product_Loaded"
     mc:Ignorable="d">
 
-
+    <Window.Resources>
+        <uc:ImageConverter x:Key="imageConverter" />
+    </Window.Resources>
     <Canvas>
         <ListView
             Name="PhoneComboBox"
@@ -45,7 +48,7 @@
                                 Height="50"
                                 DockPanel.Dock="Left"
                                 RenderOptions.BitmapScalingMode="HighQuality"
-                                Source="{Binding Image}" />
+                                Source="{Binding Image, Converter={StaticResource imageConverter}}" />
                             <StackPanel
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Right"
@@ -68,30 +71,30 @@
         </ListView>
         <Button
             Canvas.Left="265"
-            Canvas.Top="381"
+            Canvas.Top="377"
             Width="90"
             Height="25"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
             Click="AddToCart_Click"
             Content="Thêm vào giỏ" />
         <Button
             Canvas.Left="360"
-            Canvas.Top="381"
+            Canvas.Top="377"
             Width="50"
             Height="25"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Click="Cancel_Click"
             Content="Dừng" />
         <TextBox
             Name="quantity_product"
             Canvas.Left="148"
-            Canvas.Top="381"
+            Canvas.Top="377"
             Width="102"
             Height="25"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             TextWrapping="Wrap" />
     </Canvas>
 </Window>
