@@ -35,7 +35,7 @@ namespace Shoping.Presentation.ViewModels
             var lstProducts = await IProductBusiness.GetListProductsByRecID(lstProductIDs);
 
             var lstChartItemFromProducts = new List<ChartItemDTO>();
-            foreach(var productID in lstProductIDs)
+            foreach (var productID in lstProductIDs)
             {
                 var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
                 var product = lstProducts.FirstOrDefault(x => x.ProductID == productID);

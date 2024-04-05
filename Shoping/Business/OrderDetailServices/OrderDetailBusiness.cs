@@ -14,13 +14,13 @@ namespace Shoping.Business.OrderDetailServices
         // Order details
         public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime from, DateTime to)
         {
-            var lstOrderDetails = await Repository.GetAsync(x => x.CreatedOn >= from && x.CreatedOn <= to && x.CreatedBy == App.Auth.Email).ToListAsync();
+            var lstOrderDetails = await Repository.GetAsync(x => x.CreatedOn >= from && x.CreatedOn <= to).ToListAsync();
             return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(lstOrderDetails));
         }
 
         public async Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
-            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailDTO.RecID && x.CreatedBy == App.Auth.Email);
+            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailDTO.RecID);
             if (orderDetail == null)
             {
                 orderDetail = new OrderDetail
@@ -48,7 +48,7 @@ namespace Shoping.Business.OrderDetailServices
 
         public async Task<double> DeleteOrderDetailsAsync(Guid orderDetailRecID)
         {
-            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailRecID && x.CreatedBy == App.Auth.Email);
+            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailRecID);
             double totalDeleted = 0;
             if (orderDetail != null)
             {
