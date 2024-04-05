@@ -29,7 +29,14 @@ namespace Shoping.Presentation.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
+            if (string.IsNullOrWhiteSpace(categoryControl.nameTextBox.Text.Trim()))
+            {
+                MessageBox.Show("Please fill all the information!");
+            }
+            else
+            {
+                DialogResult = true;
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

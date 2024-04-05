@@ -28,10 +28,17 @@ namespace Shoping.Presentation.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            newCategory.RecID = new Guid();
-            newCategory.CategoryID = new Guid();
-            newCategory.Name = categoryControl.nameTextBox.Text;
-            DialogResult = true;
+            if(string.IsNullOrWhiteSpace(categoryControl.nameTextBox.Text.Trim()))
+            {
+                MessageBox.Show("Please fill all the information!");
+            }
+            else
+            {
+                newCategory.RecID = new Guid();
+                newCategory.CategoryID = new Guid();
+                newCategory.Name = categoryControl.nameTextBox.Text;
+                DialogResult = true;
+            }
         }
     }
 }

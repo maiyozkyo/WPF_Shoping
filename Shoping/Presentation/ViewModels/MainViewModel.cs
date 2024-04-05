@@ -1,20 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using PropertyChanged;
+﻿using PropertyChanged;
+using Shoping.Business.CategoryServices;
+
 //using Shoping.Business.OderServices;
 using Shoping.Business.ProductServices;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoping.Presentation.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
-    public class MainViewModel 
+    public class MainViewModel
     {
         public IProductBusiness ProductBusiness;
         public List<ProductDTO> products { get; set; }
@@ -38,9 +33,22 @@ namespace Shoping.Presentation.ViewModels
         {
             return await ProductBusiness.GetProductsPaging(page, pageSize);
         }
-        public async Task<PageData<ProductDTO>> GetFilterProducts(String searchFilter, Guid CatID, int page, int pageSize)
+        public async Task<PageData<ProductDTO>> GetFilterProducts(String searchFilter, Guid CatID, double from, double to, int page, int pageSize)
         {
-            return await ProductBusiness.GetFilterProducts(searchFilter, CatID, page, pageSize);
+            return await ProductBusiness.GetFilterProducts(searchFilter, CatID, from, to, page, pageSize);
+        }
+        public async Task<bool> DeleteAllProducts()
+        {
+            var result = await ProductBusiness.DeleteAllProducts();
+            return result;
+        }
+        public async Task<bool> CheckProductCategory(Guid category)
+        {
+            return await ProductBusiness.CheckProductCategory(category);
+        }
+        public async Task<List<ProductDTO>> GetAllProducts()
+        {
+            return await ProductBusiness.GetAllProducts();
         }
     }
 }

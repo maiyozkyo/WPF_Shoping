@@ -12,5 +12,7 @@ namespace Shoping.Business.CategoryServices
         public Task<Guid> AddUpdateCategoryAsync(CategoryDTO categoryDTO);
         public Task<bool> DeleteCategoryAsync(Guid categoryRecID);
         public Task<List<CategoryDTO>> GetAllCategories();
+        public Task<bool> DeleteAllCategories();
+        public Task<Guid> GetCategoryID(string Name);
     }
 }
