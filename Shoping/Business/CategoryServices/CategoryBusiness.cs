@@ -18,7 +18,7 @@ namespace Shoping.Business.CategoryServices
         }
         public async Task<Guid> AddUpdateCategoryAsync(CategoryDTO categoryDTO)
         {
-            var category = await Repository.GetOneAsync(x => x.RecID == categoryDTO.RecID && x.CreatedBy == App.Auth.UserName);
+            var category = await Repository.GetOneAsync(x => x.RecID == categoryDTO.RecID);
             if (category == null)
             {
                 category = new Category
@@ -37,7 +37,7 @@ namespace Shoping.Business.CategoryServices
         }
         public async Task<bool> DeleteCategoryAsync(Guid categoryRecID)
         {
-            var category = await Repository.GetOneAsync(x => x.RecID == categoryRecID && x.CreatedBy == App.Auth.UserName);
+            var category = await Repository.GetOneAsync(x => x.RecID == categoryRecID);
             if (category != null)
             {
                 Repository.Delete(category);
@@ -47,7 +47,7 @@ namespace Shoping.Business.CategoryServices
         }
         public async Task<List<CategoryDTO>> GetAllCategories()
         {
-            var categories = await Repository.GetAsync(x => x.CreatedBy == App.Auth.Email).ToListAsync();
+            var categories = await Repository.GetAsync(x => true).ToListAsync();
             return JsonConvert.DeserializeObject<List<CategoryDTO>>(JsonConvert.SerializeObject(categories));
         }
         public async Task<bool> DeleteAllCategories()

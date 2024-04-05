@@ -15,7 +15,7 @@ namespace Shoping.Business.OrderServices
         // Order
         public async Task<Guid> AddUpdateOrderAsync(OrderDTO orderDTO)
         {
-            var order = await Repository.GetOneAsync(x => x.RecID == orderDTO.RecID && x.CreatedBy == App.Auth.UserName);
+            var order = await Repository.GetOneAsync(x => x.RecID == orderDTO.RecID);
             if (order == null)
             {
                 order = new Order
@@ -41,7 +41,7 @@ namespace Shoping.Business.OrderServices
 
         public async Task<bool> DeleteOrderAsync(Guid orderRecID)
         {
-            var order = await Repository.GetOneAsync(x => x.RecID == orderRecID && x.CreatedBy == App.Auth.UserName);
+            var order = await Repository.GetOneAsync(x => x.RecID == orderRecID);
             if (order != null)
             {
                 Repository.Delete(order);
@@ -52,7 +52,7 @@ namespace Shoping.Business.OrderServices
 
         public async Task<OrderDTO> GetOrderAsync(Guid orderRecID)
         {
-            var order = await Repository.GetOneAsync(x => x.RecID == orderRecID && x.CreatedBy == App.Auth.UserName);
+            var order = await Repository.GetOneAsync(x => x.RecID == orderRecID);
             if (order != null)
             {
                 return JsonConvert.DeserializeObject<OrderDTO>(JsonConvert.SerializeObject(order));
@@ -68,13 +68,13 @@ namespace Shoping.Business.OrderServices
 
         public async Task<PageData<OrderDTO>> GetOrdersInRangeAsync(DateTime fromDate, DateTime toDate, int page, int pageSize)
         {
-            var pageData = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate && x.CreatedBy == App.Auth.Email).ToPaging<Order, OrderDTO>(page, pageSize);
+            var pageData = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToPaging<Order, OrderDTO>(page, pageSize);
             return pageData;
         }
         // Report
         public async Task<List<int>> GetRevenueByWeekAsync(int year)
         {
-            var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year && x.CreatedBy == App.Auth.UserName).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
             var ordersByWeek = listOrders.ToLookup(x => x.CreatedOn.DayOfYear / 7);
 
             List<int> revenueByWeek = Enumerable.Repeat(0, 53).ToList();
@@ -89,7 +89,7 @@ namespace Shoping.Business.OrderServices
 
         public async Task<List<int>> GetRevenueByMonthAsync(int year)
         {
-            var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year && x.CreatedBy == App.Auth.UserName).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
             var ordersByMonth = listOrders.ToLookup(x => x.CreatedOn.Month);
             List<int> revenueByMonth = Enumerable.Repeat(0, 12).ToList();
 
@@ -104,7 +104,7 @@ namespace Shoping.Business.OrderServices
         public async Task<List<int>> GetRevenueByYearAsync()
         {
             var currentYear = DateTime.Today.Year;
-            var listOrders = await Repository.GetAsync(x => currentYear - 10 <= x.CreatedOn.Year && x.CreatedOn.Year <= currentYear && x.CreatedBy == App.Auth.UserName).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => currentYear - 10 <= x.CreatedOn.Year && x.CreatedOn.Year <= currentYear).ToListAsync();
             var ordersByYear = listOrders.ToLookup(x => 10 - (currentYear - x.CreatedOn.Year));
 
             List<int> revenueByYear = Enumerable.Repeat(0, 11).ToList();
@@ -119,7 +119,7 @@ namespace Shoping.Business.OrderServices
 
         public async Task<Tuple<List<int>, List<string>>> GetRevenueInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
-            var listOrders = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate && x.CreatedBy == App.Auth.UserName).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
             var ordersByDateTime = listOrders.ToLookup(x => x.CreatedOn.Date);
             List<int> revenueInDateRange = [];
             List<string> dates = [];
