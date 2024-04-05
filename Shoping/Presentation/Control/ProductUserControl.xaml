@@ -49,5 +49,6 @@
         <TextBox Name="priceSortToTextBox" Height="15" Width="79" Canvas.Left="591" Canvas.Top="312"/>
         <TextBlock Text="-" Canvas.Left="548" Canvas.Top="311"/>
         <Button Name="priceSortButton" Content="Sort" Click="priceSortButton_Click" Canvas.Left="703" Canvas.Top="307" HorizontalAlignment="Center" VerticalAlignment="Top" Height="28" Width="59"/>
+        <ProgressBar x:Name="progressBar" Width="100" Height="10" Canvas.Left="682" Canvas.Top="265" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Canvas>
 </UserControl>

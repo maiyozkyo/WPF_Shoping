@@ -207,9 +207,11 @@ namespace Shoping.Presentation.Control
 
         private async void searchButton_Click(object sender, RoutedEventArgs e)
         {
+            progressBar.IsIndeterminate = true;
             searchFilter = searchTextBox.Text;
             loadData(1);
             pagesComboBox.SelectedIndex = 0;
+            progressBar.IsIndeterminate = false;
         }
 
         private void previousButton_Click(object sender, RoutedEventArgs e)
@@ -232,9 +234,11 @@ namespace Shoping.Presentation.Control
 
         private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            progressBar.IsIndeterminate = true;
             int i = (pagesComboBox.SelectedIndex >= 0 ? pagesComboBox.SelectedIndex : 0);
             _paging.currentPage = i + 1;
             loadData(_paging.currentPage);
+            progressBar.IsIndeterminate = false;
         }
 
         private async void categoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -254,8 +258,10 @@ namespace Shoping.Presentation.Control
             {
                 Filter = "Excel Files|*.xlsx"
             };
+            
             if (file.ShowDialog() == true)
             {
+                progressBar.IsIndeterminate = true;
                 fullPath = file.FileName;
                 var fileBytes = File.ReadAllBytes(fullPath);
                 await categoryViewModel.DeleteAllCategories();
@@ -293,11 +299,14 @@ namespace Shoping.Presentation.Control
                 }
                 loadData(1);
                 pagesComboBox.SelectedIndex = 0;
+                progressBar.IsIndeterminate = false;
+                MessageBox.Show("Loaded successfully!");
             }
         }
 
         private void priceSortButton_Click(object sender, RoutedEventArgs e)
         {
+            progressBar.IsIndeterminate = true;
             priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
             priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
             if(priceFromFilter > priceToFilter)
@@ -308,6 +317,7 @@ namespace Shoping.Presentation.Control
             {
                 loadData(1);
                 pagesComboBox.SelectedIndex = 0;
+                progressBar.IsIndeterminate = false;
             }
         }
     }
