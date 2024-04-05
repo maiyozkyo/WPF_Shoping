@@ -44,6 +44,10 @@
         </ComboBox>
         <Button Name="nextButton" Content="Next page" Click="nextButton_Click" Canvas.Left="645" Canvas.Top="187" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="1.822,0.525"/>
         <ComboBox x:Name="categoryComboBox" SelectionChanged="categoryComboBox_SelectionChanged" Canvas.Left="548" Canvas.Top="265" HorizontalAlignment="Left" Height="21" VerticalAlignment="Top" Width="80"/>
-        <Button Name="excelButton" Content="Import Excel" Click="excelButton_Click" Canvas.Left="548" Canvas.Top="333" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.474,0.421"/>
+        <Button Name="excelButton" Content="Excel" Click="excelButton_Click" Canvas.Left="684" Canvas.Top="106" Height="30" Width="78" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.822,0.525"/>
+        <TextBox Name="priceSortFromTextBox" Height="15" Width="79" Canvas.Left="447" Canvas.Top="311" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox Name="priceSortToTextBox" Height="15" Width="79" Canvas.Left="591" Canvas.Top="312"/>
+        <TextBlock Text="-" Canvas.Left="548" Canvas.Top="311"/>
+        <Button Name="priceSortButton" Content="Sort" Click="priceSortButton_Click" Canvas.Left="703" Canvas.Top="307" HorizontalAlignment="Center" VerticalAlignment="Top" Height="28" Width="59"/>
     </Canvas>
 </UserControl>

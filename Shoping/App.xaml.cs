@@ -3,15 +3,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shoping.ApiBusiness;
 using Shoping.Business;
-using Shoping.Business.OrderServices;
+using Shoping.Business.CategoryServices;
+using Shoping.Business.CustomerServices;
 using Shoping.Business.OrderDetailServices;
+using Shoping.Business.OrderServices;
 using Shoping.Business.ProductServices;
 using Shoping.Business.UserServices;
 using Shoping.Data_Access.DTOs;
 using Shoping.Presentation;
 using System.IO;
 using System.Windows;
-using Shoping.Business.CategoryServices;
 
 namespace Shoping
 {
@@ -27,8 +28,9 @@ namespace Shoping
         public static IProductBusiness iProductBusiness { get; set; }
         public static ICategoryBusiness iCategoryBusiness { get; set; }
         public static IOrderBusiness iOrderBusiness { get; set; }
+        public static ICustomerBusiness iCustomerBusiness { get; set; }
         public static IOrderDetailBusiness iOrderDetailBusiness { get; set; }
-        public static Auth Auth { get; private set; } 
+        public static Auth Auth { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
             var builder = new ConfigurationBuilder()
@@ -57,6 +59,7 @@ namespace Shoping
             #region Register
             containerBuilder.RegisterType<UserBusiness>().WithParameter("_dbName", dbName).As<IUserBusiness>();
             containerBuilder.RegisterType<OrderBusiness>().WithParameter("_dbName", dbName).As<IOrderBusiness>();
+            containerBuilder.RegisterType<CustomerBusiness>().WithParameter("_dbName", dbName).As<ICustomerBusiness>();
             containerBuilder.RegisterType<ProductBusiness>().WithParameter("_dbName", dbName).As<IProductBusiness>();
             containerBuilder.RegisterType<CategoryBusiness>().WithParameter("_dbName", dbName).As<ICategoryBusiness>();
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
@@ -72,6 +75,7 @@ namespace Shoping
             iProductBusiness = container.Resolve<IProductBusiness>();
             iCategoryBusiness = container.Resolve<ICategoryBusiness>();
             iOrderBusiness = container.Resolve<IOrderBusiness>();
+            iCustomerBusiness = container.Resolve<ICustomerBusiness>();
             iOrderDetailBusiness = container.Resolve<IOrderDetailBusiness>();
             #endregion
         }

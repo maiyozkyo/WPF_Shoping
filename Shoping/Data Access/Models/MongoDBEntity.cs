@@ -1,10 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoping.Data_Access.Models
 {
@@ -18,7 +13,7 @@ namespace Shoping.Data_Access.Models
         public Guid RecID { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
-        public string ModifiedBy {  get; set; }
+        public string ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
 
         public int Index { get; set; }
