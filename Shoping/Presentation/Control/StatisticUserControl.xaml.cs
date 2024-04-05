@@ -78,18 +78,14 @@ namespace Shoping.Presentation.Control
                 }
             ];
 
-            var max = 10;
-            var min = 0;
-            if (information.Item1.Count + information.Item2.Count > 0)
+            if (information.Item1.Count + information.Item2.Count == 0)
             {
-                max = information.Item1.Max();
-                min = profits.Min();
+                revenueAndProfitChart.AxisY.Add(new Axis()
+                {
+                    MaxValue = 10,
+                    MinValue = 0,
+                });
             }
-            revenueAndProfitChart.AxisY.Add(new Axis()
-            {
-                MaxValue = max,
-                MinValue = min,
-            });
 
             revenueAndProfitChart.AxisX.Add(new Axis()
             {

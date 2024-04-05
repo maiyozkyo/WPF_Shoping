@@ -18,7 +18,7 @@ namespace Shoping.Business.CategoryServices
         }
         public async Task<Guid> AddUpdateCategoryAsync(CategoryDTO categoryDTO)
         {
-            var category = await Repository.GetOneAsync(x => x.RecID == categoryDTO.RecID && x.CreatedBy == App.Auth.Email);
+            var category = await Repository.GetOneAsync(x => x.RecID == categoryDTO.RecID && x.CreatedBy == App.Auth.UserName);
             if (category == null)
             {
                 category = new Category
@@ -37,7 +37,7 @@ namespace Shoping.Business.CategoryServices
         }
         public async Task<bool> DeleteCategoryAsync(Guid categoryRecID)
         {
-            var category = await Repository.GetOneAsync(x => x.RecID == categoryRecID && x.CreatedBy == App.Auth.Email);
+            var category = await Repository.GetOneAsync(x => x.RecID == categoryRecID && x.CreatedBy == App.Auth.UserName);
             if (category != null)
             {
                 Repository.Delete(category);
