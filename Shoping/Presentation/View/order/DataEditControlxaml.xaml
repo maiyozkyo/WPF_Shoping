@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:Shoping"
     Title="DataEditControlxaml"
-    Width="620"
-    Height="450"
+    Width="720"
+    Height="480"
     Loaded="Product_Loaded"
     mc:Ignorable="d">
     <Window.Resources>
@@ -56,8 +56,18 @@
             Canvas.Left="153"
             Canvas.Top="213"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Content="Chưa thanh toán" />
+            VerticalAlignment="Center">
+            <CheckBox.Style>
+                <Style TargetType="CheckBox">
+                    <Setter Property="Content" Value="Chưa thanh toán" />
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Content" Value="Đã thanh toán" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
         <Button
             Canvas.Left="91"
             Canvas.Top="238"
@@ -93,14 +103,14 @@
             Name="PhoneComboBox"
             Canvas.Left="293"
             Canvas.Top="39"
-            Width="285"
-            Height="312"
+            Width="340"
+            Height="310"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.Resources>
                 <ContextMenu x:Key="PhoneContextMenu">
-                    <MenuItem Header="Delete" Click="DeleteOrderDetail_Click">
+                    <MenuItem Click="DeleteOrderDetail_Click" Header="Delete">
                         <MenuItem.Icon>
                             <Image
                                 Width="16"
@@ -121,7 +131,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel
-                        Width="220"
+                        Width="270"
                         Height="100"
                         Margin="5,5,5,0"
                         VerticalAlignment="Center">
@@ -136,6 +146,10 @@
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Right"
                                 Orientation="Vertical">
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Text="Tên: " />
+                                    <TextBlock Text="{Binding NameProduct}" />
+                                </StackPanel>
                                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock Text="Giá: " />
                                     <TextBlock Text="{Binding Price}" />

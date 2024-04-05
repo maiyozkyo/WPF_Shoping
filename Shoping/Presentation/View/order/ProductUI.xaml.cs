@@ -57,6 +57,8 @@ namespace Shoping.Presentation.View.order
                     OrderDetailDTO orderDetail = new OrderDetailDTO
                     {
                         ProductID = _list[i].ProductID,
+                        Image = _list[i].Image,
+                        NameProduct = _list[i].Name,
                         Quantity = quantity,
                         Price = _list[i].Price,
                         Total = _list[i].Price * quantity,

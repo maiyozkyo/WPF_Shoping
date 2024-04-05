@@ -5,11 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Shoping.Presentation.View.order"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:Shoping"
     Title="OrderDetailUI"
-    Width="620"
-    Height="450"
+    Width="720"
+    Height="480"
     Loaded="OrderDetail_Loaded"
     mc:Ignorable="d">
+    <Window.Resources>
+        <uc:ImageConverter x:Key="imageConverter" />
+    </Window.Resources>
     <Canvas>
         <Label
             Canvas.Left="32"
@@ -80,8 +84,8 @@
             Name="PhoneComboBox"
             Canvas.Left="293"
             Canvas.Top="39"
-            Width="285"
-            Height="312"
+            Width="340"
+            Height="310"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -98,7 +102,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel
-                        Width="220"
+                        Width="270"
                         Height="100"
                         Margin="5,5,5,0"
                         VerticalAlignment="Center">
@@ -108,11 +112,15 @@
                                 Height="80"
                                 DockPanel.Dock="Left"
                                 RenderOptions.BitmapScalingMode="HighQuality"
-                                Source="{Binding Image}" />
+                                Source="{Binding Image, Converter={StaticResource imageConverter}}" />
                             <StackPanel
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Right"
                                 Orientation="Vertical">
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Text="Tên: " />
+                                    <TextBlock Text="{Binding NameProduct}" />
+                                </StackPanel>
                                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock Text="Giá: " />
                                     <TextBlock Text="{Binding Price}" />

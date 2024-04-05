@@ -49,9 +49,9 @@ namespace Shoping.Presentation.Control
                 };
                 _orders.Add(order);
             }
-            OrderComboBox.ItemsSource = _orders;
-
             DataContext = ManageOrderViewModel;
+
+            OrderComboBox.ItemsSource = _orders;
 
             _paging = new PagingInfo();
 
@@ -148,7 +148,7 @@ namespace Shoping.Presentation.Control
             }
 
         }
-        private void ReloadedOrder(object sender, RoutedEventArgs e)
+        private void ReloadedOrder_Click(object sender, RoutedEventArgs e)
         {
             flag = false;
             LoadData();
@@ -163,11 +163,14 @@ namespace Shoping.Presentation.Control
         }
         private async void EditData_DataInputCompleted(object sender, DataInputEventArgs e)
         {
-            _orders[e.SelectedIndex].TotalMoney = e.TotalMoney;
-            _orders[e.SelectedIndex].DeliveryDate = e.DeliveryDate;
-            _orders[e.SelectedIndex].PaymentStatus = e.PaymentStatus;
+            if (e != null)
+            {
+                _orders[e.SelectedIndex].TotalMoney = e.TotalMoney;
+                _orders[e.SelectedIndex].DeliveryDate = e.DeliveryDate;
+                _orders[e.SelectedIndex].PaymentStatus = e.PaymentStatus;
 
-            await ManageOrderViewModel.AddUpdateOrderAsync(_orders[e.SelectedIndex]);
+                await ManageOrderViewModel.AddUpdateOrderAsync(_orders[e.SelectedIndex]);
+            }
             flag = false;
             LoadData();
         }
@@ -178,7 +181,6 @@ namespace Shoping.Presentation.Control
 
             DataEditControlxaml newDataInputControl = new DataEditControlxaml(selectedIndex, selectedOrderDTO);
             newDataInputControl.DataInputCompleted += EditData_DataInputCompleted;
-
             newDataInputControl.ShowDialog();
         }
         private void ResetCart_Click(object sender, RoutedEventArgs e)
