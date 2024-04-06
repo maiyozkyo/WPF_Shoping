@@ -38,6 +38,10 @@ namespace Shoping.Presentation.View.order
             {
                 payment_status.Text = "Đã giao hàng";
             }
+            else
+            {
+                payment_status.Text = "Chưa giao hàng";
+            }
         }
         private async void GetCustomerData(Guid customerId)
         {
@@ -58,6 +62,8 @@ namespace Shoping.Presentation.View.order
                 _list.Add(new OrderDetailDTO
                 {
                     ProductID = orderDetailDTO.ProductID,
+                    Image = orderDetailDTO.Image,
+                    NameProduct = orderDetailDTO.NameProduct,
                     Quantity = orderDetailDTO.Quantity,
                     Price = orderDetailDTO.Price,
                     Total = orderDetailDTO.Total,

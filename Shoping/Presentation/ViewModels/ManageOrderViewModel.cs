@@ -57,6 +57,11 @@ namespace Shoping.Presentation.ViewModels
 
         public async Task<bool> DeleteOrder(OrderDTO orderDTO)
         {
+            List<OrderDetailDTO> _list = await OrderDetailBusiness.GetAllOrderDetails(orderDTO.RecID);
+            foreach (var orderDetail in _list)
+            {
+                await OrderDetailBusiness.DeleteOrderDetailsAsync(orderDetail.RecID);
+            }
             var result = await OrderBusiness.DeleteOrderAsync(orderDTO.RecID);
             return result;
         }
