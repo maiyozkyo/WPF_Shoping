@@ -1,8 +1,11 @@
-﻿using PropertyChanged;
+﻿using LiveCharts;
+using LiveCharts.Wpf;
+using PropertyChanged;
 using Shoping.Business.OrderDetailServices;
 using Shoping.Business.OrderServices;
 using Shoping.Business.ProductServices;
 using Shoping.Data_Access.DTOs;
+using Shoping.Data_Access.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,13 +21,15 @@ namespace Shoping.Presentation.ViewModels
         public IOrderBusiness IOrderBusiness { get; set; }
         public IOrderDetailBusiness IOrderDetailBusiness { get; set; }
         public IProductBusiness IProductBusiness { get; set; }
-        public ObservableCollection<ChartItemDTO> LstChartItems { get; set; }
+        public SeriesCollection SeriesCollection { get; set; }
+        public List<string> Labels { get; set; }
         private int Step;
         public ReportViewModel(IOrderBusiness iOrderBusiness, IOrderDetailBusiness iOrderDetailBusiness, IProductBusiness iProductBusiness)
         {
             IOrderBusiness = iOrderBusiness;
             IOrderDetailBusiness = iOrderDetailBusiness;
             IProductBusiness = iProductBusiness;
+            SeriesCollection = new SeriesCollection();
         }
 
         public async Task GetBestSellingProductsInRange(DateTime from, DateTime to)
@@ -39,13 +44,26 @@ namespace Shoping.Presentation.ViewModels
             {
                 var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
                 var product = lstProducts.FirstOrDefault(x => x.ProductID == productID);
-                lstChartItemFromProducts.Add(new ChartItemDTO
+                if (product != null)
                 {
-                    ColumnName = product.Name,
-                    Quantity = (int)soldQuantity,
+                    lstChartItemFromProducts.Add(new ChartItemDTO
+                    {
+                        ColumnName = product.Name,
+                        Quantity = (int)soldQuantity,
+                    });
+                }
+            }
+
+            lstChartItemFromProducts = lstChartItemFromProducts.OrderByDescending(x => x.Quantity).ToList();
+            foreach(var item in lstChartItemFromProducts)
+            {
+                SeriesCollection.Add(new ColumnSeries
+                {
+                    Title = item.ColumnName,
+                    Values = new ChartValues<int> { item.Quantity },
                 });
             }
-            LstChartItems = new ObservableCollection<ChartItemDTO>(lstChartItemFromProducts);
+            Labels = lstChartItemFromProducts.Select(c => c.ColumnName).ToList();
         }
     }
 }

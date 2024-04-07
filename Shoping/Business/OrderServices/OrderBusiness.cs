@@ -62,7 +62,7 @@ namespace Shoping.Business.OrderServices
 
         public async Task<PageData<OrderDTO>> GetOrdersPaging(int page, int pageSize)
         {
-            var pageData = await Repository.GetAsync(x => true).ToPaging<Order, OrderDTO>(page, pageSize);
+            var pageData = await Repository.GetAsync(x => true).OrderByDescending(x => x.CreatedOn).ToPaging<Order, OrderDTO>(page, pageSize);
             return pageData;
         }
 

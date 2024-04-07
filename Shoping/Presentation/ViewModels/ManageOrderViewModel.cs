@@ -2,8 +2,10 @@
 using Shoping.Business.CustomerServices;
 using Shoping.Business.OrderDetailServices;
 using Shoping.Business.OrderServices;
+using Shoping.Business.VoucherServices;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
+using System.ComponentModel;
 
 namespace Shoping.Presentation.ViewModels
 {
@@ -13,13 +15,16 @@ namespace Shoping.Presentation.ViewModels
         public IOrderBusiness OrderBusiness;
         public ICustomerBusiness CustomerBusiness;
         public IOrderDetailBusiness OrderDetailBusiness;
+        public IVoucherBusiness VoucherBusiness { get; set; }
         public List<OrderDTO> orders { get; set; }
         public List<OrderDetailDTO> orderDetails { get; set; }
-        public ManageOrderViewModel(IOrderBusiness orderBusiness, ICustomerBusiness customerBusiness, IOrderDetailBusiness orderDetailBusiness)
+        public BindingList<VoucherDTO> ListVoucherDTOs { get; set; }
+        public ManageOrderViewModel(IOrderBusiness orderBusiness, ICustomerBusiness customerBusiness, IOrderDetailBusiness orderDetailBusiness, IVoucherBusiness voucherBusiness)
         {
             OrderBusiness = orderBusiness;
             CustomerBusiness = customerBusiness;
             OrderDetailBusiness = orderDetailBusiness;
+            VoucherBusiness = voucherBusiness;
         }
         // Customer
         public async Task<Guid> CreateCustomer(CustomerDTO customerDTO)
@@ -72,6 +77,13 @@ namespace Shoping.Presentation.ViewModels
         public async Task<PageData<OrderDTO>> SearchOrder(DateTime fromDate, DateTime toDate, int page, int pageSize)
         {
             return await OrderBusiness.GetOrdersInRangeAsync(fromDate, toDate, page, pageSize);
+        }
+
+        //Vouchers
+        public async Task GetVouchers()
+        {
+            var voucherDTOs = await VoucherBusiness.GetVouchers(true);
+            ListVoucherDTOs = new BindingList<VoucherDTO>(voucherDTOs);
         }
     }
 }

@@ -28,5 +28,6 @@
             <TextBox Name="txtYear" Width="80"  VerticalAlignment="Center"/>
         </StackPanel>
         <lvc:CartesianChart Name="revenueAndProfitChart" LegendLocation="Bottom" Height="310" Width="740" Canvas.Left="30" Canvas.Top="98"/>
+        <Button Content="Best Selling Products" Canvas.Left="570" Canvas.Top="21" Height="25" Width="156" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnBestSellingProducts_Click"/>
     </Canvas>
 </UserControl>

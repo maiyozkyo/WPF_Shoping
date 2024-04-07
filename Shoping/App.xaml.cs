@@ -8,10 +8,13 @@ using Shoping.Business.CustomerServices;
 using Shoping.Business.OrderDetailServices;
 using Shoping.Business.OrderServices;
 using Shoping.Business.ProductServices;
+using Shoping.Business.SettingServices;
 using Shoping.Business.UserServices;
+using Shoping.Business.VoucherServices;
 using Shoping.Data_Access.DTOs;
 using Shoping.Presentation;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Windows;
 
 namespace Shoping
@@ -30,6 +33,8 @@ namespace Shoping
         public static IOrderBusiness iOrderBusiness { get; set; }
         public static ICustomerBusiness iCustomerBusiness { get; set; }
         public static IOrderDetailBusiness iOrderDetailBusiness { get; set; }
+        public static IVoucherBusiness iVoucherBusiness { get; set; }
+        public static ISettingBusiness iSettingBusiness { get; set; }
         public static Auth Auth { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -55,7 +60,7 @@ namespace Shoping
         private void BuildupContainer(ContainerBuilder containerBuilder)
         {
             var dbName = iConfiguration.GetSection("Database").GetSection("DBName").Value;
-
+            var conntectionString = iConfiguration.GetSection("Database").GetSection("MongoDatabase").Value;
             #region Register
             containerBuilder.RegisterType<UserBusiness>().WithParameter("_dbName", dbName).As<IUserBusiness>();
             containerBuilder.RegisterType<OrderBusiness>().WithParameter("_dbName", dbName).As<IOrderBusiness>();
@@ -65,7 +70,13 @@ namespace Shoping
             containerBuilder.RegisterType<ApiService>().As<IApiService>();
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             containerBuilder.RegisterType<OrderDetailBusiness>().WithParameter("_dbName", dbName).As<IOrderDetailBusiness>();
-
+            containerBuilder.RegisterType<VoucherBusiness>().WithParameter("_dbName", dbName).As<IVoucherBusiness>();
+            containerBuilder.RegisterType<SettingBusiness>().WithParameters(new List<Autofac.NamedParameter>
+            {
+                new Autofac.NamedParameter("_conntectionString", conntectionString),
+                new Autofac.NamedParameter("_dbName", dbName),
+            }).As<ISettingBusiness>();
+            
             #endregion
 
             #region Resolve
@@ -77,6 +88,8 @@ namespace Shoping
             iOrderBusiness = container.Resolve<IOrderBusiness>();
             iCustomerBusiness = container.Resolve<ICustomerBusiness>();
             iOrderDetailBusiness = container.Resolve<IOrderDetailBusiness>();
+            iVoucherBusiness = container.Resolve<IVoucherBusiness>();
+            iSettingBusiness = container.Resolve<ISettingBusiness>();
             #endregion
         }
 

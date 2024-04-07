@@ -4,16 +4,19 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Wpf;
+using Shoping.Presentation.View;
 
 namespace Shoping.Presentation.Control
 {
     public partial class StatisticUserControl : UserControl
     {
         public StatisticViewModel StatisticViewModel { get; set; }
+        public ReportViewModel ReportViewModel { get; set; }
         public StatisticUserControl()
         {
             InitializeComponent();
             StatisticViewModel = new StatisticViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
+            ReportViewModel = new ReportViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
             StatisticCombobox.SelectedIndex = 0;
             revenueAndProfitChart.Visibility = Visibility.Collapsed;
         }
@@ -93,6 +96,23 @@ namespace Shoping.Presentation.Control
                 Labels = information.Item4,
                 Separator = new LiveCharts.Wpf.Separator { Step = 1 },
             });
+        }
+
+        private async void BtnBestSellingProducts_Click(object sender, RoutedEventArgs e)
+        {
+            if (StartDate.SelectedDate.HasValue && EndDate.SelectedDate.HasValue)
+            {
+                var reportWindow = new Report(StartDate.SelectedDate.Value, EndDate.SelectedDate.Value);
+                if (reportWindow.ShowDialog() == true)
+                {
+
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn ngày bắt đầu và ngày kết thúc!");
+            }
         }
     }
 }

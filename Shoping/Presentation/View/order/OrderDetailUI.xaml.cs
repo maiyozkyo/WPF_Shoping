@@ -24,7 +24,7 @@ namespace Shoping.Presentation.View.order
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness);
+            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness, App.iVoucherBusiness);
             MainViewModel = new MainViewModel(App.iProductBusiness);
             DataContext = ManageOrderViewModel;
             DataContext = MainViewModel;

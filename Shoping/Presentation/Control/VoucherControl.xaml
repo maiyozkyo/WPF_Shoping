@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Shoping.Presentation.Control.VoucherControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Shoping.Presentation.Control"
+             mc:Ignorable="d" d:DesignWidth="800" Height="468"
+             Loaded="UserControl_Loaded"
+             >
+    <Grid>
+        <Label Content="Mã voucher" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="59,62,0,0" VerticalAlignment="Top" Height="39" Width="194"/>
+        <TextBox HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="84,101,0,0" TextWrapping="Wrap" Text="{Binding Code}" VerticalAlignment="Top" Width="169" Height="37"/>
+        <Button Content="Tạo mã" HorizontalAlignment="Left" Margin="253,101,0,0" VerticalAlignment="Top" Height="37" Width="62" Click="BtnGenCode_Click"/>
+        <Label Content="Giá trị" HorizontalAlignment="Left" Margin="59,143,0,0" VerticalAlignment="Top" Height="39" VerticalContentAlignment="Center" Width="194"/>
+        <TextBox HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="84,182,0,0" PreviewTextInput="CheckIsNumber" TextWrapping="Wrap" Text="{Binding VoucherDTO.Value}" VerticalAlignment="Top" Width="169" Height="37"/>
+        <Label Content="Giảm tối đa" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="59,220,0,0" VerticalAlignment="Top" Height="38" Width="194"/>
+        <TextBox HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="84,258,0,0" PreviewTextInput="CheckIsNumber" TextWrapping="Wrap" Text="{Binding VoucherDTO.Max}" VerticalAlignment="Top" Width="169" Height="38"/>
+        <CheckBox IsChecked="{Binding VoucherDTO.IsPercent}" Content="Giảm theo %" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="258,182,0,0" VerticalAlignment="Top" Height="37" Width="102"/>
+        <Label Content="Ngày hết hạn" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="59,301,0,0" VerticalAlignment="Top" Height="38" Width="194"/>
+        <DatePicker SelectedDate="{Binding VoucherDTO.ExpiredOn}" HorizontalAlignment="Left" Margin="84,344,0,0" VerticalAlignment="Top" Height="42" Width="169"/>
+        <Button Content="Lưu" HorizontalAlignment="Left" Margin="128,408,0,0" VerticalAlignment="Top" Height="38" Width="82" Click="BtnAddVoucher_Click"/>
+        <Label Content="Voucher" HorizontalAlignment="Left" HorizontalContentAlignment="Center" FontSize="25" FontWeight="Bold"
+               VerticalContentAlignment="Center" Margin="58,10,0,0" VerticalAlignment="Top" Height="52" Width="302"/>
+        <ListView d:ItemsSource="{d:SampleData ItemCount= 15}" Margin="400,18,51,22" Name="ListVouchers" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Height="801" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="270" Height="100" Margin="10">
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <Run Text="Mã: " FontWeight="Bold" Foreground="Chocolate"/>
+                            <Run Text="{Binding Code}" FontWeight="Bold" Foreground="Blue"/>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <Run Text="Giá trị: " FontWeight="Bold" Foreground="Chocolate"/>
+                            <Run Text="{Binding Value}" FontWeight="Bold" Foreground="Blue"/>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <Run Text="Giảm tối đa: " FontWeight="Bold" Foreground="Chocolate"/>
+                            <Run Text="{Binding Max}" FontWeight="Bold" Foreground="Blue"/>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left">
+                             <Run Text="Giảm theo %: " FontWeight="Bold" Foreground="Chocolate"/>
+                            <CheckBox IsEnabled="False" IsChecked="{Binding IsPercent}" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Top" >
+                            </CheckBox>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 5 0 0">
+                            <Run Text="Ngày hết hạn: " FontWeight="Bold" Foreground="Chocolate"/>
+                            <DatePicker IsEnabled="False" SelectedDate="{Binding ExpiredOn}" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

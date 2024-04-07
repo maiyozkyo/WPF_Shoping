@@ -12,6 +12,23 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <uc:PaymentStatusConverter x:Key="PaymentStatusConverter" />
+        <DataTemplate x:Key="VoucherTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock  Margin="0,0,5,0">
+                    <Run Text="Mã: " FontWeight="Bold" Foreground="Chocolate"/>
+                    <Run Text="{Binding Code}" FontWeight="Bold" Foreground="Blue"/>
+                </TextBlock>
+                <TextBlock Margin="0,0,5,0">
+                    <Run Text="Giảm: " FontWeight="Bold" Foreground="Chocolate"/>
+                    <Run Text="{Binding Value}" FontWeight="Bold" Foreground="Blue"/>
+                </TextBlock>
+                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Run Text="Giảm theo %: " FontWeight="Bold" Foreground="Chocolate"/>
+                    <CheckBox IsEnabled="False" IsChecked="{Binding IsPercent}" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Top" >
+                    </CheckBox>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
     </UserControl.Resources>
     <Canvas>
         <Label
@@ -165,7 +182,7 @@
         </ListView>
         <Button
             Canvas.Left="129"
-            Canvas.Top="197"
+            Canvas.Top="237"
             Width="116"
             Height="27"
             HorizontalAlignment="Center"
@@ -231,7 +248,7 @@
             Content="Search" />
         <Rectangle
             Canvas.Left="10"
-            Canvas.Top="258"
+            Canvas.Top="269"
             Width="299"
             Height="1"
             HorizontalAlignment="Center"
@@ -285,5 +302,9 @@
             FontSize="20"
             FontWeight="Bold"
             Foreground="Blue" />
+        <Label Content="Mã giảm giá:" Canvas.Left="64" Canvas.Top="195" HorizontalAlignment="Left" VerticalAlignment="Center" Width="76"/>
+
+        <ComboBox Name="CbxVouchers" SelectionChanged="CbxVouchers_SelectionChanged" ItemTemplate="{StaticResource VoucherTemplate}" Canvas.Left="145" Canvas.Top="198" Width="141" HorizontalAlignment="Left" VerticalAlignment="Center" >
+        </ComboBox>
     </Canvas>
 </UserControl>

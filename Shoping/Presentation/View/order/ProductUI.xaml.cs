@@ -56,7 +56,7 @@ namespace Shoping.Presentation.View.order
                     // create order detail
                     OrderDetailDTO orderDetail = new OrderDetailDTO
                     {
-                        ProductID = _list[i].ProductID,
+                        ProductID = _list[i].RecID,
                         Image = _list[i].Image,
                         NameProduct = _list[i].Name,
                         Quantity = quantity,

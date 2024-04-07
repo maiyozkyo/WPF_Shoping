@@ -13,6 +13,7 @@ namespace Shoping.Presentation.Control
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
         public ObservableCollection<OrderDTO> _orders { get; set; }
         public ObservableCollection<OrderDetailDTO> _listOrderDetail { get; set; }
+        public double OriginalTotal = 0;
         public int pageIndex { get; set; }
         PagingInfo _paging;
         bool flag = false;
@@ -25,7 +26,7 @@ namespace Shoping.Presentation.Control
         public OrderUserControl()
         {
             InitializeComponent();
-            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness);
+            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness, App.iVoucherBusiness);
             DataContext = ManageOrderViewModel;
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -74,6 +75,9 @@ namespace Shoping.Presentation.Control
 
             pageIndex = 1;
             pageTextBox.Text = pageIndex.ToString() + " / " + $"{_paging.totalPage}";
+
+            await ManageOrderViewModel.GetVouchers();
+            CbxVouchers.ItemsSource = ManageOrderViewModel.ListVoucherDTOs;
         }
         private async void loadDataPerPage(int page)
         {
@@ -191,6 +195,8 @@ namespace Shoping.Presentation.Control
         private async void EditCartData_DataInputCompleted(object sender, CartInputEventArgs e)
         {
             total_money.Text = e.TotalMoney.ToString();
+            double.TryParse(total_money.Text, out OriginalTotal);
+            CbxVouchers_SelectionChanged(null, null);
             _listOrderDetail = e.ListOrderDetail;
         }
         private void AddToCart_Click(object sender, RoutedEventArgs e)
@@ -355,6 +361,18 @@ namespace Shoping.Presentation.Control
             total_money.Text = "";
             delivery_date.SelectedDate = null;
             payment_status.IsChecked = false;
+        }
+
+        private void CbxVouchers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Get the selected item
+            var voucher = CbxVouchers.SelectedItem as VoucherDTO;
+            if (OriginalTotal > 0 && voucher != null)
+            {
+                var discount = voucher.IsPercent ? (OriginalTotal * (voucher.Value / 100)) : voucher.Value;
+                var total = OriginalTotal - (voucher.Max > 0 ? Math.Min(discount, voucher.Max) : discount);
+                total_money.Text = total.ToString();
+            }
         }
     }
 }

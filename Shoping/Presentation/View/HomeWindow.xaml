@@ -14,8 +14,8 @@
     <DockPanel LastChildFill="True">
         <Fluent:Ribbon Name="ribbon" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
-                <Fluent:Backstage Header="My Shop">
-                    <Fluent:BackstageTabControl>
+                <Fluent:Backstage Header="My Shop" Name="Backstage">
+                    <Fluent:BackstageTabControl Name="BackstageControl">
                         <Fluent:BackstageTabItem Header="Manage Product">
                             <TabControl Name="tabsProduct" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}" />
                         </Fluent:BackstageTabItem>
@@ -23,8 +23,10 @@
                             <TabControl Name="tabsCategory" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}" />
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Order">
-
                             <TabControl Name="tabsOrder" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}" />
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Voucher">
+                            <TabControl Name="tabVoucher" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}" />
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Statistic">
                             <TabControl Name="tabsStatistic" SelectedIndex="{Binding ElementName=ribbon, Path=SelectedTabIndex}" />
@@ -36,8 +38,7 @@
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
-
         </Fluent:Ribbon>
-
+        <Label Content="Welcome to WPF Shop" FontSize="50" FontWeight="Bold" FontStyle="Italic" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="632" Height="480"/>
     </DockPanel>
 </Fluent:RibbonWindow>
