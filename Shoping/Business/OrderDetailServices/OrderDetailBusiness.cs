@@ -12,12 +12,6 @@ namespace Shoping.Business.OrderDetailServices
 
         }
         // Order details
-        public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime from, DateTime to)
-        {
-            var lstOrderDetails = await Repository.GetAsync(x => x.CreatedOn >= from && x.CreatedOn <= to).ToListAsync();
-            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(lstOrderDetails));
-        }
-
         public async Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
             var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailDTO.RecID);
@@ -67,6 +61,23 @@ namespace Shoping.Business.OrderDetailServices
                 return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(orderDetails));
             }
             return null;
+        }
+        public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime from, DateTime to)
+        {
+            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn >= from && x.CreatedOn <= to).ToListAsync();
+            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
+        }
+        public async Task<List<OrderDetailDTO>> GetOrderDetailsByYear(int year)
+        {
+            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
+            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
+        }
+
+        public async Task<List<OrderDetailDTO>> GetOrderDetailsBy10Year()
+        {
+            int currentYear = DateTime.Now.Year;
+            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year >= currentYear - 10 && x.CreatedOn.Year <= currentYear).ToListAsync();
+            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
         }
     }
 }

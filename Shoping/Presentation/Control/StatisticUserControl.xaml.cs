@@ -9,48 +9,52 @@ namespace Shoping.Presentation.Control
 {
     public partial class StatisticUserControl : UserControl
     {
+        DateTime startDate = DateTime.Today, endDate = DateTime.Today;
+        int year = 0, choose = 0;
         public StatisticViewModel StatisticViewModel { get; set; }
+        public DrawChartModel DrawChartModel { get; set; }
         public StatisticUserControl()
         {
             InitializeComponent();
             StatisticViewModel = new StatisticViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
+            DrawChartModel = new DrawChartModel();
             StatisticCombobox.SelectedIndex = 0;
-            revenueAndProfitChart.Visibility = Visibility.Collapsed;
+            MyChart.Visibility = Visibility.Collapsed;
         }
         private void StatisticCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (StatisticCombobox.SelectedIndex == 0)
             {
                 DatePicker.Visibility = Visibility.Visible;
-                InputYear.Visibility = Visibility.Collapsed;
-            }
-            else if (StatisticCombobox.SelectedIndex == 1 || StatisticCombobox.SelectedIndex == 2)
+                if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
+                {
+                    startDate = (DateTime)StartDate.SelectedDate;
+                    endDate = (DateTime)EndDate.SelectedDate;
+                }
+            } else
             {
                 DatePicker.Visibility = Visibility.Collapsed;
+            }
+
+            if (StatisticCombobox.SelectedIndex == 1 || StatisticCombobox.SelectedIndex == 2)
+            {
                 InputYear.Visibility = Visibility.Visible;
+                if (Regex.IsMatch(txtYear.Text, @"^\d+$"))
+                {
+                    year = int.Parse(txtYear.Text);
+                }
             }
             else
             {
-                DatePicker.Visibility = Visibility.Collapsed;
                 InputYear.Visibility = Visibility.Collapsed;
             }
+
+            choose = StatisticCombobox.SelectedIndex;
         }
         private async void RevenueButton_Click(object sender, RoutedEventArgs e)
         {
-            revenueAndProfitChart.Visibility = Visibility.Visible;
-            var startDate = DateTime.Today;
-            var endDate = DateTime.Today;
-            var year = 0;
-            var choose = StatisticCombobox.SelectedIndex;
-            if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
-            {
-                startDate = (DateTime)StartDate.SelectedDate;
-                endDate = (DateTime)EndDate.SelectedDate;
-            }
-            if (Regex.IsMatch(txtYear.Text, @"^\d+$"))
-            {
-                year = int.Parse(txtYear.Text);
-            }
+            MyChart.Visibility = Visibility.Visible;
+
             var information = await StatisticViewModel.GetRevenueAndSpendingInform(choose, startDate, endDate, year);
             List<int> profits = [];
 
@@ -60,39 +64,16 @@ namespace Shoping.Presentation.Control
                 profits.Add(profit);
             }
 
-            revenueAndProfitChart.Series.Clear();
-            revenueAndProfitChart.AxisX.Clear();
-            revenueAndProfitChart.AxisY.Clear();
+            MyChart = DrawChartModel.DrawDoubleLineChartByTime(information.Item1, profits, "Revenue", "Profit", information.Item3, information.Item4);
+        }
 
-            revenueAndProfitChart.Series =
-            [
-                new LineSeries
-                {
-                    Title = "Revenue",
-                    Values = new ChartValues<int>(information.Item1),
-                },
-                new LineSeries
-                {
-                    Title = "Profit",
-                    Values = new ChartValues<int>(profits),
-                }
-            ];
+        private async void SaleVolumeButton_Click(object sender, RoutedEventArgs e)
+        {
+            MyChart.Visibility = Visibility.Visible;
 
-            if (information.Item1.Count + information.Item2.Count == 0)
-            {
-                revenueAndProfitChart.AxisY.Add(new Axis()
-                {
-                    MaxValue = 10,
-                    MinValue = 0,
-                });
-            }
+            var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
 
-            revenueAndProfitChart.AxisX.Add(new Axis()
-            {
-                Title = information.Item3,
-                Labels = information.Item4,
-                Separator = new LiveCharts.Wpf.Separator { Step = 1 },
-            });
+            MyChart = DrawChartModel.DrawColumnChartByTime();
         }
     }
 }

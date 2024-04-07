@@ -18,7 +18,7 @@ namespace Shoping.Presentation.ViewModels
         public IOrderBusiness IOrderBusiness { get; set; }
         public IOrderDetailBusiness IOrderDetailBusiness { get; set; }
         public IProductBusiness IProductBusiness { get; set; }
-        public ObservableCollection<ChartItemDTO> LstChartItems { get; set; }
+        public ObservableCollection<ChartItemDTO> ListChartItems { get; set; }
         private int Step;
         public ReportViewModel(IOrderBusiness iOrderBusiness, IOrderDetailBusiness iOrderDetailBusiness, IProductBusiness iProductBusiness)
         {
@@ -29,23 +29,23 @@ namespace Shoping.Presentation.ViewModels
 
         public async Task GetBestSellingProductsInRange(DateTime from, DateTime to)
         {
-            var lstOrderDetails = await IOrderDetailBusiness.GetOrderDetailsInRange(from, to);
-            var lkOrderDetails = lstOrderDetails.ToLookup(c => c.ProductID);
-            var lstProductIDs = lkOrderDetails.Select(c => c.Key).ToList();
-            var lstProducts = await IProductBusiness.GetListProductsByRecID(lstProductIDs);
+            var listOrderDetails = await IOrderDetailBusiness.GetOrderDetailsInRange(from, to);
+            var lkOrderDetails = listOrderDetails.ToLookup(c => c.ProductID);
+            var listProductIDs = lkOrderDetails.Select(c => c.Key).ToList();
+            var listProducts = await IProductBusiness.GetListProductsByRecID(listProductIDs);
 
-            var lstChartItemFromProducts = new List<ChartItemDTO>();
-            foreach (var productID in lstProductIDs)
+            var listChartItemFromProducts = new List<ChartItemDTO>();
+            foreach (var productID in listProductIDs)
             {
                 var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
-                var product = lstProducts.FirstOrDefault(x => x.ProductID == productID);
-                lstChartItemFromProducts.Add(new ChartItemDTO
+                var product = listProducts.FirstOrDefault(x => x.ProductID == productID);
+                listChartItemFromProducts.Add(new ChartItemDTO
                 {
                     ColumnName = product.Name,
                     Quantity = (int)soldQuantity,
                 });
             }
-            LstChartItems = new ObservableCollection<ChartItemDTO>(lstChartItemFromProducts);
+            ListChartItems = new ObservableCollection<ChartItemDTO>(listChartItemFromProducts);
         }
     }
 }

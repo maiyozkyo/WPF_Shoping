@@ -1,8 +1,7 @@
 ﻿using Shoping.Business.OrderDetailServices;
 using Shoping.Business.OrderServices;
 using Shoping.Business.ProductServices;
-using System.Linq;
-using System.Windows.Controls.DataVisualization;
+using Shoping.Data_Access.DTOs;
 
 namespace Shoping.Presentation.ViewModels
 {
@@ -11,12 +10,37 @@ namespace Shoping.Presentation.ViewModels
         public IOrderBusiness OrderBusiness = orderBusiness;
         public IOrderDetailBusiness OrderDetailBusiness = orderDetailBusiness;
         public IProductBusiness ProductBusiness = productBusiness;
+        string X_Title = "";
+        List<string> X_Labels = [];
 
+        private void Inittialize(int choose)
+        {
+            switch(choose)
+            {
+                case 0: X_Title = "Date";
+                    break;
+                case 1: X_Title = "Week";
+                    for (int i = 0; i < 53; i++)
+                    {
+                        X_Labels.Add($"{i + 1}");
+                    }
+                    break;
+                case 2: X_Title = "Month";
+                    X_Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                    break;
+                default: X_Title = "Year";
+                    for (int i = 10; i >= 0; i--)
+                {
+                    X_Labels.Add($"{DateTime.Today.Year - i}");
+                }
+                    break;
+            }
+        }
         public async Task<Tuple<List<int>, List<int>, string, List<string>>> GetRevenueAndSpendingInform(int choose, DateTime startDate, DateTime endDate, int year)
         {
             List<int> revenues = [], spending = [];
-            string X_Title;
-            List<string> X_Labels = [];
+
+            Inittialize (choose);
 
             if (choose == 0)
             {
@@ -42,7 +66,6 @@ namespace Shoping.Presentation.ViewModels
                 }
                 var orderedList = revenueAndSpendingByDate.OrderBy(x => x.Item3);
 
-                X_Title = "Date";
                 foreach (var tuple in orderedList)
                 {
                     revenues.Add(tuple.Item1);
@@ -54,31 +77,60 @@ namespace Shoping.Presentation.ViewModels
             {
                 revenues = await OrderBusiness.GetRevenueByWeekAsync(year);
                 spending = await ProductBusiness.GetSpendingByWeekAsync(year);
-                X_Title = "Week";
-                for (int i = 0; i < 53; i++)
-                {
-                    X_Labels.Add($"{i + 1}");
-                }
             }
             else if (choose == 2)
             {
                 revenues = await OrderBusiness.GetRevenueByMonthAsync(year);
                 spending = await ProductBusiness.GetSpendingByMonthAsync(year);
-                X_Title = "Month";
-                X_Labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             }
             else
             {
                 revenues = await OrderBusiness.GetRevenueByYearAsync();
                 spending = await ProductBusiness.GetSpendingByYearAsync();
-                X_Title = "Year";
-                for (int i = 10; i >= 0; i--)
-                {
-                    X_Labels.Add($"{DateTime.Today.Year - i}");
-                }
             }
 
             return new Tuple<List<int>, List<int>, string, List<string>>(revenues, spending, X_Title, X_Labels);
+        }
+        
+        public async Task<Tuple<List<List<ChartItemDTO>>, string, List<string>>> GetSaleVolumeInform(int choose, DateTime startDate, DateTime endDate, int year)
+        {
+            List<List<ChartItemDTO>> quantities = [];
+
+            Inittialize(choose);
+
+            if (choose == 0)
+            {
+                var listOrderDetails = await OrderDetailBusiness.GetOrderDetailsInRange(startDate, endDate);
+                var lkOrderDetails = listOrderDetails.ToLookup(c => c.ProductID);
+                var listProductIDs = lkOrderDetails.Select(c => c.Key).ToList();
+                var listProducts = await ProductBusiness.GetListProductsByRecID(listProductIDs);
+
+                var listChartItemFromProducts = new List<ChartItemDTO>();
+                foreach (var productID in listProductIDs)
+                {
+                    var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
+                    var product = listProducts.FirstOrDefault(x => x.ProductID == productID);
+                    listChartItemFromProducts.Add(new ChartItemDTO
+                    {
+                        ColumnName = product.Name,
+                        Quantity = (int)soldQuantity,
+                    });
+                }
+            }
+            else if (choose == 1)
+            {
+
+            }
+            else if (choose == 2)
+            {
+
+            }
+            else
+            {
+
+            }
+
+            return new Tuple<List<List<ChartItemDTO>>, string, List<string>>(quantities, X_Title, X_Labels);
         }
     }
 }
