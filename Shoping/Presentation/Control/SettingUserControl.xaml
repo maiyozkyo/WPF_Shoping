@@ -9,5 +9,9 @@
     <Canvas>
         <TextBlock Text="Items Per Page: " HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Canvas.Left="26" Canvas.Top="28" Width="99" />
         <ComboBox x:Name="comboBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="79" Canvas.Left="156" Canvas.Top="30" SelectionChanged="comboBox_SelectionChanged" Height="24"/>
+        <Button Content="Backup" Canvas.Left="156" Canvas.Top="87" Height="39" Width="79" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnBackup_Click"/>
+        <Label Content="Backup dữ liệu" Height="39" Canvas.Left="26" Canvas.Top="87" Width="99" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <Button Content="Restore" Canvas.Left="156" Canvas.Top="155" Height="39" Width="79" HorizontalAlignment="Center" VerticalAlignment="Top" Click="BtnRestore_Click"/>
+        <Label Content="Restore dữ liệu" Height="39" Canvas.Left="26" Canvas.Top="155" Width="99" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
     </Canvas>
 </UserControl>

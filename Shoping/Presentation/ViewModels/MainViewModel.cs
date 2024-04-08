@@ -1,22 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using PropertyChanged;
+﻿using PropertyChanged;
 using Shoping.Business.CategoryServices;
 
 //using Shoping.Business.OderServices;
 using Shoping.Business.ProductServices;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoping.Presentation.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
-    public class MainViewModel 
+    public class MainViewModel
     {
         public IProductBusiness ProductBusiness;
         public List<ProductDTO> products { get; set; }
@@ -52,6 +45,10 @@ namespace Shoping.Presentation.ViewModels
         public async Task<bool> CheckProductCategory(Guid category)
         {
             return await ProductBusiness.CheckProductCategory(category);
+        }
+        public async Task<List<ProductDTO>> GetAllProducts()
+        {
+            return await ProductBusiness.GetAllProducts();
         }
     }
 }
