@@ -171,10 +171,17 @@ namespace Shoping.Presentation.Control
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             var selected = productsListView.SelectedItem as ProductDTO;
-            await MainViewModel.DeleteProduct(selected);
-            loadData(1);
-            pagesComboBox.SelectedIndex = 0;
-            MessageBox.Show("Deleted successfully!");
+            if(selected != null)
+            {
+                await MainViewModel.DeleteProduct(selected);
+                loadData(1);
+                pagesComboBox.SelectedIndex = 0;
+                MessageBox.Show("Deleted successfully!");
+            }
+            else
+            {
+                MessageBox.Show("You have to choose an item to delete!");
+            }
         }
 
         private async void editButton_Click(object sender, RoutedEventArgs e)
@@ -182,26 +189,33 @@ namespace Shoping.Presentation.Control
             var categoryList = await categoryViewModel.GetAllCategories();
             ProductDTO oldData = null;
             var selected = productsListView.SelectedItem as ProductDTO;
-            oldData = (ProductDTO)selected.Clone();
-            var screen = new EditProduct(selected, categoryList);
-            if (screen.ShowDialog() == true)
+            if(selected != null)
             {
-                selected.Name = screen.newEditPhone.Name;
-                selected.Price = screen.newEditPhone.Price;
-                selected.PurchasePrice = screen.newEditPhone.PurchasePrice;
-                selected.CatID = screen.newEditPhone.CatID;
-                selected.Quantity = screen.newEditPhone.Quantity;
-                selected.Image = screen.newEditPhone.Image;
-                await MainViewModel.AddUpdateProduct(selected);
-                loadData(_paging.currentPage);
-                MessageBox.Show("Edited successfully");
+                oldData = (ProductDTO)selected.Clone();
+                var screen = new EditProduct(selected, categoryList);
+                if (screen.ShowDialog() == true)
+                {
+                    selected.Name = screen.newEditPhone.Name;
+                    selected.Price = screen.newEditPhone.Price;
+                    selected.PurchasePrice = screen.newEditPhone.PurchasePrice;
+                    selected.CatID = screen.newEditPhone.CatID;
+                    selected.Quantity = screen.newEditPhone.Quantity;
+                    selected.Image = screen.newEditPhone.Image;
+                    await MainViewModel.AddUpdateProduct(selected);
+                    loadData(_paging.currentPage);
+                    MessageBox.Show("Edited successfully");
+                }
+                else
+                {
+                    selected.Name = oldData.Name;
+                    selected.Price = oldData.Price;
+                    selected.Image = oldData.Image;
+                    loadData(_paging.currentPage);
+                }
             }
             else
             {
-                selected.Name = oldData.Name;
-                selected.Price = oldData.Price;
-                selected.Image = oldData.Image;
-                loadData(_paging.currentPage);
+                MessageBox.Show("You have to choose an item to edit!");
             }
         }
 
