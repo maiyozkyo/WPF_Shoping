@@ -9,7 +9,8 @@ namespace Shoping.Business.OrderDetailServices
         public Task<List<OrderDetailDTO>> GetOrderDetailsBy10Year();
 
         public Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId);
-        public Task<double> DeleteOrderDetailsAsync(Guid orderDetailRecID);
+        public Task<double> DeleteOrderDetailsAsync(Guid orderDetailRecID, Guid orderId);
+        public Task<bool> DeleteOrderDetailsByOrder(Guid orderId);
         public Task<List<OrderDetailDTO>> GetAllOrderDetails(Guid orderId);
     }
 }

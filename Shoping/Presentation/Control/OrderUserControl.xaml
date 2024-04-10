@@ -130,8 +130,7 @@
             Padding="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
             <ListView.Resources>
                 <ContextMenu x:Key="OrderContextMenu">

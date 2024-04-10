@@ -26,6 +26,7 @@ namespace Shoping.Presentation.ViewModels
             OrderDetailBusiness = orderDetailBusiness;
             VoucherBusiness = voucherBusiness;
         }
+
         // Customer
         public async Task<Guid> CreateCustomer(CustomerDTO customerDTO)
         {
@@ -37,15 +38,16 @@ namespace Shoping.Presentation.ViewModels
             var result = await CustomerBusiness.GetCustomerById(customerId);
             return result;
         }
+
         // Order details
         public async Task<bool> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
             var result = await OrderDetailBusiness.AddUpdateOrderDetailAsync(orderDetailDTO, orderId);
             return result != Guid.Empty;
         }
-        public async Task<double> DeleteOrderDetail(OrderDetailDTO orderDetailDTO)
+        public async Task<double> DeleteOrderDetail(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
-            var result = await OrderDetailBusiness.DeleteOrderDetailsAsync(orderDetailDTO.ProductID);
+            var result = await OrderDetailBusiness.DeleteOrderDetailsAsync(orderDetailDTO.ProductID, orderId);
             return result;
         }
         public async Task<List<OrderDetailDTO>> GetAllOrderDetails(Guid orderId)
@@ -53,19 +55,19 @@ namespace Shoping.Presentation.ViewModels
             orderDetails = await OrderDetailBusiness.GetAllOrderDetails(orderId);
             return orderDetails;
         }
+
         // Order
         public async Task<Guid> AddUpdateOrderAsync(OrderDTO orderDTO)
         {
             var result = await OrderBusiness.AddUpdateOrderAsync(orderDTO);
             return result;
         }
-
         public async Task<bool> DeleteOrder(OrderDTO orderDTO)
         {
             List<OrderDetailDTO> _list = await OrderDetailBusiness.GetAllOrderDetails(orderDTO.RecID);
             foreach (var orderDetail in _list)
             {
-                await OrderDetailBusiness.DeleteOrderDetailsAsync(orderDetail.RecID);
+                await OrderDetailBusiness.DeleteOrderDetailsByOrder(orderDTO.RecID);
             }
             var result = await OrderBusiness.DeleteOrderAsync(orderDTO.RecID);
             return result;
