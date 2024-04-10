@@ -5,84 +5,119 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Shoping.Presentation.Control"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:Shoping"
     d:DesignHeight="540"
     d:DesignWidth="800"
     Loaded="UserControl_Loaded"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <uc:PaymentStatusConverter x:Key="PaymentStatusConverter" />
+        <DataTemplate x:Key="VoucherTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock  Margin="0,0,5,0">
+                    <Run Text="Mã: " FontWeight="Bold" Foreground="Chocolate"/>
+                    <Run Text="{Binding Code}" FontWeight="Bold" Foreground="Blue"/>
+                </TextBlock>
+                <TextBlock Margin="0,0,5,0">
+                    <Run Text="Giảm: " FontWeight="Bold" Foreground="Chocolate"/>
+                    <Run Text="{Binding Value}" FontWeight="Bold" Foreground="Blue"/>
+                </TextBlock>
+                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Run Text="Giảm theo %: " FontWeight="Bold" Foreground="Chocolate"/>
+                    <CheckBox IsEnabled="False" IsChecked="{Binding IsPercent}" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Top" >
+                    </CheckBox>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
     <Canvas>
         <Label
-            Canvas.Left="10"
-            Canvas.Top="10"
+            Canvas.Left="100"
+            Width="174"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Content="Quản lí đơn hàng"
+            Content="Tạo đơn hàng"
+            FontSize="20"
             FontWeight="Bold"
-            Foreground="Purple" />
+            Foreground="Blue" />
         <Label
-            Canvas.Left="10"
+            Canvas.Left="64"
             Canvas.Top="47"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
             Content="Họ:" />
         <Label
-            Canvas.Left="10"
-            Canvas.Top="73"
-            HorizontalAlignment="Center"
+            Canvas.Left="64"
+            Canvas.Top="72"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Tên:" />
         <Label
-            Canvas.Left="10"
-            Canvas.Top="99"
-            HorizontalAlignment="Center"
+            Canvas.Left="64"
+            Canvas.Top="103"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Tổng tiền:" />
         <Label
-            Canvas.Left="10"
-            Canvas.Top="125"
+            Canvas.Left="64"
+            Canvas.Top="133"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Content="Ngày giao hàng:" />
         <Label
-            Canvas.Left="10"
-            Canvas.Top="151"
+            Canvas.Left="64"
+            Canvas.Top="164"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Content="Tình trạng đơn hàng:" />
         <TextBox
             Name="first_name"
-            Canvas.Left="35"
+            Canvas.Left="100"
             Canvas.Top="50"
             Width="120"
+            Height="20"
             TextWrapping="Wrap" />
         <TextBox
             Name="last_name"
-            Canvas.Left="41"
-            Canvas.Top="76"
+            Canvas.Left="100"
+            Canvas.Top="75"
             Width="120"
+            Height="20"
             TextWrapping="Wrap" />
         <TextBlock
             Name="total_money"
-            Canvas.Left="79"
-            Canvas.Top="103"
-            Width="82"
+            Canvas.Left="132"
+            Canvas.Top="108"
+            Width="85"
+            Height="20"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            TextWrapping="Wrap"
-            Text="0"/>
+            VerticalAlignment="Top"
+            Text="0"
+            TextWrapping="Wrap" />
         <DatePicker
             x:Name="delivery_date"
-            Canvas.Left="112"
-            Canvas.Top="127"
+            Canvas.Left="166"
+            Canvas.Top="134"
             Height="25"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center" />
         <CheckBox
             Name="payment_status"
-            Canvas.Left="133"
-            Canvas.Top="157"
+            Canvas.Left="190"
+            Canvas.Top="169"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Content="Chưa thanh toán" />
+            VerticalAlignment="Center">
+            <CheckBox.Style>
+                <Style TargetType="CheckBox">
+                    <Setter Property="Content" Value="Chưa thanh toán" />
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Content" Value="Đã thanh toán" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
 
         <ListView
             Name="OrderComboBox"
@@ -122,19 +157,19 @@
                         </StackPanel>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <TextBlock Text="Customer ID: " />
-                            <TextBlock Foreground="Green" Text="{Binding CustomerID}" />
+                            <TextBlock Foreground="Orange" Text="{Binding CustomerID}" />
                         </StackPanel>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <TextBlock Text="Total: " />
-                            <TextBlock Foreground="Blue" Text="{Binding TotalMoney}" />
+                            <TextBlock Text="{Binding TotalMoney}" />
                         </StackPanel>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <TextBlock Text="Ngày giao hàng: " />
-                            <TextBlock Foreground="Red" Text="{Binding DeliveryDate}" />
+                            <TextBlock Text="{Binding DeliveryDate}" />
                         </StackPanel>
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <TextBlock Text="Tình trạng đơn hàng: " />
-                            <TextBlock Foreground="Green" Text="{Binding PaymentStatus}" />
+                            <TextBlock Text="{Binding PaymentStatus, Converter={StaticResource PaymentStatusConverter}}" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
@@ -146,23 +181,30 @@
             </ListView.ItemsPanel>
         </ListView>
         <Button
-            Canvas.Left="121"
-            Canvas.Top="182"
-            Height="30"
+            Canvas.Left="129"
+            Canvas.Top="237"
+            Width="116"
+            Height="27"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
             Click="CreateOrder_Click"
-            Content="Tạo đơn hàng" />
+            Content="Xác nhận" />
         <Button
-            Canvas.Left="166"
-            Canvas.Top="101"
-            Width="30"
+            Canvas.Left="222"
+            Canvas.Top="108"
+            Width="34"
             Height="20"
-            HorizontalAlignment="Left"
+            HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Click="AddToCart_Click"
             Content="+" />
         <Button
-            Canvas.Left="201"
-            Canvas.Top="101"
+            Canvas.Left="261"
+            Canvas.Top="108"
+            Width="35"
+            Height="20"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
             Click="ResetCart_Click"
             Content="Reset" />
         <Label
@@ -204,16 +246,14 @@
             VerticalAlignment="Top"
             Click="SearchOrder_Click"
             Content="Search" />
-
         <Rectangle
             Canvas.Left="10"
-            Canvas.Top="243"
+            Canvas.Top="269"
             Width="299"
             Height="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Stroke="Black" />
-
         <TextBox
             Name="pageTextBox"
             Canvas.Left="516"
@@ -223,7 +263,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             TextAlignment="Center" />
-
         <Button
             Name="previousButton"
             Canvas.Left="461"
@@ -249,8 +288,10 @@
             Canvas.Top="481"
             Width="50"
             Height="25"
-            Content="Reload"
-            Click="ReloadedOrder"/>
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Click="ReloadedOrder_Click"
+            Content="Reload" />
         <Label
             Canvas.Left="37"
             Canvas.Top="270"
@@ -261,8 +302,9 @@
             FontSize="20"
             FontWeight="Bold"
             Foreground="Blue" />
+        <Label Content="Mã giảm giá:" Canvas.Left="64" Canvas.Top="195" HorizontalAlignment="Left" VerticalAlignment="Center" Width="76"/>
 
-
-
+        <ComboBox Name="CbxVouchers" SelectionChanged="CbxVouchers_SelectionChanged" ItemTemplate="{StaticResource VoucherTemplate}" Canvas.Left="145" Canvas.Top="198" Width="141" HorizontalAlignment="Left" VerticalAlignment="Center" >
+        </ComboBox>
     </Canvas>
 </UserControl>

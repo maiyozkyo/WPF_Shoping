@@ -21,6 +21,8 @@ namespace Shoping.Business.OrderDetailServices
                 {
                     OrderID = orderId,
                     ProductID = orderDetailDTO.ProductID,
+                    Image = orderDetailDTO.Image,
+                    NameProduct = orderDetailDTO.NameProduct,
                     Quantity = orderDetailDTO.Quantity,
                     Price = orderDetailDTO.Price,
                     Total = orderDetailDTO.Quantity * orderDetailDTO.Price,
@@ -29,8 +31,6 @@ namespace Shoping.Business.OrderDetailServices
             }
             else
             {
-                orderDetail.OrderID = orderId;
-                orderDetail.ProductID = orderDetailDTO.ProductID;
                 orderDetail.Quantity = orderDetailDTO.Quantity;
                 orderDetail.Price = orderDetailDTO.Price;
                 orderDetail.Total = orderDetailDTO.Quantity * orderDetailDTO.Price;

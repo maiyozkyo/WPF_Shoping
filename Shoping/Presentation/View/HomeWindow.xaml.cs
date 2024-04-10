@@ -46,6 +46,16 @@ namespace Shoping.Presentation.View
                 new TabItem() { Content = new Control.SettingUserControl()},
             };
             tabsSetting.ItemsSource = settingTabs;
+
+            var voucherTab = new ObservableCollection<TabItem>()
+            {
+                new TabItem
+                {
+                    Content = new Control.VoucherControl()
+                }
+            };
+            tabVoucher.ItemsSource = voucherTab;
+            ribbon.TabIndex = 0;
         }
         private void Quit_Handle(object sender, MouseButtonEventArgs e)
         {

@@ -13,13 +13,14 @@ namespace Shoping.Presentation.View.order
         public ObservableCollection<OrderDetailDTO> _listOrderDetail { get; set; }
 
         public event EventHandler<DataInputEventArgs> DataInputCompleted;
+        public event EventHandler DataUpdated;
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
         public MainViewModel MainViewModel { get; set; }
         public DataEditControlxaml(int selectedIndex, OrderDTO editOrder)
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness);
+            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness, App.iVoucherBusiness);
             MainViewModel = new MainViewModel(App.iProductBusiness);
             DataContext = ManageOrderViewModel;
             DataContext = MainViewModel;
@@ -50,6 +51,8 @@ namespace Shoping.Presentation.View.order
                 _list.Add(new OrderDetailDTO
                 {
                     ProductID = orderDetailDTO.ProductID,
+                    Image = orderDetailDTO.Image,
+                    NameProduct = orderDetailDTO.NameProduct,
                     Quantity = orderDetailDTO.Quantity,
                     Price = orderDetailDTO.Price,
                     Total = orderDetailDTO.Total,
@@ -89,15 +92,24 @@ namespace Shoping.Presentation.View.order
 
             double totalDeleted = await ManageOrderViewModel.DeleteOrderDetail(_orderDetailDTO);
             total_money.Text = ((double.Parse(total_money.Text) - totalDeleted).ToString());
+            MessageBox.Show($"Xoá khỏi giỏ hàng thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             LoadData();
         }
-        private void Confirm_Click(object sender, RoutedEventArgs e)
+        private async void Confirm_Click(object sender, RoutedEventArgs e)
         {
             double totalMoney = double.Parse(total_money.Text);
             DateTime? dateDelivery = delivery_date.SelectedDate;
             bool paymentStatus = payment_status.IsChecked ?? false;
 
-            DataInputCompleted?.Invoke(this, new DataInputEventArgs(totalMoney, dateDelivery.Value, paymentStatus, SelectedIndex));
+            if (totalMoney == 0)
+            {
+                await ManageOrderViewModel.DeleteOrder(EditOrder);
+                DataInputCompleted?.Invoke(this, null);
+            }
+            else
+            {
+                DataInputCompleted?.Invoke(this, new DataInputEventArgs(totalMoney, dateDelivery.Value, paymentStatus, SelectedIndex));
+            }
             var parentWindow = Window.GetWindow(this);
             if (parentWindow != null)
             {

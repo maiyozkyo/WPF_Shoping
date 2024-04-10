@@ -24,7 +24,7 @@ namespace Shoping.Presentation.View.order
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness);
+            ManageOrderViewModel = new ManageOrderViewModel(App.iOrderBusiness, App.iCustomerBusiness, App.iOrderDetailBusiness, App.iVoucherBusiness);
             MainViewModel = new MainViewModel(App.iProductBusiness);
             DataContext = ManageOrderViewModel;
             DataContext = MainViewModel;
@@ -37,6 +37,10 @@ namespace Shoping.Presentation.View.order
             if (editOrder.PaymentStatus)
             {
                 payment_status.Text = "Đã giao hàng";
+            }
+            else
+            {
+                payment_status.Text = "Chưa giao hàng";
             }
         }
         private async void GetCustomerData(Guid customerId)
@@ -58,6 +62,8 @@ namespace Shoping.Presentation.View.order
                 _list.Add(new OrderDetailDTO
                 {
                     ProductID = orderDetailDTO.ProductID,
+                    Image = orderDetailDTO.Image,
+                    NameProduct = orderDetailDTO.NameProduct,
                     Quantity = orderDetailDTO.Quantity,
                     Price = orderDetailDTO.Price,
                     Total = orderDetailDTO.Total,

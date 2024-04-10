@@ -224,15 +224,6 @@ namespace Shoping.Presentation.View
             loadDataSearch(search, _paging.currentPage);
         }
 
-        private void OpenReport_Click(object sender, RoutedEventArgs e)
-        {
-            var screen = new Report();
-            if (screen.ShowDialog() == true)
-            {
-
-            }
-        }
-
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 

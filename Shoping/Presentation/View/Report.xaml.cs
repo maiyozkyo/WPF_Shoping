@@ -23,19 +23,22 @@ namespace Shoping.Presentation.View
     public partial class Report : Window
     {
         public ReportViewModel ReportViewModel { get; set; }
+        private DateTime StartDate { get; }
+        private DateTime EndDate { get; }
 
-        public Report()
+        public Report(DateTime startDate, DateTime endDate)
         {
             InitializeComponent();
             ReportViewModel = new ReportViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
             DataContext = ReportViewModel;
+            StartDate = startDate;
+            EndDate = endDate;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var fromDate = DateTime.Now.AddDays(-7);
-            var toDate = DateTime.Now;
-            await ReportViewModel.GetBestSellingProductsInRange(fromDate, toDate);
+            await ReportViewModel.GetBestSellingProductsInRange(StartDate, EndDate);
         }
+
     }
 }

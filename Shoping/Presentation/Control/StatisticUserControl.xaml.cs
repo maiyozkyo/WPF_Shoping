@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using LiveCharts.Wpf;
+using Shoping.Presentation.View;
 
 namespace Shoping.Presentation.Control
 {
@@ -74,6 +75,23 @@ namespace Shoping.Presentation.Control
             var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
 
             MyChart = DrawChartModel.DrawColumnChartByTime();
+        }
+
+        private async void BtnBestSellingProducts_Click(object sender, RoutedEventArgs e)
+        {
+            if (StartDate.SelectedDate.HasValue && EndDate.SelectedDate.HasValue)
+            {
+                var reportWindow = new Report(StartDate.SelectedDate.Value, EndDate.SelectedDate.Value);
+                if (reportWindow.ShowDialog() == true)
+                {
+
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn ngày bắt đầu và ngày kết thúc!");
+            }
         }
     }
 }
