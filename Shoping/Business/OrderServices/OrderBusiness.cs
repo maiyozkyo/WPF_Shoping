@@ -81,7 +81,7 @@ namespace Shoping.Business.OrderServices
 
             foreach (var week in ordersByWeek.Select(x => x.Key).OrderBy(x => x))
             {
-                var total = (int)ordersByWeek[week].Sum(x => x.TotalMoney * 1000);
+                var total = (int)ordersByWeek[week].Sum(x => x.TotalMoney);
                 revenueByWeek[week] = total;
             }
             return revenueByWeek;
@@ -95,7 +95,7 @@ namespace Shoping.Business.OrderServices
 
             foreach (var month in ordersByMonth.Select(x => x.Key).OrderBy(x => x))
             {
-                var total = (int)ordersByMonth[month].Sum(x => x.TotalMoney * 1000);
+                var total = (int)ordersByMonth[month].Sum(x => x.TotalMoney);
                 revenueByMonth[month - 1] = total;
             }
             return revenueByMonth;
@@ -111,7 +111,7 @@ namespace Shoping.Business.OrderServices
 
             foreach (var year in ordersByYear.Select(x => x.Key).OrderBy(x => x))
             {
-                var total = (int)ordersByYear[year].Sum(x => x.TotalMoney * 1000);
+                var total = (int)ordersByYear[year].Sum(x => x.TotalMoney);
                 revenueByYear[year] = total;
             }
             return revenueByYear;
@@ -119,15 +119,16 @@ namespace Shoping.Business.OrderServices
 
         public async Task<Tuple<List<int>, List<string>>> GetRevenueInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
-            var listOrders = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => (fromDate.Day <= x.CreatedOn.Day || fromDate.Month <= x.CreatedOn.Month || fromDate.Year <= x.CreatedOn.Year) && (x.CreatedOn.Day <= toDate.Day || x.CreatedOn.Month <= toDate.Month || x.CreatedOn.Year <= toDate.Year)).ToListAsync();
             var ordersByDateTime = listOrders.ToLookup(x => x.CreatedOn.Date);
             List<int> revenueInDateRange = [];
             List<string> dates = [];
 
             foreach (var dateTime in ordersByDateTime.Select(x => x.Key).OrderBy(x => x))
             {
-                var total = (int)ordersByDateTime[dateTime].Sum(x => x.TotalMoney * 1000);
+                var total = (int)ordersByDateTime[dateTime].Sum(x => x.TotalMoney);
                 revenueInDateRange.Add(total);
+                dates.Add(dateTime.ToString()[..10]);
             }
             return new Tuple<List<int>, List<string>>(revenueInDateRange, dates);
         }

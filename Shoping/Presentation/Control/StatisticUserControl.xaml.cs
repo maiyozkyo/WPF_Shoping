@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using LiveCharts.Wpf;
 using Shoping.Presentation.View;
 
+
 namespace Shoping.Presentation.Control
 {
     public partial class StatisticUserControl : UserControl
@@ -52,9 +53,16 @@ namespace Shoping.Presentation.Control
 
             choose = StatisticCombobox.SelectedIndex;
         }
-        private async void RevenueButton_Click(object sender, RoutedEventArgs e)
+        private void InitializeChart()
         {
             MyChart.Visibility = Visibility.Visible;
+            MyChart.Series.Clear();
+            MyChart.AxisX.Clear();
+            MyChart.AxisY.Clear();
+        }
+        private async void RevenueButton_Click(object sender, RoutedEventArgs e)
+        {
+            InitializeChart();
 
             var information = await StatisticViewModel.GetRevenueAndSpendingInform(choose, startDate, endDate, year);
             List<int> profits = [];
@@ -65,12 +73,40 @@ namespace Shoping.Presentation.Control
                 profits.Add(profit);
             }
 
-            MyChart = DrawChartModel.DrawDoubleLineChartByTime(information.Item1, profits, "Revenue", "Profit", information.Item3, information.Item4);
+            //MyChart = DrawChartModel.DrawDoubleLineChartByTime(information.Item1, profits, "Revenue", "Profit", information.Item3, information.Item4);
+
+            MyChart.Series = [
+                    new LineSeries
+                    {
+                        Title = "Revenue",
+                        Values = new ChartValues<int>(information.Item1),
+                    },
+                new LineSeries
+                {
+                    Title = "Profit",
+                    Values = new ChartValues<int>(profits),
+                }
+            ];
+
+            if (information.Item1.Count + profits.Count == 0)
+            {
+                MyChart.AxisY.Add(new Axis()
+                {
+                    MaxValue = 10,
+                    MinValue = 0,
+                });
+            }
+
+            MyChart.AxisX.Add(new Axis()
+            {
+                Title = information.Item3,
+                Labels = information.Item4,
+            });
         }
 
         private async void SaleVolumeButton_Click(object sender, RoutedEventArgs e)
         {
-            MyChart.Visibility = Visibility.Visible;
+            InitializeChart();
 
             var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
 

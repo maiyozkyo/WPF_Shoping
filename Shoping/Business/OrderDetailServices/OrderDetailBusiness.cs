@@ -62,9 +62,9 @@ namespace Shoping.Business.OrderDetailServices
             }
             return null;
         }
-        public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime from, DateTime to)
+        public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime fromDate, DateTime toDate)
         {
-            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn >= from && x.CreatedOn <= to).ToListAsync();
+            var listOrderDetails = await Repository.GetAsync(x => (fromDate.Day <= x.CreatedOn.Day || fromDate.Month <= x.CreatedOn.Month || fromDate.Year <= x.CreatedOn.Year) && (x.CreatedOn.Day <= toDate.Day || x.CreatedOn.Month <= toDate.Month || x.CreatedOn.Year <= toDate.Year)).ToListAsync();
             return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
         }
         public async Task<List<OrderDetailDTO>> GetOrderDetailsByYear(int year)

@@ -8,21 +8,19 @@ namespace Shoping.Presentation.ViewModels
     {
         public CartesianChart DrawDoubleLineChartByTime(List<int> values1, List<int> values2, string title1, string title2, string X_Title, List<string> X_Labels)
         {
-            CartesianChart chart = new()
-            {
-                Series = [
+            CartesianChart chart = new();
+            chart.Series = [
                     new LineSeries
                     {
                         Title = title1,
                         Values = new ChartValues<int>(values1),
                     },
-                    new LineSeries
-                    {
-                        Title = title2,
-                        Values = new ChartValues<int>(values2),
-                    }
-                ]
-            };
+                new LineSeries
+                {
+                    Title = title2,
+                    Values = new ChartValues<int>(values2),
+                }
+            ];
 
             if (values1.Count + values2.Count == 0)
             {
