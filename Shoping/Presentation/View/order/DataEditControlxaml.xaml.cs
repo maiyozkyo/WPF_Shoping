@@ -16,6 +16,7 @@ namespace Shoping.Presentation.View.order
         public event EventHandler DataUpdated;
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
         public MainViewModel MainViewModel { get; set; }
+        double _totalMoney;
         public DataEditControlxaml(int selectedIndex, OrderDTO editOrder)
         {
             InitializeComponent();
@@ -60,7 +61,6 @@ namespace Shoping.Presentation.View.order
             }
             PhoneComboBox.ItemsSource = _list;
         }
-        double _totalMoney;
         private async void EditCartData_DataInputCompleted(object sender, CartInputEventArgs e)
         {
             _totalMoney = e.TotalMoney + double.Parse(total_money.Text);

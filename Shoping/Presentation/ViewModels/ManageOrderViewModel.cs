@@ -45,7 +45,7 @@ namespace Shoping.Presentation.ViewModels
         }
         public async Task<double> DeleteOrderDetail(OrderDetailDTO orderDetailDTO)
         {
-            var result = await OrderDetailBusiness.DeleteOrderDetailsAsync(orderDetailDTO.RecID);
+            var result = await OrderDetailBusiness.DeleteOrderDetailsAsync(orderDetailDTO.ProductID);
             return result;
         }
         public async Task<List<OrderDetailDTO>> GetAllOrderDetails(Guid orderId)

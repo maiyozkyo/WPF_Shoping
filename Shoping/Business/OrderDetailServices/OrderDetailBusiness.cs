@@ -20,7 +20,7 @@ namespace Shoping.Business.OrderDetailServices
 
         public async Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
-            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailDTO.RecID);
+            var orderDetail = await Repository.GetOneAsync(x => x.ProductID == orderDetailDTO.ProductID);
             if (orderDetail == null)
             {
                 orderDetail = new OrderDetail
@@ -37,8 +37,7 @@ namespace Shoping.Business.OrderDetailServices
             }
             else
             {
-                orderDetail.Quantity = orderDetailDTO.Quantity;
-                orderDetail.Price = orderDetailDTO.Price;
+                orderDetail.Quantity += orderDetailDTO.Quantity;
                 orderDetail.Total = orderDetailDTO.Quantity * orderDetailDTO.Price;
                 Repository.Update(orderDetail);
             }
@@ -46,9 +45,9 @@ namespace Shoping.Business.OrderDetailServices
             return orderDetail.RecID;
         }
 
-        public async Task<double> DeleteOrderDetailsAsync(Guid orderDetailRecID)
+        public async Task<double> DeleteOrderDetailsAsync(Guid orderDetailProductID)
         {
-            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailRecID);
+            var orderDetail = await Repository.GetOneAsync(x => x.ProductID == orderDetailProductID);
             double totalDeleted = 0;
             if (orderDetail != null)
             {

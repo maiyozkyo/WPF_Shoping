@@ -4,25 +4,10 @@ using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
 using Shoping.Presentation.View;
 using Shoping.Presentation.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Shoping.Presentation.Control
 {
@@ -48,7 +33,7 @@ namespace Shoping.Presentation.Control
             public int currentPage { get; set; }
             public int totalPage { get; set; }
             public int itemsPerPage { get; set; }
-    }
+        }
         public ProductUserControl()
         {
             InitializeComponent();
@@ -239,7 +224,7 @@ namespace Shoping.Presentation.Control
 
         private async void categoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if((ComboBoxItem)categoryComboBox.SelectedItem != null)
+            if ((ComboBoxItem)categoryComboBox.SelectedItem != null)
             {
                 categoryFilter = Guid.Parse(((ComboBoxItem)categoryComboBox.SelectedItem).Tag.ToString());
             }
@@ -300,15 +285,20 @@ namespace Shoping.Presentation.Control
         {
             priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
             priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
-            if(priceFromFilter > priceToFilter)
+            if (priceFromFilter > priceToFilter)
             {
-                MessageBox.Show("Error! Price from cannot larget than price to");
+                MessageBox.Show("Error! Price from cannot larger than price to");
             }
             else
             {
                 loadData(1);
                 pagesComboBox.SelectedIndex = 0;
             }
+        }
+
+        private void priceSortFromTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

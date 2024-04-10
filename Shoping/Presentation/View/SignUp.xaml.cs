@@ -1,23 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Shoping.Business;
-using Shoping.Data_Access.DB.UnitOfWork;
-using Shoping.Data_Access.DTOs;
-using Shoping.Data_Access.Models;
+﻿using Shoping.Data_Access.DTOs;
 using Shoping.Presentation.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Shoping.Presentation
 {
@@ -51,7 +36,9 @@ namespace Shoping.Presentation
             if (addedUser != null)
             {
                 MessageBox.Show("Đăng ký thành công");
+                var loginView = new Login();
                 this.Close();
+                loginView.Show();
             }
             else
             {
@@ -61,7 +48,9 @@ namespace Shoping.Presentation
 
         private void CloseClick(object sender, RoutedEventArgs e)
         {
+            var loginView = new Login();
             this.Close();
+            loginView.Show();
         }
     }
 }

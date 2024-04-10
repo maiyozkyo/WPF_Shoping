@@ -50,20 +50,27 @@ namespace Shoping.Presentation.View.order
             {
                 if (quantity > 0)
                 {
-                    MessageBox.Show($"Thêm vào đơn hàng thành công", "Notice", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _totalMoney += (double)_list[i].Price * quantity;
-
-                    // create order detail
-                    OrderDetailDTO orderDetail = new OrderDetailDTO
+                    if (i >= 0)
                     {
-                        ProductID = _list[i].RecID,
-                        Image = _list[i].Image,
-                        NameProduct = _list[i].Name,
-                        Quantity = quantity,
-                        Price = _list[i].Price,
-                        Total = _list[i].Price * quantity,
-                    };
-                    _listOrderDetail.Add(orderDetail);
+                        MessageBox.Show($"Thêm vào đơn hàng thành công", "Notice", MessageBoxButton.OK, MessageBoxImage.Information);
+                        _totalMoney += (double)_list[i].Price * quantity;
+
+                        // create order detail
+                        OrderDetailDTO orderDetail = new OrderDetailDTO
+                        {
+                            ProductID = _list[i].RecID,
+                            Image = _list[i].Image,
+                            NameProduct = _list[i].Name,
+                            Quantity = quantity,
+                            Price = _list[i].Price,
+                            Total = _list[i].Price * quantity,
+                        };
+                        _listOrderDetail.Add(orderDetail);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Vui lòng chọn sản phẩm trước khi nhập số lượng", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
                 else
                 {

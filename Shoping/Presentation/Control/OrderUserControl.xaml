@@ -15,15 +15,15 @@
         <DataTemplate x:Key="VoucherTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock  Margin="0,0,5,0">
-                    <Run Text="Mã: " FontWeight="Bold" Foreground="Chocolate"/>
-                    <Run Text="{Binding Code}" FontWeight="Bold" Foreground="Blue"/>
+                    <Run Text="Mã:" FontWeight="Bold" Foreground="Chocolate"/>
+                    <Run Text="{Binding Code}" Foreground="Blue"/>
                 </TextBlock>
                 <TextBlock Margin="0,0,5,0">
-                    <Run Text="Giảm: " FontWeight="Bold" Foreground="Chocolate"/>
-                    <Run Text="{Binding Value}" FontWeight="Bold" Foreground="Blue"/>
+                    <Run Text="Giảm:" FontWeight="Bold" Foreground="Chocolate"/>
+                    <Run Text="{Binding Value}"/>
                 </TextBlock>
                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left">
-                    <Run Text="Giảm theo %: " FontWeight="Bold" Foreground="Chocolate"/>
+                    <Run Text="Giảm theo %:"/>
                     <CheckBox IsEnabled="False" IsChecked="{Binding IsPercent}" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Top" >
                     </CheckBox>
                 </TextBlock>
@@ -31,84 +31,86 @@
         </DataTemplate>
     </UserControl.Resources>
     <Canvas>
+        <Rectangle Height="124" Canvas.Left="19" Stroke="Black" Canvas.Top="327" Width="286" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Rectangle Height="222" Canvas.Left="16" Stroke="Black" Canvas.Top="38" Width="286" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <Label
-            Canvas.Left="100"
+            Canvas.Left="10"
             Width="174"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Content="Tạo đơn hàng"
             FontSize="20"
             FontWeight="Bold"
-            Foreground="Blue" />
+            Foreground="Blue" Canvas.Top="1" />
         <Label
-            Canvas.Left="64"
-            Canvas.Top="47"
+            Canvas.Left="22"
+            Canvas.Top="43"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Content="Họ:" />
         <Label
-            Canvas.Left="64"
-            Canvas.Top="72"
+            Canvas.Left="22"
+            Canvas.Top="68"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Tên:" />
         <Label
-            Canvas.Left="64"
-            Canvas.Top="103"
+            Canvas.Left="22"
+            Canvas.Top="99"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Tổng tiền:" />
         <Label
-            Canvas.Left="64"
-            Canvas.Top="133"
-            HorizontalAlignment="Center"
+            Canvas.Left="22"
+            Canvas.Top="129"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Ngày giao hàng:" />
         <Label
-            Canvas.Left="64"
-            Canvas.Top="164"
-            HorizontalAlignment="Center"
+            Canvas.Left="22"
+            Canvas.Top="160"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Tình trạng đơn hàng:" />
         <TextBox
-            Name="first_name"
-            Canvas.Left="100"
-            Canvas.Top="50"
+            x:Name="first_name"
+            Canvas.Left="90"
+            Canvas.Top="46"
             Width="120"
             Height="20"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <TextBox
-            Name="last_name"
-            Canvas.Left="100"
-            Canvas.Top="75"
+            x:Name="last_name"
+            Canvas.Left="90"
+            Canvas.Top="71"
             Width="120"
             Height="20"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <TextBlock
-            Name="total_money"
-            Canvas.Left="132"
-            Canvas.Top="108"
+            x:Name="total_money"
+            Canvas.Left="90"
+            Canvas.Top="104"
             Width="85"
             Height="20"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Text="0"
             TextWrapping="Wrap" />
         <DatePicker
             x:Name="delivery_date"
-            Canvas.Left="166"
-            Canvas.Top="134"
+            Canvas.Left="124"
+            Canvas.Top="130"
             Height="25"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center" />
-        <CheckBox
-            Name="payment_status"
-            Canvas.Left="190"
-            Canvas.Top="169"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center">
+            VerticalAlignment="Top" />
+        <CheckBox
+            x:Name="payment_status"
+            Canvas.Left="148"
+            Canvas.Top="165"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top">
             <CheckBox.Style>
-                <Style TargetType="CheckBox">
+                <Style TargetType="{x:Type CheckBox}">
                     <Setter Property="Content" Value="Chưa thanh toán" />
                     <Style.Triggers>
                         <Trigger Property="IsChecked" Value="True">
@@ -120,7 +122,7 @@
         </CheckBox>
 
         <ListView
-            Name="OrderComboBox"
+            x:Name="OrderComboBox"
             Canvas.Left="331"
             Canvas.Top="28"
             Width="420"
@@ -150,6 +152,7 @@
                     <StackPanel
                         Width="400"
                         Height="100"
+                        Margin="10"
                         VerticalAlignment="Center">
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <TextBlock Text="ID: " />
@@ -181,26 +184,26 @@
             </ListView.ItemsPanel>
         </ListView>
         <Button
-            Canvas.Left="129"
-            Canvas.Top="237"
+            Canvas.Left="103"
+            Canvas.Top="225"
             Width="116"
-            Height="27"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
+            Height="26"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
             Click="CreateOrder_Click"
             Content="Xác nhận" />
         <Button
-            Canvas.Left="222"
-            Canvas.Top="108"
+            Canvas.Left="217"
+            Canvas.Top="104"
             Width="34"
             Height="20"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
             Click="AddToCart_Click"
             Content="+" />
         <Button
-            Canvas.Left="261"
-            Canvas.Top="108"
+            Canvas.Left="256"
+            Canvas.Top="104"
             Width="35"
             Height="20"
             HorizontalAlignment="Left"
@@ -208,54 +211,62 @@
             Click="ResetCart_Click"
             Content="Reset" />
         <Label
-            Canvas.Left="64"
-            Canvas.Top="334"
+            Canvas.Left="25"
+            Canvas.Top="339"
             Width="60"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
             Content="Từ ngày:" />
         <Label
-            Canvas.Left="64"
-            Canvas.Top="384"
+            Canvas.Left="25"
+            Canvas.Top="375"
             Width="60"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
             Content="Đến ngày:" />
         <DatePicker
             x:Name="date_before"
-            Canvas.Left="129"
-            Canvas.Top="334"
+            Canvas.Left="90"
+            Canvas.Top="339"
             Width="116"
             Height="26"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center" />
+            VerticalAlignment="Top" />
         <DatePicker
             x:Name="date_after"
-            Canvas.Left="129"
-            Canvas.Top="384"
+            Canvas.Left="90"
+            Canvas.Top="375"
             Width="116"
             Height="26"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center" />
+            VerticalAlignment="Top" />
         <Button
-            Canvas.Left="129"
-            Canvas.Top="431"
+            Canvas.Left="90"
+            Canvas.Top="412"
             Width="116"
             Height="27"
-            HorizontalAlignment="Left"
+            HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Click="SearchOrder_Click"
             Content="Search" />
         <Rectangle
-            Canvas.Left="10"
-            Canvas.Top="269"
-            Width="299"
+            Canvas.Top="278"
+            Width="327"
             Height="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Stroke="Black" />
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Stroke="Black" RenderTransformOrigin="0.5,0.5" Canvas.Left="-8" >
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.435"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
         <TextBox
-            Name="pageTextBox"
+            x:Name="pageTextBox"
             Canvas.Left="516"
             Canvas.Top="481"
             Width="50"
@@ -264,7 +275,7 @@
             VerticalAlignment="Center"
             TextAlignment="Center" />
         <Button
-            Name="previousButton"
+            x:Name="previousButton"
             Canvas.Left="461"
             Canvas.Top="481"
             Width="50"
@@ -274,7 +285,7 @@
             Click="previousButton_Click"
             Content="Previous" />
         <Button
-            Name="nextButton"
+            x:Name="nextButton"
             Canvas.Left="571"
             Canvas.Top="481"
             Width="50"
@@ -289,22 +300,31 @@
             Width="50"
             Height="25"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Click="ReloadedOrder_Click"
             Content="Reload" />
         <Label
-            Canvas.Left="37"
-            Canvas.Top="270"
-            Width="289"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
+            Canvas.Left="16"
+            Canvas.Top="281"
+            Width="286"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
             Content="Tìm kiếm đơn hàng được tạo"
             FontSize="20"
             FontWeight="Bold"
-            Foreground="Blue" />
-        <Label Content="Mã giảm giá:" Canvas.Left="64" Canvas.Top="195" HorizontalAlignment="Left" VerticalAlignment="Center" Width="76"/>
+            Foreground="Blue" Height="39" />
+        <Label Content="Mã giảm giá:" Canvas.Left="22" Canvas.Top="191" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76"/>
 
-        <ComboBox Name="CbxVouchers" SelectionChanged="CbxVouchers_SelectionChanged" ItemTemplate="{StaticResource VoucherTemplate}" Canvas.Left="145" Canvas.Top="198" Width="141" HorizontalAlignment="Left" VerticalAlignment="Center" >
-        </ComboBox>
+        <ComboBox x:Name="CbxVouchers" SelectionChanged="CbxVouchers_SelectionChanged" ItemTemplate="{StaticResource VoucherTemplate}" Canvas.Left="103" Canvas.Top="194" Width="141" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Height="815" Canvas.Left="319" Stroke="Black" Canvas.Top="-8" Width="1" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.235"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
     </Canvas>
 </UserControl>
