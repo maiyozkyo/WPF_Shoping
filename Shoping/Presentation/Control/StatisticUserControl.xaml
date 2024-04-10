@@ -10,24 +10,25 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Canvas>
         <Button Content="Revenue and profit" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="30" Canvas.Top="60" Click="RevenueButton_Click" Height="30" Width="120"/>
-        <Button Content="Products and sales volume" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="193" Canvas.Top="60" Width="150" Height="30"/>
-        <ComboBox x:Name="StatisticCombobox" Canvas.Left="27" Canvas.Top="16" Width="130" Height="30" SelectionChanged="StatisticCombobox_SelectionChanged" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Button Content="Products and sales volume" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="155" Canvas.Top="60" Width="150" Height="30"/>
+        <ComboBox x:Name="StatisticCombobox" Canvas.Left="30" Canvas.Top="18" Width="120" Height="30" SelectionChanged="StatisticCombobox_SelectionChanged" HorizontalAlignment="Left" VerticalAlignment="Center">
             <ComboBoxItem Content="From date to date"/>
             <ComboBoxItem Content="By weeks"/>
             <ComboBoxItem Content="By months"/>
             <ComboBoxItem Content="By years"/>
+
         </ComboBox>
-        <StackPanel Orientation="Horizontal" Canvas.Left="170" Canvas.Top="20" Name="DatePicker">
+        <StackPanel Orientation="Horizontal" Canvas.Left="170" Canvas.Top="20" Name="DatePicker" HorizontalAlignment="Center" Height="28" VerticalAlignment="Top">
             <Label Content="From"/>
             <DatePicker SelectedDate="{x:Static sys:DateTime.Today}" x:Name="StartDate"/>
             <Label Content="To" Margin="30 0 0 0"/>
             <DatePicker SelectedDate="{x:Static sys:DateTime.Today}" x:Name="EndDate"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Canvas.Left="170" Canvas.Top="20" Name="InputYear">
-            <Label Content="Year"/>
-            <TextBox x:Name="txtYear" Width="80"/>
+            <Label Content="Year" Height="30"/>
+            <TextBox x:Name="txtYear" Height="30" Width="80" TextChanged="txtYear_TextChanged"/>
         </StackPanel>
         <lvc:CartesianChart Name="revenueAndProfitChart" LegendLocation="Bottom" Height="310" Width="740" Canvas.Left="30" Canvas.Top="98"/>
-        <Button Content="Best Selling Products" Canvas.Left="391" Canvas.Top="62" Height="30" Width="156" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnBestSellingProducts_Click"/>
+        <Button Content="Best selling products" Canvas.Left="310" Canvas.Top="60" Height="30" Width="156" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnBestSellingProducts_Click"/>
     </Canvas>
 </UserControl>

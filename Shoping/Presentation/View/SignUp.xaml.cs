@@ -15,6 +15,7 @@ namespace Shoping.Presentation
         public SignUp()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             SignUpViewModel = new SignUpViewModel(App.iUserBusiness);
         }
 
