@@ -43,10 +43,10 @@ namespace Shoping.Presentation.ViewModels
             foreach (var productID in listProductIDs)
             {
                 var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
-                var product = lstProducts.FirstOrDefault(x => x.ProductID == productID);
+                var product = listProducts.FirstOrDefault(x => x.ProductID == productID);
                 if (product != null)
                 {
-                    lstChartItemFromProducts.Add(new ChartItemDTO
+                    listChartItemFromProducts.Add(new ChartItemDTO
                     {
                         ColumnName = product.Name,
                         Quantity = (int)soldQuantity,
@@ -54,8 +54,8 @@ namespace Shoping.Presentation.ViewModels
                 }
             }
 
-            lstChartItemFromProducts = lstChartItemFromProducts.OrderByDescending(x => x.Quantity).ToList();
-            foreach(var item in lstChartItemFromProducts)
+            listChartItemFromProducts = listChartItemFromProducts.OrderByDescending(x => x.Quantity).ToList();
+            foreach(var item in listChartItemFromProducts)
             {
                 SeriesCollection.Add(new ColumnSeries
                 {
@@ -63,7 +63,7 @@ namespace Shoping.Presentation.ViewModels
                     Values = new ChartValues<int> { item.Quantity },
                 });
             }
-            Labels = lstChartItemFromProducts.Select(c => c.ColumnName).ToList();
+            Labels = listChartItemFromProducts.Select(c => c.ColumnName).ToList();
         }
     }
 }

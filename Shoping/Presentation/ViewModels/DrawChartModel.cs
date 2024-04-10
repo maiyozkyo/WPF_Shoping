@@ -6,7 +6,7 @@ namespace Shoping.Presentation.ViewModels
 {
     public class DrawChartModel
     {
-        public CartesianChart DrawDoubleLineChart(List<int> values1, List<int> values2, string title1, string title2, string X_Title, List<string> X_Labels, CartesianChart MyChart)
+        public CartesianChart DrawDoubleLineChartByTime(List<int> values1, List<int> values2, string title1, string title2, string X_Title, List<string> X_Labels)
         {
             CartesianChart chart = new()
             {
@@ -51,7 +51,7 @@ namespace Shoping.Presentation.ViewModels
                     new ColumnSeries
                     {
                         Title = title,
-                        Values = new ChartValues<int>(values),
+                        Values = new ChartValues<List<ChartItemDTO>>(values),
                     }
                 ]
             };

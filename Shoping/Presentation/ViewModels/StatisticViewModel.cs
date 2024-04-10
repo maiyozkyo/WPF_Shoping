@@ -95,40 +95,43 @@ namespace Shoping.Presentation.ViewModels
         public async Task<Tuple<List<List<ChartItemDTO>>, string, List<string>>> GetSaleVolumeInform(int choose, DateTime startDate, DateTime endDate, int year)
         {
             List<List<ChartItemDTO>> quantities = [];
+            List<OrderDetailDTO> listOrderDetails;
 
             Inittialize(choose);
 
             if (choose == 0)
             {
-                var listOrderDetails = await OrderDetailBusiness.GetOrderDetailsInRange(startDate, endDate);
-                var lkOrderDetails = listOrderDetails.ToLookup(c => c.ProductID);
-                var listProductIDs = lkOrderDetails.Select(c => c.Key).ToList();
-                var listProducts = await ProductBusiness.GetListProductsByRecID(listProductIDs);
-
-                var listChartItemFromProducts = new List<ChartItemDTO>();
-                foreach (var productID in listProductIDs)
-                {
-                    var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
-                    var product = listProducts.FirstOrDefault(x => x.ProductID == productID);
-                    listChartItemFromProducts.Add(new ChartItemDTO
-                    {
-                        ColumnName = product.Name,
-                        Quantity = (int)soldQuantity,
-                    });
-                }
+                listOrderDetails = await OrderDetailBusiness.GetOrderDetailsInRange(startDate, endDate); 
             }
             else if (choose == 1)
             {
-
+                listOrderDetails = await OrderDetailBusiness.GetOrderDetailsByYear(year);
             }
             else if (choose == 2)
             {
-
+                listOrderDetails = await OrderDetailBusiness.GetOrderDetailsByYear(year);
             }
             else
             {
-
+                listOrderDetails = await OrderDetailBusiness.GetOrderDetailsBy10Year();
             }
+
+            var lkOrderDetails = listOrderDetails.ToLookup(c => c.ProductID);
+            var listProductIDs = lkOrderDetails.Select(c => c.Key).ToList();
+            var listProducts = await ProductBusiness.GetListProductsByRecID(listProductIDs);
+
+            var listChartItemFromProducts = new List<ChartItemDTO>();
+            foreach (var productID in listProductIDs)
+            {
+                var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
+                var product = listProducts.FirstOrDefault(x => x.ProductID == productID);
+                listChartItemFromProducts.Add(new ChartItemDTO
+                {
+                    ColumnName = product.Name,
+                    Quantity = (int)soldQuantity,
+                });
+            }
+            //quantities = listChartItemFromProducts.ToLookup(x => )
 
             return new Tuple<List<List<ChartItemDTO>>, string, List<string>>(quantities, X_Title, X_Labels);
         }

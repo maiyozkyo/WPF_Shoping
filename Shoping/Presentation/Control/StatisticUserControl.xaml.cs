@@ -74,7 +74,7 @@ namespace Shoping.Presentation.Control
 
             var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
 
-            MyChart = DrawChartModel.DrawColumnChartByTime();
+            //MyChart = DrawChartModel.DrawColumnChartByTime();
         }
 
         private async void BtnBestSellingProducts_Click(object sender, RoutedEventArgs e)
