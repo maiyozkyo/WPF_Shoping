@@ -249,5 +249,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Content="Load excel file:" />
+        <ProgressBar x:Name="progressBar" Width="155" Height="10" Canvas.Left="615" Canvas.Top="222" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Canvas>
 </UserControl>
