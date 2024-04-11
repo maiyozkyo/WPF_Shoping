@@ -1,33 +1,33 @@
 ﻿<UserControl x:Class="Shoping.Presentation.Control.StatisticUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:local="clr-namespace:Shoping.Presentation.Control"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Canvas>
         <Button Content="Revenue and profit" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="27" Canvas.Top="60" Click="RevenueButton_Click"/>
-        <Button Content="Products and sales volume" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="174" Canvas.Top="60"/>
+        <Button Content="Sales volume" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="174" Canvas.Top="60" Click="SaleVolumeButton_Click"/>
         <ComboBox x:Name="StatisticCombobox" Canvas.Left="27" Canvas.Top="20" Width="125" SelectionChanged="StatisticCombobox_SelectionChanged">
             <ComboBoxItem Content="From date to date"/>
             <ComboBoxItem Content="By weeks"/>
             <ComboBoxItem Content="By months"/>
             <ComboBoxItem Content="By years"/>
+
         </ComboBox>
-        <StackPanel Orientation="Horizontal" Canvas.Left="170" Canvas.Top="20" Name="DatePicker">
+        <StackPanel Orientation="Horizontal" Canvas.Left="170" Canvas.Top="20" Name="DatePicker" HorizontalAlignment="Center" Height="28" VerticalAlignment="Top">
             <Label Content="From"/>
-            <DatePicker SelectedDate="{x:Static sys:DateTime.Today}" VerticalAlignment="Center" Name="StartDate"/>
+            <DatePicker SelectedDate="{x:Static sys:DateTime.Today}" x:Name="StartDate"/>
             <Label Content="To" Margin="30 0 0 0"/>
-            <DatePicker SelectedDate="{x:Static sys:DateTime.Today}" VerticalAlignment="Center" Name="EndDate"/>
+            <DatePicker SelectedDate="{x:Static sys:DateTime.Today}" x:Name="EndDate"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Canvas.Left="170" Canvas.Top="20" Name="InputYear">
-            <Label Content="Year"/>
-            <TextBox Name="txtYear" Width="80"  VerticalAlignment="Center"/>
+            <Label Content="Year" Height="30"/>
+            <TextBox x:Name="txtYear" Height="30" Width="80" TextChanged="txtYear_TextChanged"/>
         </StackPanel>
-        <lvc:CartesianChart Name="revenueAndProfitChart" LegendLocation="Bottom" Height="310" Width="740" Canvas.Left="30" Canvas.Top="98"/>
-        <Button Content="Best Selling Products" Canvas.Left="570" Canvas.Top="21" Height="25" Width="156" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnBestSellingProducts_Click"/>
+        <lvc:CartesianChart Name="MyChart" LegendLocation="Bottom" Height="310" Width="780" Canvas.Left="10" Canvas.Top="98" HorizontalAlignment="Left" VerticalAlignment="Center"/>
     </Canvas>
 </UserControl>

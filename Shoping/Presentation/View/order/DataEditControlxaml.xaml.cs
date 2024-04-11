@@ -16,6 +16,7 @@ namespace Shoping.Presentation.View.order
         public event EventHandler DataUpdated;
         public ManageOrderViewModel ManageOrderViewModel { get; set; }
         public MainViewModel MainViewModel { get; set; }
+        double _totalMoney;
         public DataEditControlxaml(int selectedIndex, OrderDTO editOrder)
         {
             InitializeComponent();
@@ -60,7 +61,6 @@ namespace Shoping.Presentation.View.order
             }
             PhoneComboBox.ItemsSource = _list;
         }
-        double _totalMoney;
         private async void EditCartData_DataInputCompleted(object sender, CartInputEventArgs e)
         {
             _totalMoney = e.TotalMoney + double.Parse(total_money.Text);
@@ -90,7 +90,7 @@ namespace Shoping.Presentation.View.order
             _orderDetails = await ManageOrderViewModel.GetAllOrderDetails(EditOrder.RecID);
             OrderDetailDTO _orderDetailDTO = _orderDetails[i];
 
-            double totalDeleted = await ManageOrderViewModel.DeleteOrderDetail(_orderDetailDTO);
+            double totalDeleted = await ManageOrderViewModel.DeleteOrderDetail(_orderDetailDTO, EditOrder.RecID);
             total_money.Text = ((double.Parse(total_money.Text) - totalDeleted).ToString());
             MessageBox.Show($"Xoá khỏi giỏ hàng thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             LoadData();
@@ -101,7 +101,7 @@ namespace Shoping.Presentation.View.order
             DateTime? dateDelivery = delivery_date.SelectedDate;
             bool paymentStatus = payment_status.IsChecked ?? false;
 
-            if (totalMoney == 0)
+            if (totalMoney <= 0)
             {
                 await ManageOrderViewModel.DeleteOrder(EditOrder);
                 DataInputCompleted?.Invoke(this, null);

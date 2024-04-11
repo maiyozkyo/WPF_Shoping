@@ -12,18 +12,13 @@ namespace Shoping.Business.OrderDetailServices
 
         }
         // Order details
-        public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime from, DateTime to)
-        {
-            var lstOrderDetails = await Repository.GetAsync(x => x.CreatedOn >= from && x.CreatedOn <= to).ToListAsync();
-            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(lstOrderDetails));
-        }
-
         public async Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
-            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailDTO.RecID);
-            if (orderDetail == null)
+            var existingOrderDetail = await Repository.GetOneAsync(x => x.ProductID == orderDetailDTO.ProductID && x.OrderID == orderId);
+
+            if (existingOrderDetail == null)
             {
-                orderDetail = new OrderDetail
+                var newOrderDetail = new OrderDetail
                 {
                     OrderID = orderId,
                     ProductID = orderDetailDTO.ProductID,
@@ -33,22 +28,32 @@ namespace Shoping.Business.OrderDetailServices
                     Price = orderDetailDTO.Price,
                     Total = orderDetailDTO.Quantity * orderDetailDTO.Price,
                 };
-                Repository.Add(orderDetail);
+                Repository.Add(newOrderDetail);
             }
             else
             {
-                orderDetail.Quantity = orderDetailDTO.Quantity;
-                orderDetail.Price = orderDetailDTO.Price;
-                orderDetail.Total = orderDetailDTO.Quantity * orderDetailDTO.Price;
-                Repository.Update(orderDetail);
+                existingOrderDetail.Quantity += orderDetailDTO.Quantity;
+                existingOrderDetail.Total = existingOrderDetail.Quantity * orderDetailDTO.Price;
+                Repository.Update(existingOrderDetail);
             }
+
             await UnitOfWork.SaveChangesAsync();
-            return orderDetail.RecID;
+            return existingOrderDetail?.RecID ?? Guid.Empty;
         }
 
-        public async Task<double> DeleteOrderDetailsAsync(Guid orderDetailRecID)
+        public async Task<bool> DeleteOrderDetailsByOrder(Guid orderId)
         {
-            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailRecID);
+            var orderDetail = await Repository.GetOneAsync(x => x.OrderID == orderId);
+            if (orderDetail != null)
+            {
+                Repository.Delete(orderDetail);
+                await UnitOfWork.SaveChangesAsync();
+            }
+            return true;
+        }
+        public async Task<double> DeleteOrderDetailsAsync(Guid orderDetailProductID, Guid orderId)
+        {
+            var orderDetail = await Repository.GetOneAsync(x => x.ProductID == orderDetailProductID && x.OrderID == orderId);
             double totalDeleted = 0;
             if (orderDetail != null)
             {
@@ -67,6 +72,23 @@ namespace Shoping.Business.OrderDetailServices
                 return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(orderDetails));
             }
             return null;
+        }
+        public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime fromDate, DateTime toDate)
+        {
+            var listOrderDetails = await Repository.GetAsync(x => (fromDate.Day <= x.CreatedOn.Day || fromDate.Month <= x.CreatedOn.Month || fromDate.Year <= x.CreatedOn.Year) && (x.CreatedOn.Day <= toDate.Day || x.CreatedOn.Month <= toDate.Month || x.CreatedOn.Year <= toDate.Year)).ToListAsync();
+            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
+        }
+        public async Task<List<OrderDetailDTO>> GetOrderDetailsByYear(int year)
+        {
+            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
+            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
+        }
+
+        public async Task<List<OrderDetailDTO>> GetOrderDetailsBy10Year()
+        {
+            int currentYear = DateTime.Now.Year;
+            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year >= currentYear - 10 && x.CreatedOn.Year <= currentYear).ToListAsync();
+            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
         }
     }
 }

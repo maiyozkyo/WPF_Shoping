@@ -34,19 +34,19 @@ namespace Shoping.Presentation.ViewModels
 
         public async Task GetBestSellingProductsInRange(DateTime from, DateTime to)
         {
-            var lstOrderDetails = await IOrderDetailBusiness.GetOrderDetailsInRange(from, to);
-            var lkOrderDetails = lstOrderDetails.ToLookup(c => c.ProductID);
-            var lstProductIDs = lkOrderDetails.Select(c => c.Key).ToList();
-            var lstProducts = await IProductBusiness.GetListProductsByRecID(lstProductIDs);
+            var listOrderDetails = await IOrderDetailBusiness.GetOrderDetailsInRange(from, to);
+            var lkOrderDetails = listOrderDetails.ToLookup(c => c.ProductID);
+            var listProductIDs = lkOrderDetails.Select(c => c.Key).ToList();
+            var listProducts = await IProductBusiness.GetListProductsByRecID(listProductIDs);
 
-            var lstChartItemFromProducts = new List<ChartItemDTO>();
-            foreach (var productID in lstProductIDs)
+            var listChartItemFromProducts = new List<ChartItemDTO>();
+            foreach (var productID in listProductIDs)
             {
                 var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
-                var product = lstProducts.FirstOrDefault(x => x.ProductID == productID);
+                var product = listProducts.FirstOrDefault(x => x.ProductID == productID);
                 if (product != null)
                 {
-                    lstChartItemFromProducts.Add(new ChartItemDTO
+                    listChartItemFromProducts.Add(new ChartItemDTO
                     {
                         ColumnName = product.Name,
                         Quantity = (int)soldQuantity,
@@ -54,8 +54,8 @@ namespace Shoping.Presentation.ViewModels
                 }
             }
 
-            lstChartItemFromProducts = lstChartItemFromProducts.OrderByDescending(x => x.Quantity).ToList();
-            foreach(var item in lstChartItemFromProducts)
+            listChartItemFromProducts = listChartItemFromProducts.OrderByDescending(x => x.Quantity).ToList();
+            foreach(var item in listChartItemFromProducts)
             {
                 SeriesCollection.Add(new ColumnSeries
                 {
@@ -63,7 +63,7 @@ namespace Shoping.Presentation.ViewModels
                     Values = new ChartValues<int> { item.Quantity },
                 });
             }
-            Labels = lstChartItemFromProducts.Select(c => c.ColumnName).ToList();
+            Labels = listChartItemFromProducts.Select(c => c.ColumnName).ToList();
         }
     }
 }

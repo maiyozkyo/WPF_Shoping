@@ -57,7 +57,7 @@ namespace Shoping.Business.ProductServices
             var pageData = await Repository.GetAsync(x => true).ToPaging<Product, ProductDTO>(page, pageSize);
             return pageData;
         }
-        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, double from, double to ,int page, int pageSize)
+        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, double from, double to, int page, int pageSize)
         {
             if (CatID == Guid.Empty)
             {
@@ -87,7 +87,7 @@ namespace Shoping.Business.ProductServices
 
         public async Task<Tuple<List<int>, List<string>>> GetSpendingInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
-            var listProducts = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
+            var listProducts = await Repository.GetAsync(x => (fromDate.Day <= x.CreatedOn.Day || fromDate.Month <= x.CreatedOn.Month || fromDate.Year <= x.CreatedOn.Year) && (x.CreatedOn.Day <= toDate.Day || x.CreatedOn.Month <= toDate.Month || x.CreatedOn.Year <= toDate.Year)).ToListAsync();
             var productsByDateTime = listProducts.ToLookup(x => x.CreatedOn.Date);
             List<int> spendingInDateRange = [];
             List<string> dates = [];
@@ -159,7 +159,7 @@ namespace Shoping.Business.ProductServices
         public async Task<bool> CheckProductCategory(Guid category)
         {
             var product = await Repository.GetOneAsync(x => x.CatID == category);
-            if(product != null)
+            if (product != null)
             {
                 return true;
             }
