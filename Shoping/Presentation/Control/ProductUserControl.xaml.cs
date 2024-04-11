@@ -224,6 +224,7 @@ namespace Shoping.Presentation.Control
             searchFilter = searchTextBox.Text;
             loadData(1);
             pagesComboBox.SelectedIndex = 0;
+            MessageBox.Show("Search filter successfully!");
         }
 
         private void previousButton_Click(object sender, RoutedEventArgs e)
@@ -316,38 +317,42 @@ namespace Shoping.Presentation.Control
 
         private void priceSortButton_Click(object sender, RoutedEventArgs e)
         {
-            progressBar.IsIndeterminate = true;
             if(!string.IsNullOrEmpty(priceSortFromTextBox.Text) && !string.IsNullOrEmpty(priceSortToTextBox.Text))
             {
-                if (!double.TryParse(priceSortFromTextBox.Text, out priceFromFilter))
+                if (!double.TryParse(priceSortFromTextBox.Text, out priceFromFilter) || !double.TryParse(priceSortToTextBox.Text, out priceToFilter))
                 {
                     MessageBox.Show("Only numbers are allowed!");
                 }
                 else
                 {
                     priceFromFilter = double.Parse(priceSortFromTextBox.Text);
-                }
-                if(!double.TryParse(priceSortToTextBox.Text, out priceToFilter))
-                {
-                    MessageBox.Show("Only numbers are allowed");
-                }
-                else
-                {
                     priceToFilter = double.Parse(priceSortToTextBox.Text);
+                    if (priceFromFilter > priceToFilter)
+                    {
+                        MessageBox.Show("Error! Price from cannot larger than price to");
+                    }
+                    else
+                    {
+                        loadData(1);
+                        pagesComboBox.SelectedIndex = 0;
+                        MessageBox.Show("Price filter successfully!");
+                    }
                 }
             }
-            //priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
-            //priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
-            if(priceFromFilter > priceToFilter)
+            else if((string.IsNullOrEmpty(priceSortFromTextBox.Text) && !string.IsNullOrEmpty(priceSortToTextBox.Text)) || (!string.IsNullOrEmpty(priceSortFromTextBox.Text) && string.IsNullOrEmpty(priceSortToTextBox.Text)))
             {
-                MessageBox.Show("Error! Price from cannot larger than price to");
+                MessageBox.Show("Please fill in both prices for sorting!");
             }
             else
             {
+                priceFromFilter = 0;
+                priceToFilter = double.MaxValue;
                 loadData(1);
                 pagesComboBox.SelectedIndex = 0;
-                progressBar.IsIndeterminate = false;
+                MessageBox.Show("All datas have been loaded!");
             }
+            //priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
+            //priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
         }
     }
 }
