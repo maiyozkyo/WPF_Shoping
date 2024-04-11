@@ -7,11 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Canvas>
-        <TextBlock Text="Items Per Page: " HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Canvas.Left="26" Canvas.Top="28" Width="99" />
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="79" Canvas.Left="156" Canvas.Top="30" SelectionChanged="comboBox_SelectionChanged" Height="24"/>
-        <Button Content="Backup" Canvas.Left="156" Canvas.Top="87" Height="39" Width="79" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnBackup_Click"/>
-        <Label Content="Backup dữ liệu" Height="39" Canvas.Left="26" Canvas.Top="87" Width="99" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
-        <Button Content="Restore" Canvas.Left="156" Canvas.Top="155" Height="39" Width="79" HorizontalAlignment="Center" VerticalAlignment="Top" Click="BtnRestore_Click"/>
-        <Label Content="Restore dữ liệu" Height="39" Canvas.Left="26" Canvas.Top="155" Width="99" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="79" Canvas.Left="150" Canvas.Top="48" SelectionChanged="comboBox_SelectionChanged" Height="30"/>
+        <Button Content="Backup" Canvas.Left="150" Canvas.Top="90" Height="30" Width="79" HorizontalAlignment="Center" VerticalAlignment="Top" Click="BtnBackup_Click"/>
+        <Label Content="Backup dữ liệu:" Height="30" Canvas.Left="50" Canvas.Top="90" Width="95" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Button Content="Restore" Canvas.Left="150" Canvas.Top="135" Height="30" Width="79" HorizontalAlignment="Center" VerticalAlignment="Top" Click="BtnRestore_Click"/>
+        <Label Content="Restore dữ liệu:" Height="30" Canvas.Left="52" Canvas.Top="135" Width="93" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Label Content="Item per page:" Height="30" Canvas.Left="50" Canvas.Top="48" Width="95" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" />
     </Canvas>
 </UserControl>

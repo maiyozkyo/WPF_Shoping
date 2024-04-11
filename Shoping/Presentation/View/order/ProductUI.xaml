@@ -53,9 +53,18 @@
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Right"
                                 Orientation="Vertical">
-                                <TextBlock Foreground="Red" Text="{Binding Name}" />
-                                <TextBlock Foreground="Green" Text="{Binding Price}" />
-                                <TextBlock Foreground="Blue" Text="{Binding Quantity}" />
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Text="Tên: " />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Text="Giá: " />
+                                    <TextBlock Text="{Binding Price}" />
+                                </StackPanel>
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Text="Số lượng: " />
+                                    <TextBlock Text="{Binding Quantity}" />
+                                </StackPanel>
                             </StackPanel>
                         </DockPanel>
 

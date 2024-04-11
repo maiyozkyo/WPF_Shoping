@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Canvas>
-        <TextBlock Text="Category name: " HorizontalAlignment="Left" Height="27" VerticalAlignment="Center" Canvas.Left="27" Canvas.Top="33" Width="99" />
-        <TextBox Name="nameTextBox" Text="{Binding Name}" Canvas.Left="143" Canvas.Top="33" HorizontalAlignment="Left" Height="18" VerticalAlignment="Center" Width="157" RenderTransformOrigin="0.84,0.581" />
+        <TextBlock Text="Category name: " Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Canvas.Left="139" Canvas.Top="78" Width="86" />
+        <TextBox Name="nameTextBox" Text="{Binding Name}" Canvas.Left="231" Canvas.Top="78" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="157" RenderTransformOrigin="0.84,0.581" />
     </Canvas>
 </UserControl>
