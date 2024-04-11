@@ -221,11 +221,9 @@ namespace Shoping.Presentation.Control
 
         private async void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            progressBar.IsIndeterminate = true;
             searchFilter = searchTextBox.Text;
             loadData(1);
             pagesComboBox.SelectedIndex = 0;
-            progressBar.IsIndeterminate = false;
         }
 
         private void previousButton_Click(object sender, RoutedEventArgs e)
@@ -248,11 +246,9 @@ namespace Shoping.Presentation.Control
 
         private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            progressBar.IsIndeterminate = true;
             int i = (pagesComboBox.SelectedIndex >= 0 ? pagesComboBox.SelectedIndex : 0);
             _paging.currentPage = i + 1;
             loadData(_paging.currentPage);
-            progressBar.IsIndeterminate = false;
         }
 
         private async void categoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -261,7 +257,7 @@ namespace Shoping.Presentation.Control
             {
                 categoryFilter = Guid.Parse(((ComboBoxItem)categoryComboBox.SelectedItem).Tag.ToString());
             }
-            loadData(1);
+            //loadData(1);
             pagesComboBox.SelectedIndex = 0;
         }
 
@@ -321,11 +317,30 @@ namespace Shoping.Presentation.Control
         private void priceSortButton_Click(object sender, RoutedEventArgs e)
         {
             progressBar.IsIndeterminate = true;
-            priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
-            priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
+            if(!string.IsNullOrEmpty(priceSortFromTextBox.Text) && !string.IsNullOrEmpty(priceSortToTextBox.Text))
+            {
+                if (!double.TryParse(priceSortFromTextBox.Text, out priceFromFilter))
+                {
+                    MessageBox.Show("Only numbers are allowed!");
+                }
+                else
+                {
+                    priceFromFilter = double.Parse(priceSortFromTextBox.Text);
+                }
+                if(!double.TryParse(priceSortToTextBox.Text, out priceToFilter))
+                {
+                    MessageBox.Show("Only numbers are allowed");
+                }
+                else
+                {
+                    priceToFilter = double.Parse(priceSortToTextBox.Text);
+                }
+            }
+            //priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
+            //priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
             if(priceFromFilter > priceToFilter)
             {
-                MessageBox.Show("Error! Price from cannot larget than price to");
+                MessageBox.Show("Error! Price from cannot larger than price to");
             }
             else
             {
