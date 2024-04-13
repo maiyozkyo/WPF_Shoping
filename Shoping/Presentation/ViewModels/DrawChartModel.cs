@@ -1,5 +1,6 @@
 ﻿using LiveCharts;
 using LiveCharts.Wpf;
+using Microsoft.VisualBasic;
 using Shoping.Data_Access.DTOs;
 
 namespace Shoping.Presentation.ViewModels
@@ -28,6 +29,16 @@ namespace Shoping.Presentation.ViewModels
                 {
                     MaxValue = 10,
                     MinValue = 0,
+                });
+            } else
+            {
+                var max = values1.Max();
+                var min = values2.Min();
+                chart.AxisY.Add(new Axis()
+                {
+                    MaxValue = max,
+                    MinValue = min,
+                    Separator = new Separator { Step = (max - min) / 10 }
                 });
             }
 

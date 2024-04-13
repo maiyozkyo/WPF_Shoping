@@ -95,12 +95,23 @@ namespace Shoping.Presentation.Control
                     MaxValue = 10,
                     MinValue = 0,
                 });
+            } else
+            {
+                var max = information.Item1.Max();
+                var min = profits.Min();
+                MyChart.AxisY.Add(new Axis()
+                {
+                    MaxValue = max,
+                    MinValue = min,
+                    Separator = new LiveCharts.Wpf.Separator() { Step = (max - min) / 10 },
+                });
             }
 
             MyChart.AxisX.Add(new Axis()
             {
                 Title = information.Item3,
                 Labels = information.Item4,
+                Separator = new LiveCharts.Wpf.Separator() { Step = 1 },
             });
         }
 

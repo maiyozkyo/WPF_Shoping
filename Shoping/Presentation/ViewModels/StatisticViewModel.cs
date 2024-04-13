@@ -15,6 +15,7 @@ namespace Shoping.Presentation.ViewModels
 
         private void Inittialize(int choose)
         {
+            X_Labels.Clear();
             switch(choose)
             {
                 case 0: X_Title = "Date";
