@@ -1,10 +1,10 @@
 ﻿using LiveCharts;
+using LiveCharts.Wpf;
+using Shoping.Presentation.View;
 using Shoping.Presentation.ViewModels;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Wpf;
-using Shoping.Presentation.View;
 
 
 namespace Shoping.Presentation.Control
@@ -139,6 +139,11 @@ namespace Shoping.Presentation.Control
             {
                 MessageBox.Show("Vui lòng chọn ngày bắt đầu và ngày kết thúc!");
             }
+        }
+
+        private void txtYear_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

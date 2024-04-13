@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:Shoping.Presentation.View"
         xmlns:uc="clr-namespace:Shoping.Presentation.Control"
         mc:Ignorable="d"
-        Title="AddProduct" Height="450" Width="800">
+        Title="AddProduct" Height="500" Width="800">
     <Canvas>
         <uc:PhoneControl x:Name="phoneControl"/>
-        <Button Content="Add" Canvas.Left="360" Canvas.Top="368" Height="34" Width="80" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.804,1.336"/>
+        <Button Content="Add" Canvas.Left="360" Canvas.Top="422" Height="34" Width="80" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.804,1.336"/>
     </Canvas>
 </Window>

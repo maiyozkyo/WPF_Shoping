@@ -57,15 +57,15 @@ namespace Shoping.Business.ProductServices
             var pageData = await Repository.GetAsync(x => true).ToPaging<Product, ProductDTO>(page, pageSize);
             return pageData;
         }
-        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, double from, double to ,int page, int pageSize)
+        public async Task<PageData<ProductDTO>> GetFilterProducts(String search, Guid CatID, double from, double to, int page, int pageSize)
         {
             if (CatID == Guid.Empty)
             {
-                return await Repository.GetAsync(x => x.Name.Contains(search)).ToPaging<Product, ProductDTO>(page, pageSize);
+                return await Repository.GetAsync(x => x.Name.ToLower().Contains(search.ToLower()) && (x.Price >= from && x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
             }
             else
             {
-                var pageData = await Repository.GetAsync(x => x.Name.Contains(search) && x.CatID == CatID).ToPaging<Product, ProductDTO>(page, pageSize);
+                var pageData = await Repository.GetAsync(x => x.Name.ToLower().Contains(search.ToLower()) && x.CatID == CatID && (x.Price >= from && x.Price <= to)).ToPaging<Product, ProductDTO>(page, pageSize);
                 return pageData;
             }
         }
@@ -159,7 +159,7 @@ namespace Shoping.Business.ProductServices
         public async Task<bool> CheckProductCategory(Guid category)
         {
             var product = await Repository.GetOneAsync(x => x.CatID == category);
-            if(product != null)
+            if (product != null)
             {
                 return true;
             }

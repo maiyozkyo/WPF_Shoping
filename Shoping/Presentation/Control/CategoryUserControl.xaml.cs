@@ -87,16 +87,23 @@ namespace Shoping.Presentation.Control
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             var selected = categoriesListView.SelectedItem as CategoryDTO;
-            bool checkProduct = await MainViewModel.CheckProductCategory(selected.RecID);
-            if (checkProduct)
+            if(selected != null)
             {
-                MessageBox.Show("Cannot delete category. Reason: There are still products with this category!");
+                bool checkProduct = await MainViewModel.CheckProductCategory(selected.RecID);
+                if (checkProduct)
+                {
+                    MessageBox.Show("Cannot delete category. Reason: There are still products with this category!");
+                }
+                else
+                {
+                    await CategoryViewModel.DeleteCategory(selected);
+                    loadData();
+                    MessageBox.Show("Deleted successfully!");
+                }
             }
             else
             {
-                await CategoryViewModel.DeleteCategory(selected);
-                loadData();
-                MessageBox.Show("Deleted successfully!");
+                MessageBox.Show("You have to choose a category to delete!");
             }
         }
 
@@ -104,19 +111,26 @@ namespace Shoping.Presentation.Control
         {
             CategoryDTO oldData = null;
             var selected = categoriesListView.SelectedItem as CategoryDTO;
-            oldData = (CategoryDTO)selected.Clone();
-            var screen = new EditCategory(selected);
-            if (screen.ShowDialog() == true)
+            if(selected != null)
             {
-                selected.Name = screen.newEditCategory.Name;
-                await CategoryViewModel.AddUpdateCategory(selected);
-                loadData();
-                MessageBox.Show("Edited successfully");
+                oldData = (CategoryDTO)selected.Clone();
+                var screen = new EditCategory(selected);
+                if (screen.ShowDialog() == true)
+                {
+                    selected.Name = screen.newEditCategory.Name;
+                    await CategoryViewModel.AddUpdateCategory(selected);
+                    loadData();
+                    MessageBox.Show("Edited successfully");
+                }
+                else
+                {
+                    selected.Name = oldData.Name;
+                    loadData();
+                }
             }
             else
             {
-                selected.Name = oldData.Name;
-                loadData();
+                MessageBox.Show("You have to choose a category to edit!");
             }
         }
     }

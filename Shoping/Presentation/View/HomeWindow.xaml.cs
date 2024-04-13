@@ -14,6 +14,7 @@ namespace Shoping.Presentation.View
         public HomeWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {

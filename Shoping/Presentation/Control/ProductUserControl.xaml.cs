@@ -4,25 +4,10 @@ using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
 using Shoping.Presentation.View;
 using Shoping.Presentation.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Shoping.Presentation.Control
 {
@@ -48,7 +33,7 @@ namespace Shoping.Presentation.Control
             public int currentPage { get; set; }
             public int totalPage { get; set; }
             public int itemsPerPage { get; set; }
-    }
+        }
         public ProductUserControl()
         {
             InitializeComponent();
@@ -171,10 +156,17 @@ namespace Shoping.Presentation.Control
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             var selected = productsListView.SelectedItem as ProductDTO;
-            await MainViewModel.DeleteProduct(selected);
-            loadData(1);
-            pagesComboBox.SelectedIndex = 0;
-            MessageBox.Show("Deleted successfully!");
+            if(selected != null)
+            {
+                await MainViewModel.DeleteProduct(selected);
+                loadData(1);
+                pagesComboBox.SelectedIndex = 0;
+                MessageBox.Show("Deleted successfully!");
+            }
+            else
+            {
+                MessageBox.Show("You have to choose an item to delete!");
+            }
         }
 
         private async void editButton_Click(object sender, RoutedEventArgs e)
@@ -182,26 +174,33 @@ namespace Shoping.Presentation.Control
             var categoryList = await categoryViewModel.GetAllCategories();
             ProductDTO oldData = null;
             var selected = productsListView.SelectedItem as ProductDTO;
-            oldData = (ProductDTO)selected.Clone();
-            var screen = new EditProduct(selected, categoryList);
-            if (screen.ShowDialog() == true)
+            if(selected != null)
             {
-                selected.Name = screen.newEditPhone.Name;
-                selected.Price = screen.newEditPhone.Price;
-                selected.PurchasePrice = screen.newEditPhone.PurchasePrice;
-                selected.CatID = screen.newEditPhone.CatID;
-                selected.Quantity = screen.newEditPhone.Quantity;
-                selected.Image = screen.newEditPhone.Image;
-                await MainViewModel.AddUpdateProduct(selected);
-                loadData(_paging.currentPage);
-                MessageBox.Show("Edited successfully");
+                oldData = (ProductDTO)selected.Clone();
+                var screen = new EditProduct(selected, categoryList);
+                if (screen.ShowDialog() == true)
+                {
+                    selected.Name = screen.newEditPhone.Name;
+                    selected.Price = screen.newEditPhone.Price;
+                    selected.PurchasePrice = screen.newEditPhone.PurchasePrice;
+                    selected.CatID = screen.newEditPhone.CatID;
+                    selected.Quantity = screen.newEditPhone.Quantity;
+                    selected.Image = screen.newEditPhone.Image;
+                    await MainViewModel.AddUpdateProduct(selected);
+                    loadData(_paging.currentPage);
+                    MessageBox.Show("Edited successfully");
+                }
+                else
+                {
+                    selected.Name = oldData.Name;
+                    selected.Price = oldData.Price;
+                    selected.Image = oldData.Image;
+                    loadData(_paging.currentPage);
+                }
             }
             else
             {
-                selected.Name = oldData.Name;
-                selected.Price = oldData.Price;
-                selected.Image = oldData.Image;
-                loadData(_paging.currentPage);
+                MessageBox.Show("You have to choose an item to edit!");
             }
         }
 
@@ -210,6 +209,7 @@ namespace Shoping.Presentation.Control
             searchFilter = searchTextBox.Text;
             loadData(1);
             pagesComboBox.SelectedIndex = 0;
+            MessageBox.Show("Search filter successfully!");
         }
 
         private void previousButton_Click(object sender, RoutedEventArgs e)
@@ -239,11 +239,11 @@ namespace Shoping.Presentation.Control
 
         private async void categoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if((ComboBoxItem)categoryComboBox.SelectedItem != null)
+            if ((ComboBoxItem)categoryComboBox.SelectedItem != null)
             {
                 categoryFilter = Guid.Parse(((ComboBoxItem)categoryComboBox.SelectedItem).Tag.ToString());
             }
-            loadData(1);
+            //loadData(1);
             pagesComboBox.SelectedIndex = 0;
         }
 
@@ -254,8 +254,10 @@ namespace Shoping.Presentation.Control
             {
                 Filter = "Excel Files|*.xlsx"
             };
+            
             if (file.ShowDialog() == true)
             {
+                progressBar.IsIndeterminate = true;
                 fullPath = file.FileName;
                 var fileBytes = File.ReadAllBytes(fullPath);
                 await categoryViewModel.DeleteAllCategories();
@@ -293,22 +295,49 @@ namespace Shoping.Presentation.Control
                 }
                 loadData(1);
                 pagesComboBox.SelectedIndex = 0;
+                progressBar.IsIndeterminate = false;
+                MessageBox.Show("Loaded successfully!");
             }
         }
 
         private void priceSortButton_Click(object sender, RoutedEventArgs e)
         {
-            priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
-            priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
-            if(priceFromFilter > priceToFilter)
+            if(!string.IsNullOrEmpty(priceSortFromTextBox.Text) && !string.IsNullOrEmpty(priceSortToTextBox.Text))
             {
-                MessageBox.Show("Error! Price from cannot larget than price to");
+                if (!double.TryParse(priceSortFromTextBox.Text, out priceFromFilter) || !double.TryParse(priceSortToTextBox.Text, out priceToFilter))
+                {
+                    MessageBox.Show("Only numbers are allowed!");
+                }
+                else
+                {
+                    priceFromFilter = double.Parse(priceSortFromTextBox.Text);
+                    priceToFilter = double.Parse(priceSortToTextBox.Text);
+                    if (priceFromFilter > priceToFilter)
+                    {
+                        MessageBox.Show("Error! Price from cannot larger than price to");
+                    }
+                    else
+                    {
+                        loadData(1);
+                        pagesComboBox.SelectedIndex = 0;
+                        MessageBox.Show("Price filter successfully!");
+                    }
+                }
+            }
+            else if((string.IsNullOrEmpty(priceSortFromTextBox.Text) && !string.IsNullOrEmpty(priceSortToTextBox.Text)) || (!string.IsNullOrEmpty(priceSortFromTextBox.Text) && string.IsNullOrEmpty(priceSortToTextBox.Text)))
+            {
+                MessageBox.Show("Please fill in both prices for sorting!");
             }
             else
             {
+                priceFromFilter = 0;
+                priceToFilter = double.MaxValue;
                 loadData(1);
                 pagesComboBox.SelectedIndex = 0;
+                MessageBox.Show("All datas have been loaded!");
             }
+            //priceFromFilter = !string.IsNullOrEmpty(priceSortFromTextBox.Text) ? double.Parse(priceSortFromTextBox.Text) : 0;
+            //priceToFilter = !string.IsNullOrEmpty(priceSortToTextBox.Text) ? double.Parse(priceSortToTextBox.Text) : int.MaxValue;
         }
     }
 }

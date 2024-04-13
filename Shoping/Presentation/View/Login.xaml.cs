@@ -89,17 +89,24 @@ namespace Shoping.Presentation
 
         private void SetConfiguration(string key, string value)
         {
-            var settings = AppConfig.AppSettings.Settings;
-            if (settings[key] != null)
+            try
             {
-                settings[key].Value = value;
-            }
-            else
+                var settings = AppConfig.AppSettings.Settings;
+                if (settings[key] != null)
+                {
+                    settings[key].Value = value;
+                }
+                else
+                {
+                    settings.Add(key, value);
+                }
+                AppConfig.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection(AppConfig.AppSettings.SectionInformation.Name);
+            } 
+            catch (ConfigurationErrorsException)
             {
-                settings.Add(key, value);
+                Console.WriteLine("Error writing app settings");
             }
-            AppConfig.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection(AppConfig.AppSettings.SectionInformation.Name);
         }
 
         private string GetConfiguration(string key)

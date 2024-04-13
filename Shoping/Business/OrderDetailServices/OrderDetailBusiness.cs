@@ -14,10 +14,11 @@ namespace Shoping.Business.OrderDetailServices
         // Order details
         public async Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId)
         {
-            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailDTO.RecID);
-            if (orderDetail == null)
+            var existingOrderDetail = await Repository.GetOneAsync(x => x.ProductID == orderDetailDTO.ProductID && x.OrderID == orderId);
+
+            if (existingOrderDetail == null)
             {
-                orderDetail = new OrderDetail
+                var newOrderDetail = new OrderDetail
                 {
                     OrderID = orderId,
                     ProductID = orderDetailDTO.ProductID,
@@ -27,22 +28,32 @@ namespace Shoping.Business.OrderDetailServices
                     Price = orderDetailDTO.Price,
                     Total = orderDetailDTO.Quantity * orderDetailDTO.Price,
                 };
-                Repository.Add(orderDetail);
+                Repository.Add(newOrderDetail);
             }
             else
             {
-                orderDetail.Quantity = orderDetailDTO.Quantity;
-                orderDetail.Price = orderDetailDTO.Price;
-                orderDetail.Total = orderDetailDTO.Quantity * orderDetailDTO.Price;
-                Repository.Update(orderDetail);
+                existingOrderDetail.Quantity += orderDetailDTO.Quantity;
+                existingOrderDetail.Total = existingOrderDetail.Quantity * orderDetailDTO.Price;
+                Repository.Update(existingOrderDetail);
             }
+
             await UnitOfWork.SaveChangesAsync();
-            return orderDetail.RecID;
+            return existingOrderDetail?.RecID ?? Guid.Empty;
         }
 
-        public async Task<double> DeleteOrderDetailsAsync(Guid orderDetailRecID)
+        public async Task<bool> DeleteOrderDetailsByOrder(Guid orderId)
         {
-            var orderDetail = await Repository.GetOneAsync(x => x.RecID == orderDetailRecID);
+            var orderDetail = await Repository.GetOneAsync(x => x.OrderID == orderId);
+            if (orderDetail != null)
+            {
+                Repository.Delete(orderDetail);
+                await UnitOfWork.SaveChangesAsync();
+            }
+            return true;
+        }
+        public async Task<double> DeleteOrderDetailsAsync(Guid orderDetailProductID, Guid orderId)
+        {
+            var orderDetail = await Repository.GetOneAsync(x => x.ProductID == orderDetailProductID && x.OrderID == orderId);
             double totalDeleted = 0;
             if (orderDetail != null)
             {
