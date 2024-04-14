@@ -15,10 +15,13 @@ namespace Shoping.Presentation.Control
         int year = 0, choose = 0;
         public StatisticViewModel StatisticViewModel { get; set; }
         public DrawChartModel DrawChartModel { get; set; }
+        public ReportViewModel ReportViewModel { get; set; }
+
         public StatisticUserControl()
         {
             InitializeComponent();
             StatisticViewModel = new StatisticViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
+            ReportViewModel = new ReportViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
             DrawChartModel = new DrawChartModel();
             StatisticCombobox.SelectedIndex = 0;
             MyChart.Visibility = Visibility.Collapsed;
@@ -122,7 +125,7 @@ namespace Shoping.Presentation.Control
                 {
 
                 }
-
+                    
             }
             else
             {
@@ -134,5 +137,6 @@ namespace Shoping.Presentation.Control
         {
 
         }
+
     }
 }

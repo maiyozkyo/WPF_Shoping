@@ -124,7 +124,7 @@ namespace Shoping.Presentation.ViewModels
             foreach (var productID in listProductIDs)
             {
                 var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
-                var product = listProducts.FirstOrDefault(x => x.ProductID == productID);
+                var product = listProducts.FirstOrDefault(x => x.RecID == productID);
                 if (product != null)
                 {
                     listChartItemFromProducts.Add(new ChartItemDTO

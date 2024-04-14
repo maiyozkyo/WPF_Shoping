@@ -73,7 +73,8 @@ namespace Shoping.Business.ProductServices
         public async Task<List<ProductDTO>> GetListProductsByRecID(List<Guid> lstRecIDs)
         {
             var lstProducts = await Repository.GetAsync(x => lstRecIDs.Contains(x.RecID)).ToListAsync();
-            return JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
+            var lstProductDTOs = JsonConvert.DeserializeObject<List<ProductDTO>>(JsonConvert.SerializeObject(lstProducts));
+            return lstProductDTOs;
         }
         public async Task<List<ProductDTO>> GetAllProducts()
         {

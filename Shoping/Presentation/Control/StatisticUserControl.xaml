@@ -9,8 +9,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Canvas>
-        <Button Content="Revenue and profit" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="27" Canvas.Top="60" Click="RevenueButton_Click"/>
-        <Button Content="Sales volume" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="174" Canvas.Top="60" Click="SaleVolumeButton_Click"/>
+        <Button Content="Revenue and profit" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="27" Canvas.Top="60" Click="RevenueButton_Click" Height="27" Width="125"/>
         <ComboBox x:Name="StatisticCombobox" Canvas.Left="27" Canvas.Top="20" Width="125" SelectionChanged="StatisticCombobox_SelectionChanged">
             <ComboBoxItem Content="From date to date"/>
             <ComboBoxItem Content="By weeks"/>
@@ -29,5 +28,6 @@
             <TextBox x:Name="txtYear" Height="30" Width="80" TextChanged="txtYear_TextChanged"/>
         </StackPanel>
         <lvc:CartesianChart Name="MyChart" LegendLocation="Bottom" Height="310" Width="780" Canvas.Left="10" Canvas.Top="98" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button Content="Best Selling Products" Canvas.Left="201" Canvas.Top="60" Height="29" Width="132" HorizontalAlignment="Center" VerticalAlignment="Top" Click="BtnBestSellingProducts_Click"/>
     </Canvas>
 </UserControl>
