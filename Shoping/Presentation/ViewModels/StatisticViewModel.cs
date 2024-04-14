@@ -125,11 +125,14 @@ namespace Shoping.Presentation.ViewModels
             {
                 var soldQuantity = lkOrderDetails[productID].Sum(x => x.Quantity);
                 var product = listProducts.FirstOrDefault(x => x.ProductID == productID);
-                listChartItemFromProducts.Add(new ChartItemDTO
+                if (product != null)
                 {
-                    ColumnName = product.Name,
-                    Quantity = (int)soldQuantity,
-                });
+                    listChartItemFromProducts.Add(new ChartItemDTO
+                    {
+                        ColumnName = product.Name,
+                        Quantity = (int)soldQuantity,
+                    });
+                }
             }
             //quantities = listChartItemFromProducts.ToLookup(x => )
 

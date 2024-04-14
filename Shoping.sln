@@ -5,8 +5,6 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoping", "Shoping\Shoping.csproj", "{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "WPF_Shoping", "WPF_Shoping\WPF_Shoping.vdproj", "{19B9645D-F93C-45A6-ABF3-4668DB34A808}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,8 +15,6 @@ Global
 		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DB46D2D-EDF9-4168-A82B-F0C67CA52160}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19B9645D-F93C-45A6-ABF3-4668DB34A808}.Debug|Any CPU.ActiveCfg = Debug
-		{19B9645D-F93C-45A6-ABF3-4668DB34A808}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
