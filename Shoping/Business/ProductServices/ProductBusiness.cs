@@ -85,10 +85,10 @@ namespace Shoping.Business.ProductServices
             return null;
         }
 
-        public async Task<Tuple<List<int>, List<string>>> GetSpendingInDateRangeAsync(DateTime fromDate, DateTime toDate)
+        public async Task<(List<int>, List<string>)> GetSpendingInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
             var listProducts = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
-            var productsByDateTime = listProducts.ToLookup(x => x.CreatedOn.Date);
+            var productsByDateTime = listProducts.ToLookup(x => DateOnly.FromDateTime(x.CreatedOn));
             List<int> spendingInDateRange = [];
             List<string> dates = [];
 
@@ -96,9 +96,9 @@ namespace Shoping.Business.ProductServices
             {
                 var total = (int)productsByDateTime[dateTime].Sum(x => x.PurchasePrice * x.Quantity);
                 spendingInDateRange.Add(total);
-                dates.Add(dateTime.ToString()[..10]);
+                dates.Add(dateTime.ToString());
             }
-            return new Tuple<List<int>, List<string>>(spendingInDateRange, dates);
+            return (spendingInDateRange, dates);
         }
 
         public async Task<List<int>> GetSpendingByWeekAsync(int year)

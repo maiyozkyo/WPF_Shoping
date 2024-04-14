@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Shoping.Data_Access.DTOs;
 using Shoping.Data_Access.Models;
+using System.Collections.Generic;
 
 namespace Shoping.Business.OrderDetailServices
 {
@@ -73,22 +74,107 @@ namespace Shoping.Business.OrderDetailServices
             }
             return null;
         }
-        public async Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime fromDate, DateTime toDate)
+
+        public async Task<(List<List<ChartItemDTO>>, List<string>)> GetSaleVolumnInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
             var listOrderDetails = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
-            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
-        }
-        public async Task<List<OrderDetailDTO>> GetOrderDetailsByYear(int year)
-        {
-            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
-            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
+            var listOrderDetailsByDate = listOrderDetails.ToLookup(x => DateOnly.FromDateTime(x.CreatedOn));
+            var dates = listOrderDetailsByDate.Select(x => x.Key).OrderBy(x => x).ToList().ConvertAll(x => x.ToString()[..10]);
+
+            List<List<ChartItemDTO>> listProductsByDate = [];
+            foreach (var products in listOrderDetailsByDate)
+            {
+                var productsByID = products.ToLookup(x => x.ProductID);
+                List<ChartItemDTO> chartItem = [];
+                foreach (var product in productsByID)
+                {
+                    var soldQuantity = product.Sum(x => x.Quantity);
+                    chartItem.Add(new ChartItemDTO
+                    {
+                        ColumnName = product.First().NameProduct,
+                        Quantity = (int)soldQuantity,
+                    });
+                }
+                listProductsByDate.Add(chartItem);
+            }
+
+            return (listProductsByDate, dates);
         }
 
-        public async Task<List<OrderDetailDTO>> GetOrderDetailsBy10Year()
+        public async Task<List<List<ChartItemDTO>>> GetSaleVolumnByWeekAsync(int year)
         {
-            int currentYear = DateTime.Now.Year;
-            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year >= currentYear - 10 && x.CreatedOn.Year <= currentYear).ToListAsync();
-            return JsonConvert.DeserializeObject<List<OrderDetailDTO>>(JsonConvert.SerializeObject(listOrderDetails));
+            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
+            var listOrderDetailsByWeek = listOrderDetails.ToLookup(x => x.CreatedOn.DayOfYear / 7);
+
+            List<List<ChartItemDTO>> listProductsByWeek = new(53);
+            foreach (var products in listOrderDetailsByWeek)
+            {
+                var productsByID = products.ToLookup(x => x.ProductID);
+                List<ChartItemDTO> chartItem = [];
+                foreach (var product in productsByID)
+                {
+                    var soldQuantity = product.Sum(x => x.Quantity);
+                    chartItem.Add(new ChartItemDTO
+                    {
+                        ColumnName = product.First().NameProduct,
+                        Quantity = (int)soldQuantity,
+                    });
+                }
+                listProductsByWeek[products.Key] = chartItem;
+            }
+
+            return listProductsByWeek;
+        }
+
+        public async Task<List<List<ChartItemDTO>>> GetSaleVolumnByMonthAsync(int year)
+        {
+            var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
+            var listOrderDetailsByMonth = listOrderDetails.ToLookup(x => x.CreatedOn.Month);
+
+            List<List<ChartItemDTO>> listProductsByMonth = new(12);
+            foreach (var products in listOrderDetailsByMonth)
+            {
+                var productsByID = products.ToLookup(x => x.ProductID);
+                List<ChartItemDTO> chartItem = [];
+                foreach (var product in productsByID)
+                {
+                    var soldQuantity = product.Sum(x => x.Quantity);
+                    chartItem.Add(new ChartItemDTO
+                    {
+                        ColumnName = product.First().NameProduct,
+                        Quantity = (int)soldQuantity,
+                    });
+                }
+                listProductsByMonth[products.Key - 1] = chartItem;
+            }
+
+            return listProductsByMonth;
+        }
+
+        public async Task<List<List<ChartItemDTO>>> GetSaleVolumnByYearAsync()
+        {
+            var currentYear = DateTime.Today.Year;
+            var listOrderDetails = await Repository.GetAsync(x => currentYear - 10 <= x.CreatedOn.Year && x.CreatedOn.Year <= currentYear).ToListAsync();
+            var listOrderDetailsByYear = listOrderDetails.ToLookup(x => 10 - (currentYear - x.CreatedOn.Year));
+
+            List<List<ChartItemDTO>> listProductsByYear = new(11);
+            foreach (var products in listOrderDetailsByYear)
+            {
+                var productsByID = products.ToLookup(x => x.ProductID);
+                List<ChartItemDTO> chartItem = [];
+                foreach (var product in productsByID)
+                {
+                    var soldQuantity = product.Sum(x => x.Quantity);
+                    chartItem.Add(new ChartItemDTO
+                    {
+                        ColumnName = product.First().NameProduct,
+                        Quantity = (int)soldQuantity,
+                    });
+                }
+                listProductsByYear[products.Key] = chartItem;
+            }
+
+            return listProductsByYear;
         }
     }
 }
