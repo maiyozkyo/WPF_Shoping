@@ -12,7 +12,8 @@ namespace Shoping.Presentation.Control
     public partial class StatisticUserControl : UserControl
     {
         DateTime startDate = DateTime.Today, endDate = DateTime.Today;
-        int year = 0, choose = 0;
+        int year = -1;
+        int choose = 0;
         public StatisticViewModel StatisticViewModel { get; set; }
         public DrawChartModel DrawChartModel { get; set; }
         public StatisticUserControl()
@@ -28,11 +29,6 @@ namespace Shoping.Presentation.Control
             if (StatisticCombobox.SelectedIndex == 0)
             {
                 DatePicker.Visibility = Visibility.Visible;
-                if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
-                {
-                    startDate = (DateTime)StartDate.SelectedDate;
-                    endDate = (DateTime)EndDate.SelectedDate;
-                }
             } else
             {
                 DatePicker.Visibility = Visibility.Collapsed;
@@ -41,10 +37,6 @@ namespace Shoping.Presentation.Control
             if (StatisticCombobox.SelectedIndex == 1 || StatisticCombobox.SelectedIndex == 2)
             {
                 InputYear.Visibility = Visibility.Visible;
-                if (Regex.IsMatch(txtYear.Text, @"^\d+$"))
-                {
-                    year = int.Parse(txtYear.Text);
-                }
             }
             else
             {
@@ -59,6 +51,15 @@ namespace Shoping.Presentation.Control
             MyChart.Series.Clear();
             MyChart.AxisX.Clear();
             MyChart.AxisY.Clear();
+            if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
+            {
+                startDate = (DateTime)StartDate.SelectedDate;
+                endDate = (DateTime)EndDate.SelectedDate;
+            }
+            if (Regex.IsMatch(txtYear.Text, @"^\d+$"))
+            {
+                year = int.Parse(txtYear.Text);
+            } else { year = -1; }
         }
         private async void RevenueButton_Click(object sender, RoutedEventArgs e)
         {
@@ -88,22 +89,21 @@ namespace Shoping.Presentation.Control
                 }
             ];
 
-            if (information.Item1.Count + profits.Count == 0)
+            int max = information.Item1.Count != 0 ? information.Item1.Max() : 0;
+            int min = profits.Count != 0 ? profits.Min() : 0;
+            if(max != min)
             {
-                MyChart.AxisY.Add(new Axis()
-                {
-                    MaxValue = 10,
-                    MinValue = 0,
-                });
-            } else
-            {
-                var max = information.Item1.Max();
-                var min = profits.Min();
                 MyChart.AxisY.Add(new Axis()
                 {
                     MaxValue = max,
                     MinValue = min,
-                    Separator = new LiveCharts.Wpf.Separator() { Step = (max - min) / 10 },
+                });
+            }
+            else
+            {
+                MyChart.AxisY.Add(new Axis()
+                {
+                    MaxValue = max,
                 });
             }
 
@@ -118,6 +118,11 @@ namespace Shoping.Presentation.Control
         private async void SaleVolumeButton_Click(object sender, RoutedEventArgs e)
         {
             InitializeChart();
+            if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
+            {
+                startDate = (DateTime)StartDate.SelectedDate;
+                endDate = (DateTime)EndDate.SelectedDate;
+            }
 
             var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
 

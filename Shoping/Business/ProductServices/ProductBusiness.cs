@@ -87,7 +87,7 @@ namespace Shoping.Business.ProductServices
 
         public async Task<Tuple<List<int>, List<string>>> GetSpendingInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
-            var listProducts = await Repository.GetAsync(x => (fromDate.Day <= x.CreatedOn.Day || fromDate.Month <= x.CreatedOn.Month || fromDate.Year <= x.CreatedOn.Year) && (x.CreatedOn.Day <= toDate.Day || x.CreatedOn.Month <= toDate.Month || x.CreatedOn.Year <= toDate.Year)).ToListAsync();
+            var listProducts = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
             var productsByDateTime = listProducts.ToLookup(x => x.CreatedOn.Date);
             List<int> spendingInDateRange = [];
             List<string> dates = [];

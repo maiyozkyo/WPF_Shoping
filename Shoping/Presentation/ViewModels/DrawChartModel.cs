@@ -23,22 +23,21 @@ namespace Shoping.Presentation.ViewModels
                 }
             ];
 
-            if (values1.Count + values2.Count == 0)
+            int max = values1.Count != 0 ? values1.Max() : 0;
+            int min = values2.Count != 0 ? values2.Min() : 0;
+
+            if(max != min)
             {
-                chart.AxisY.Add(new Axis()
-                {
-                    MaxValue = 10,
-                    MinValue = 0,
-                });
-            } else
-            {
-                var max = values1.Max();
-                var min = values2.Min();
                 chart.AxisY.Add(new Axis()
                 {
                     MaxValue = max,
                     MinValue = min,
-                    Separator = new Separator { Step = (max - min) / 10 }
+                });
+            } else
+            {
+                chart.AxisY.Add(new Axis()
+                {
+                    MaxValue = max,
                 });
             }
 

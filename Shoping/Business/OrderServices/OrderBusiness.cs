@@ -119,7 +119,7 @@ namespace Shoping.Business.OrderServices
 
         public async Task<Tuple<List<int>, List<string>>> GetRevenueInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
-            var listOrders = await Repository.GetAsync(x => (fromDate.Day <= x.CreatedOn.Day || fromDate.Month <= x.CreatedOn.Month || fromDate.Year <= x.CreatedOn.Year) && (x.CreatedOn.Day <= toDate.Day || x.CreatedOn.Month <= toDate.Month || x.CreatedOn.Year <= toDate.Year)).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
             var ordersByDateTime = listOrders.ToLookup(x => x.CreatedOn.Date);
             List<int> revenueInDateRange = [];
             List<string> dates = [];
