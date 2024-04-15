@@ -1,5 +1,6 @@
 ﻿using LiveCharts;
 using LiveCharts.Wpf;
+using Shoping.Data_Access.DTOs;
 using Shoping.Presentation.View;
 using Shoping.Presentation.ViewModels;
 using System.Text.RegularExpressions;
@@ -11,17 +12,16 @@ namespace Shoping.Presentation.Control
 {
     public partial class StatisticUserControl : UserControl
     {
-        DateTime startDate = DateTime.Today, endDate = DateTime.Today;
-        int year = 0, choose = 0;
+        DateTime startDate = DateTime.Today, endDate = DateTime.Today.AddDays(1);
+        int year = -1;
+        int choose = 0;
         public StatisticViewModel StatisticViewModel { get; set; }
         public DrawChartModel DrawChartModel { get; set; }
-        public ReportViewModel ReportViewModel { get; set; }
 
         public StatisticUserControl()
         {
             InitializeComponent();
             StatisticViewModel = new StatisticViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
-            ReportViewModel = new ReportViewModel(App.iOrderBusiness, App.iOrderDetailBusiness, App.iProductBusiness);
             DrawChartModel = new DrawChartModel();
             StatisticCombobox.SelectedIndex = 0;
             MyChart.Visibility = Visibility.Collapsed;
@@ -31,11 +31,6 @@ namespace Shoping.Presentation.Control
             if (StatisticCombobox.SelectedIndex == 0)
             {
                 DatePicker.Visibility = Visibility.Visible;
-                if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
-                {
-                    startDate = (DateTime)StartDate.SelectedDate;
-                    endDate = (DateTime)EndDate.SelectedDate;
-                }
             } else
             {
                 DatePicker.Visibility = Visibility.Collapsed;
@@ -44,10 +39,6 @@ namespace Shoping.Presentation.Control
             if (StatisticCombobox.SelectedIndex == 1 || StatisticCombobox.SelectedIndex == 2)
             {
                 InputYear.Visibility = Visibility.Visible;
-                if (Regex.IsMatch(txtYear.Text, @"^\d+$"))
-                {
-                    year = int.Parse(txtYear.Text);
-                }
             }
             else
             {
@@ -62,6 +53,21 @@ namespace Shoping.Presentation.Control
             MyChart.Series.Clear();
             MyChart.AxisX.Clear();
             MyChart.AxisY.Clear();
+            if (StartDate.SelectedDate.HasValue && EndDate.SelectedDate.HasValue)
+            {
+                startDate = StartDate.SelectedDate.Value;
+                endDate = EndDate.SelectedDate.Value.AddDays(1);
+            }
+            if (Regex.IsMatch(txtYear.Text, @"^\d+$"))
+            {
+                year = int.Parse(txtYear.Text);
+            } else { year = -1; }
+        }
+        private void UpdateChart(CartesianChart chart)
+        {
+            MyChart.Series = chart.Series;
+            MyChart.AxisX = chart.AxisX;
+            MyChart.AxisY = chart.AxisY;
         }
         private async void RevenueButton_Click(object sender, RoutedEventArgs e)
         {
@@ -76,35 +82,9 @@ namespace Shoping.Presentation.Control
                 profits.Add(profit);
             }
 
-            //MyChart = DrawChartModel.DrawDoubleLineChartByTime(information.Item1, profits, "Revenue", "Profit", information.Item3, information.Item4);
+            var chart = DrawChartModel.DrawDoubleLineChartByTime(information.Item1, profits, "Revenue", "Profit", information.Item3, information.Item4, "USD");
 
-            MyChart.Series = [
-                    new LineSeries
-                    {
-                        Title = "Revenue",
-                        Values = new ChartValues<int>(information.Item1),
-                    },
-                new LineSeries
-                {
-                    Title = "Profit",
-                    Values = new ChartValues<int>(profits),
-                }
-            ];
-
-            if (information.Item1.Count + profits.Count == 0)
-            {
-                MyChart.AxisY.Add(new Axis()
-                {
-                    MaxValue = 10,
-                    MinValue = 0,
-                });
-            }
-
-            MyChart.AxisX.Add(new Axis()
-            {
-                Title = information.Item3,
-                Labels = information.Item4,
-            });
+            UpdateChart(chart);
         }
 
         private async void SaleVolumeButton_Click(object sender, RoutedEventArgs e)
@@ -113,29 +93,26 @@ namespace Shoping.Presentation.Control
 
             var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
 
-            //MyChart = DrawChartModel.DrawColumnChartByTime();
+            var chart = DrawChartModel.DrawMultipleColumnChartByTime(information.Item1, information.Item2, information.Item3, "Quantity");
+
+            UpdateChart(chart);
         }
 
-        private async void BtnBestSellingProducts_Click(object sender, RoutedEventArgs e)
+        private async void BestSellingProducts_Click(object sender, RoutedEventArgs e)
         {
-            if (StartDate.SelectedDate.HasValue && EndDate.SelectedDate.HasValue)
+            InitializeChart();
+
+            var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
+            List<ChartItemDTO> bestSaleProducts = [];
+            foreach(var productsByTime in information.Item1)
             {
-                var reportWindow = new Report(StartDate.SelectedDate.Value, EndDate.SelectedDate.Value);
-                if (reportWindow.ShowDialog() == true)
-                {
-
-                }
-                    
+                ChartItemDTO bestSaleProduct = productsByTime.OrderByDescending(x => x.Quantity).First();
+                bestSaleProducts.Add(bestSaleProduct);
             }
-            else
-            {
-                MessageBox.Show("Vui lòng chọn ngày bắt đầu và ngày kết thúc!");
-            }
-        }
 
-        private void txtYear_TextChanged(object sender, TextChangedEventArgs e)
-        {
+            var chart = DrawChartModel.DrawColumnChartByTime(bestSaleProducts, information.Item2, information.Item3, "Quantity");
 
+            UpdateChart(chart);
         }
 
     }

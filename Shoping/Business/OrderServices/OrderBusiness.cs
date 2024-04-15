@@ -74,7 +74,7 @@ namespace Shoping.Business.OrderServices
         // Report
         public async Task<List<int>> GetRevenueByWeekAsync(int year)
         {
-            var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year && x.PaymentStatus == true).ToListAsync();
             var ordersByWeek = listOrders.ToLookup(x => x.CreatedOn.DayOfYear / 7);
 
             List<int> revenueByWeek = Enumerable.Repeat(0, 53).ToList();
@@ -89,7 +89,7 @@ namespace Shoping.Business.OrderServices
 
         public async Task<List<int>> GetRevenueByMonthAsync(int year)
         {
-            var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => x.CreatedOn.Year == year && x.PaymentStatus == true).ToListAsync();
             var ordersByMonth = listOrders.ToLookup(x => x.CreatedOn.Month);
             List<int> revenueByMonth = Enumerable.Repeat(0, 12).ToList();
 
@@ -104,7 +104,7 @@ namespace Shoping.Business.OrderServices
         public async Task<List<int>> GetRevenueByYearAsync()
         {
             var currentYear = DateTime.Today.Year;
-            var listOrders = await Repository.GetAsync(x => currentYear - 10 <= x.CreatedOn.Year && x.CreatedOn.Year <= currentYear).ToListAsync();
+            var listOrders = await Repository.GetAsync(x => currentYear - 10 <= x.CreatedOn.Year && x.CreatedOn.Year <= currentYear && x.PaymentStatus == true).ToListAsync();
             var ordersByYear = listOrders.ToLookup(x => 10 - (currentYear - x.CreatedOn.Year));
 
             List<int> revenueByYear = Enumerable.Repeat(0, 11).ToList();
@@ -117,10 +117,10 @@ namespace Shoping.Business.OrderServices
             return revenueByYear;
         }
 
-        public async Task<Tuple<List<int>, List<string>>> GetRevenueInDateRangeAsync(DateTime fromDate, DateTime toDate)
+        public async Task<(List<int>, List<string>)> GetRevenueInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
-            var listOrders = await Repository.GetAsync(x => (fromDate.Day <= x.CreatedOn.Day || fromDate.Month <= x.CreatedOn.Month || fromDate.Year <= x.CreatedOn.Year) && (x.CreatedOn.Day <= toDate.Day || x.CreatedOn.Month <= toDate.Month || x.CreatedOn.Year <= toDate.Year)).ToListAsync();
-            var ordersByDateTime = listOrders.ToLookup(x => x.CreatedOn.Date);
+            var listOrders = await Repository.GetAsync(x => fromDate.Date <= x.CreatedOn.Date && x.CreatedOn.Date <= toDate.Date && x.PaymentStatus == true).ToListAsync();
+            var ordersByDateTime = listOrders.ToLookup(x => DateOnly.FromDateTime(x.CreatedOn));
             List<int> revenueInDateRange = [];
             List<string> dates = [];
 
@@ -128,9 +128,9 @@ namespace Shoping.Business.OrderServices
             {
                 var total = (int)ordersByDateTime[dateTime].Sum(x => x.TotalMoney);
                 revenueInDateRange.Add(total);
-                dates.Add(dateTime.ToString()[..10]);
+                dates.Add(dateTime.ToString());
             }
-            return new Tuple<List<int>, List<string>>(revenueInDateRange, dates);
+            return (revenueInDateRange, dates);
         }
     }
 }

@@ -4,13 +4,13 @@ namespace Shoping.Business.OrderDetailServices
 {
     public interface IOrderDetailBusiness
     {
-        public Task<List<OrderDetailDTO>> GetOrderDetailsInRange(DateTime from, DateTime to);
-        public Task<List<OrderDetailDTO>> GetOrderDetailsByYear(int year);
-        public Task<List<OrderDetailDTO>> GetOrderDetailsBy10Year();
-
         public Task<Guid> AddUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO, Guid orderId);
         public Task<double> DeleteOrderDetailsAsync(Guid orderDetailRecID, Guid orderId);
         public Task<bool> DeleteOrderDetailsByOrder(Guid orderId);
         public Task<List<OrderDetailDTO>> GetAllOrderDetails(Guid orderId);
+        public Task<(List<List<ChartItemDTO>>, List<string>)> GetSaleVolumnInDateRangeAsync(DateTime from, DateTime to);
+        public Task<List<List<ChartItemDTO>>> GetSaleVolumnByWeekAsync(int year);
+        public Task<List<List<ChartItemDTO>>> GetSaleVolumnByMonthAsync(int year);
+        public Task<List<List<ChartItemDTO>>> GetSaleVolumnByYearAsync();
     }
 }
