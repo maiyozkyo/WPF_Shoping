@@ -106,7 +106,7 @@ namespace Shoping.Business.OrderDetailServices
             var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
             var listOrderDetailsByWeek = listOrderDetails.ToLookup(x => x.CreatedOn.DayOfYear / 7);
 
-            List<List<ChartItemDTO>> listProductsByWeek = new(53);
+            var listProductsByWeek = new List<List<ChartItemDTO>>(53);
             foreach (var products in listOrderDetailsByWeek)
             {
                 var productsByID = products.ToLookup(x => x.ProductID);
@@ -131,7 +131,7 @@ namespace Shoping.Business.OrderDetailServices
             var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
             var listOrderDetailsByMonth = listOrderDetails.ToLookup(x => x.CreatedOn.Month);
 
-            List<List<ChartItemDTO>> listProductsByMonth = new(12);
+            var listProductsByMonth = new List<List<ChartItemDTO>>(12);
             foreach (var products in listOrderDetailsByMonth)
             {
                 var productsByID = products.ToLookup(x => x.ProductID);
@@ -157,7 +157,7 @@ namespace Shoping.Business.OrderDetailServices
             var listOrderDetails = await Repository.GetAsync(x => currentYear - 10 <= x.CreatedOn.Year && x.CreatedOn.Year <= currentYear).ToListAsync();
             var listOrderDetailsByYear = listOrderDetails.ToLookup(x => 10 - (currentYear - x.CreatedOn.Year));
 
-            List<List<ChartItemDTO>> listProductsByYear = new(11);
+            var listProductsByYear =  new List<List<ChartItemDTO>>(11);
             foreach (var products in listOrderDetailsByYear)
             {
                 var productsByID = products.ToLookup(x => x.ProductID);
