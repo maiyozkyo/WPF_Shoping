@@ -93,7 +93,7 @@ namespace Shoping.Presentation.Control
 
             var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
 
-            var chart = DrawChartModel.DrawMultipleColumnChartByTime(information.Item1, information.Item2, information.Item3, "Quantity");
+            var chart = DrawChartModel.DrawMultipleLineChartByTime(information.Item1, information.Item2, information.Item3, "Quantity");
 
             UpdateChart(chart);
         }

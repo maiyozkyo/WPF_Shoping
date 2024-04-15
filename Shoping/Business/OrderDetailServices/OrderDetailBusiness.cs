@@ -106,7 +106,12 @@ namespace Shoping.Business.OrderDetailServices
             var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
             var listOrderDetailsByWeek = listOrderDetails.ToLookup(x => x.CreatedOn.DayOfYear / 7);
 
-            var listProductsByWeek = new List<List<ChartItemDTO>>(53);
+            List<List<ChartItemDTO>> listProductsByWeek = [];
+            for (int i = 0; i < 53; ++i)
+            {
+                listProductsByWeek.Add([]);
+            }
+
             foreach (var products in listOrderDetailsByWeek)
             {
                 var productsByID = products.ToLookup(x => x.ProductID);
@@ -131,7 +136,12 @@ namespace Shoping.Business.OrderDetailServices
             var listOrderDetails = await Repository.GetAsync(x => x.CreatedOn.Year == year).ToListAsync();
             var listOrderDetailsByMonth = listOrderDetails.ToLookup(x => x.CreatedOn.Month);
 
-            var listProductsByMonth = new List<List<ChartItemDTO>>(12);
+            List<List<ChartItemDTO>> listProductsByMonth = [];
+            for (int i = 0; i < 12; ++i)
+            {
+                listProductsByMonth.Add([]);
+            }
+
             foreach (var products in listOrderDetailsByMonth)
             {
                 var productsByID = products.ToLookup(x => x.ProductID);
@@ -157,7 +167,12 @@ namespace Shoping.Business.OrderDetailServices
             var listOrderDetails = await Repository.GetAsync(x => currentYear - 10 <= x.CreatedOn.Year && x.CreatedOn.Year <= currentYear).ToListAsync();
             var listOrderDetailsByYear = listOrderDetails.ToLookup(x => 10 - (currentYear - x.CreatedOn.Year));
 
-            var listProductsByYear =  new List<List<ChartItemDTO>>(11);
+            List<List<ChartItemDTO>> listProductsByYear = [];
+            for (int i = 0; i < 11; ++i)
+            {
+                listProductsByYear.Add([]);
+            }
+
             foreach (var products in listOrderDetailsByYear)
             {
                 var productsByID = products.ToLookup(x => x.ProductID);
