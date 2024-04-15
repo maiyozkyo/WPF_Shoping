@@ -75,26 +75,29 @@ namespace Shoping.Presentation.ViewModels
         {
             CartesianChart chart = new();
 
-            SeriesCollection series = [];
-            foreach (var productsByTime in values)
+            var temp = values;
+            List<(int, ChartItemDTO)> all_products = [];
+            foreach(var item in temp)
             {
-                SeriesCollection section = [];
-                foreach (var product in productsByTime)
+                foreach(var value in item)
                 {
-                    List<int> quantity = [product.Quantity];
-                    section.Add(new ColumnSeries
-                    {
-                        Title = product.ColumnName,
-                        Values = new ChartValues<int>(quantity)
-                    });
-                }
-                foreach(var sec in section)
-                {
-                    series.Add(sec);
+                    all_products.Add((temp.IndexOf(item), value));
                 }
             }
-
-            chart.Series = series;
+            var productsByTime = all_products.GroupBy(x => x.Item2.ColumnName);
+            foreach(var item in productsByTime)
+            {
+                List<int> quantities = Enumerable.Repeat(0, X_Labels.Count()).ToList();
+                foreach(var product in item)
+                {
+                    quantities[product.Item1] = product.Item2.Quantity;
+                }
+                chart.Series.Add(new ColumnSeries()
+                {
+                    Title = item.Key,
+                    Values = new ChartValues<int>(quantities),
+                });
+            }
 
             if (values.Count == 0)
             {

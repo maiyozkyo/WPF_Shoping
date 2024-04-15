@@ -77,7 +77,7 @@ namespace Shoping.Business.OrderDetailServices
 
         public async Task<(List<List<ChartItemDTO>>, List<string>)> GetSaleVolumnInDateRangeAsync(DateTime fromDate, DateTime toDate)
         {
-            var listOrderDetails = await Repository.GetAsync(x => fromDate <= x.CreatedOn && x.CreatedOn <= toDate).ToListAsync();
+            var listOrderDetails = await Repository.GetAsync(x => fromDate.Date <= x.CreatedOn.Date && x.CreatedOn.Date <= toDate.Date).ToListAsync();
             var listOrderDetailsByDate = listOrderDetails.ToLookup(x => DateOnly.FromDateTime(x.CreatedOn));
             var dates = listOrderDetailsByDate.Select(x => x.Key).OrderBy(x => x).ToList().ConvertAll(x => x.ToString()[..10]);
 
