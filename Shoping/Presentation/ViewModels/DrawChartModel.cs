@@ -71,7 +71,7 @@ namespace Shoping.Presentation.ViewModels
             return chart;
         }
 
-        public CartesianChart DrawMultipleColumnChartByTime(List<List<ChartItemDTO>> values, string X_Title, List<string> X_Labels, string Y_Title)
+        public CartesianChart DrawMultipleLineChartByTime(List<List<ChartItemDTO>> values, string X_Title, List<string> X_Labels, string Y_Title)
         {
             CartesianChart chart = new();
 
@@ -92,7 +92,7 @@ namespace Shoping.Presentation.ViewModels
                 {
                     quantities[product.Item1] = product.Item2.Quantity;
                 }
-                chart.Series.Add(new ColumnSeries()
+                chart.Series.Add(new LineSeries()
                 {
                     Title = item.Key,
                     Values = new ChartValues<int>(quantities),
