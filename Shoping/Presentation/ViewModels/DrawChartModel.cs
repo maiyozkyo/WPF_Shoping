@@ -71,31 +71,42 @@ namespace Shoping.Presentation.ViewModels
             return chart;
         }
 
-        public CartesianChart DrawMultipleLineChartByTime(List<List<ChartItemDTO>> values, string X_Title, List<string> X_Labels, string Y_Title)
+        public CartesianChart DrawStackedColumnChartByTime(List<List<ChartItemDTO>> values, string X_Title, List<string> X_Labels, string Y_Title)
         {
             CartesianChart chart = new();
 
-            var temp = values;
-            List<(int, ChartItemDTO)> all_products = [];
-            foreach(var item in temp)
+            List<(int, ChartItemDTO)> all_datas = [];
+            foreach(var item in values)
             {
                 foreach(var value in item)
                 {
-                    all_products.Add((temp.IndexOf(item), value));
+                    all_datas.Add((values.IndexOf(item), value));
                 }
             }
-            var productsByTime = all_products.GroupBy(x => x.Item2.ColumnName);
-            foreach(var item in productsByTime)
+            if (all_datas.Count() == 0)
             {
-                List<int> quantities = Enumerable.Repeat(0, X_Labels.Count()).ToList();
-                foreach(var product in item)
+                chart.Series.Add(new StackedColumnSeries()
                 {
-                    quantities[product.Item1] = product.Item2.Quantity;
+                    Values = new ChartValues<int>(Enumerable.Repeat(0, X_Labels.Count()).ToList()),
+                });
+            }
+
+            var datasByTime = all_datas.GroupBy(x => x.Item2.ColumnName);
+            foreach(var data in datasByTime)
+            {
+                List<int> columnValues = Enumerable.Repeat(0, X_Labels.Count()).ToList();
+                foreach(var column in data)
+                {
+                    columnValues[column.Item1] = column.Item2.Quantity;
                 }
-                chart.Series.Add(new LineSeries()
+                if(columnValues.All(x => x == 0))
                 {
-                    Title = item.Key,
-                    Values = new ChartValues<int>(quantities),
+                    continue;
+                }
+                chart.Series.Add(new StackedColumnSeries()
+                {
+                    Title = data.Key,
+                    Values = new ChartValues<int>(columnValues),
                 });
             }
 
@@ -129,18 +140,20 @@ namespace Shoping.Presentation.ViewModels
         {
             CartesianChart chart = new();
 
-            SeriesCollection series = [];
-            foreach (var product in values)
+            foreach(var item in values)
             {
-                List<int> quantity = [product.Quantity];
-                series.Add(new ColumnSeries
+                List<int> quantities = Enumerable.Repeat(0, X_Labels.Count()).ToList();
+                quantities[values.IndexOf(item)] = item.Quantity;
+                if(quantities.All(x => x == 0))
                 {
-                    Title = product.ColumnName,
-                    Values = new ChartValues<int>(quantity)
+                    continue;
+                }
+                chart.Series.Add(new StackedColumnSeries
+                {
+                    Title = item.ColumnName,
+                    Values = new ChartValues<int>(quantities)
                 });
             }
-
-            chart.Series = series;
 
             if (values.Count == 0)
             {

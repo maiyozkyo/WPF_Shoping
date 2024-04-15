@@ -93,7 +93,7 @@ namespace Shoping.Presentation.Control
 
             var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
 
-            var chart = DrawChartModel.DrawMultipleLineChartByTime(information.Item1, information.Item2, information.Item3, "Quantity");
+            var chart = DrawChartModel.DrawStackedColumnChartByTime(information.Item1, information.Item2, information.Item3, "Quantity");
 
             UpdateChart(chart);
         }
@@ -104,9 +104,18 @@ namespace Shoping.Presentation.Control
 
             var information = await StatisticViewModel.GetSaleVolumeInform(choose, startDate, endDate, year);
             List<ChartItemDTO> bestSaleProducts = [];
-            foreach(var productsByTime in information.Item1)
+            var defaultProduct = new ChartItemDTO
             {
-                ChartItemDTO bestSaleProduct = productsByTime.OrderByDescending(x => x.Quantity).First();
+                ColumnName = "",
+                Quantity = 0
+            };
+            foreach (var productsByTime in information.Item1)
+            {
+                var bestSaleProduct = defaultProduct;
+                if (productsByTime.Count() > 0)
+                {
+                    bestSaleProduct = productsByTime.OrderByDescending(x => x.Quantity).First();
+                }
                 bestSaleProducts.Add(bestSaleProduct);
             }
 
